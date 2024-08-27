@@ -5,6 +5,7 @@ const { verifyPassword } = require("../utils/passwordUtils.js");
 const cookieParser = require("cookie-parser");
 passport.use(cookieParser());
 var JwtStrategy = require('passport-jwt').Strategy;
+var GoogleStrategy = require('passport-google-oauth20').Strategy;
 require("dotenv").config();
 var cookieExtractor = function (req) {
     var token = null;
@@ -46,5 +47,15 @@ passport.use(new JwtStrategy(opts, async (token, done) => {
     return done(null, token.sub);
 }));
 const strategy = new LocalStrategy(customFields, VerifyUser);
-
+passport.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: "http://localhost:5000/auth/google/callback"
+},
+    function (accessToken, refreshToken, profile, cb) {
+        User.findOrCreate({ googleId: profile.id }, function (err, user) {
+            return cb(err, user);
+        });
+    }
+));
 passport.use(strategy);
