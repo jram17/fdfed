@@ -1,10 +1,12 @@
 const express = require('express');
 const route = express.Router();
-const passport = require('passport');
 const User = require("../Models/UserModel");
 const { generateHash } = require("../utils/passwordUtils");
-route.use(passport.initialize());
+const issueJWT = require("../utils/jwtUtils");
+
+const { login } = require("../middlewares/PassportLogin");
 require("../config/passport_config");
+
 route.post('/register', async (req, res) => {
     const { username, email, password } = req.body;
 
@@ -24,15 +26,25 @@ route.post('/register', async (req, res) => {
             email,
             password_hash: hash
         });
+
         await newUser.save();
+
+        const { token } = issueJWT(newUser);
+
+        res.cookie('jwt', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            maxAge: 1000 * 60 * 60 * 24
+        });
+
         res.status(201).redirect('/');
     } catch (error) {
-        console.log(error.message);
         res.status(500).send({ message: "Server error. Please try again later." });
     }
 });
-route.post('/login', passport.authenticate('local', { failureRedirect: "/login" }), (req, res) => {
-    res.redirect('/');
-});
+
+route.post('/login', login, (req, res) => {
+    res.status(200).send({ message: "sucessful login" });
+})
 
 module.exports = route;
