@@ -10,10 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fontsource-variable/faustina": "^5.0.15",
+    "@fontsource/roboto": "^5.0.14",
+    "@hookform/resolvers": "^3.9.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.53.0",
     "react-router-dom": "^6.26.1",
+    "react-toastify": "^10.0.5",
     "zod": "^3.23.8"
   },
   "devDependencies": {
