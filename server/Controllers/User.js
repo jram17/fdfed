@@ -37,14 +37,14 @@ route.post('/register', async (req, res) => {
             maxAge: 1000 * 60 * 60 * 24
         });
 
-        res.status(201).redirect('/');
+        res.status(200).send({ message: "sucessfull login" });
     } catch (error) {
         res.status(500).send({ message: "Server error. Please try again later." });
     }
 });
 
 route.post('/login', login, (req, res) => {
-    res.status(200).send({ message: "sucessful login" });
+    res.status(200).send({ message: "sucessfull login" });
 })
 
 module.exports = route;

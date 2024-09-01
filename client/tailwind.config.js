@@ -1,3 +1,5 @@
+import { Form } from 'react-hook-form';
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
@@ -7,6 +9,9 @@ export default {
     extend: {
       fontFamily: {
         header: ['Poppins', 'sans-serif'],
+        title: ['Faustina Variable', 'serif'],
+        form: ['Fira Code Variable', 'sans-serif'],
+        input: ['Nunito Variable', 'serif'],
       },
       colors: {
         border: "hsl(var(--border))",

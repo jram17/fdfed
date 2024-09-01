@@ -8,6 +8,8 @@ import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import Home from './pages/Home';
 import Layout from './components/Layout';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Layout />}>
@@ -18,7 +20,22 @@ const router = createBrowserRouter(
   )
 );
 function App() {
-  return <RouterProvider router={router}></RouterProvider>;
+  return (
+    <RouterProvider router={router}>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={1000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+    </RouterProvider>
+  );
 }
 
 export default App;

@@ -51,7 +51,7 @@
 }
 
 .card-description {
-    @apply text-muted-foreground text-xl
+    @apply text-muted-foreground text-lg
 }
 
 .card-content {
@@ -67,11 +67,15 @@
 }
 
 .input {
-    @apply flex h-10 w-[40vw] rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50
+    @apply flex h-10 font-input w-[25vw] min-w-[90%] rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50
+}
+
+.form-label {
+    @apply text-xl
 }
 
 .form-item {
-    @apply space-y-2
+    @apply space-y-1
 }
 
 .form-description {
