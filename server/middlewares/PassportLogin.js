@@ -4,10 +4,10 @@ require("dotenv").config();
 const login = async (req, res, next) => {
     passport.authenticate('local', { session: false }, (err, user, info) => {
         if (err) {
-            return res.status(500).json({ message: info });
+            return res.status(400).json({ message: info });
         }
         if (!user) {
-            return res.status(401).json({ message: info });
+            return res.status(400).json({ message: info });
         } if (user) {
             const { token } = issueJWT(user);
             res.cookie('jwt', token, {

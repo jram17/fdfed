@@ -25,7 +25,7 @@ const SignUpSchema = z
 function SignUpForm() {
   const [isLoading, setLoading] = useState(false);
   const [isError, setError] = useState(false);
-  const [error, setErrorMsg] = useState(false);
+  const [error, setErrorMsg] = useState('');
   const {
     reset,
     register,
@@ -83,8 +83,8 @@ function SignUpForm() {
   };
 
   return (
-    <div className="grid w-full items-center px-4 sm:justify-center border-none shadow-none font-form">
-      <div className="card w-full max-sm:w-96 p-6 border-none shadow-none max-h-inherit max-lg:px-0 flex flex-col items-center justify-center gap-6">
+    <div className="grid w-full items-center px-4 sm:justify-center border-none shadow-none font-form min-h-[60vh] justify-center">
+      <div className="card w-full max-sm:w-96 p-6 border-none shadow-none max-h-inherit max-lg:px-0 flex flex-col items-center h-full justify-center gap-6">
         <div className="card-header flex items-center justify-center gap-2  flex-col">
           <div className="card-title flex items-center justify-center text-nowrap max-sm:text-lg font-title !text-3xl">
             Start With Society Log
@@ -126,6 +126,7 @@ function SignUpForm() {
                 UserName
               </label>
               <input
+                placeholder="UserName"
                 type="text"
                 {...register('username', { required: true })}
                 className="input"
@@ -144,6 +145,7 @@ function SignUpForm() {
               </label>
               <input
                 type="email"
+                placeholder="Email"
                 {...register('email', { required: true })}
                 className="input"
               />
@@ -161,6 +163,7 @@ function SignUpForm() {
                 Password
               </label>
               <input
+                placeholder="Password"
                 type="password"
                 {...register('password', { required: true })}
                 className="input"
@@ -179,6 +182,7 @@ function SignUpForm() {
                 ConfirmPassword
               </label>
               <input
+                placeholder="Confirm Password"
                 type="password"
                 {...register('confirmPassword', { required: true })}
                 className="input"
@@ -192,7 +196,7 @@ function SignUpForm() {
             </div>
             <div className="w-full grid place-items-center">
               <button
-                className="btn  !text-lg   max-sm:text-xs max-sm:px-2 max-sm:py-1"
+                className="btn  !text-lg outline-btn sm-btn  max-sm:text-xs max-sm:px-2 max-sm:py-1"
                 disabled={isLoading}
               >
                 {isLoading ? (

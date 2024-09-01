@@ -9,10 +9,17 @@ import '@fontsource-variable/fira-code';
 import '@fontsource-variable/nunito';
 import '@fontsource-variable/faustina';
 import '../index.css';
+
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
+
 function SignInForm() {
   const [isLoading, setLoading] = useState(false);
+  const [isError, setError] = useState(false);
+  const [error, setErrorMsg] = useState('');
+  const navigate = useNavigate();
 
-  // Corrected Zod schema
   const SignUpSchema = z.object({
     identifier: z.union([z.string().email(), z.string()]),
     password: z.string().min(8, 'Password must be at least 8 characters long'),
@@ -23,16 +30,56 @@ function SignInForm() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    getValues,
   } = useForm({ resolver: zodResolver(SignUpSchema) });
 
-  const onSubmit = (data) => {
-    console.log('Form data:', data);
+  const onSubmit = async (formData) => {
+    setLoading(true);
+    setError(false);
+    setErrorMsg('');
+    try {
+      const response = await axios.post('http://localhost:5000/user/login', {
+        identifier: formData.identifier,
+        password: formData.password,
+      });
+
+      if (response.status === 200) {
+        toast.success('Login successful!', {
+          position: 'bottom-right',
+          autoClose: 1000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        });
+        reset();
+        navigate('/');
+      }
+    } catch (error) {
+      const errorMessage = 'Invalid credentials';
+
+      setError(true);
+      setErrorMsg(errorMessage);
+
+      toast.error(errorMessage, {
+        position: 'bottom-right',
+        autoClose: 1000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="grid w-full items-center px-4 sm:justify-center border-none shadow-none font-form">
-      <div className="card w-full max-sm:w-96 p-6 border-none shadow-none max-h-inherit max-lg:px-0 flex flex-col items-center justify-center gap-6">
+    <div className="grid w-full items-center px-4 sm:justify-center border-none shadow-none font-form min-h-[60vh] min-w-[70vw] justify-center">
+      <div className="card w-full max-sm:w-96 p-6 border-none shadow-none max-h-inherit max-lg:px-0 flex flex-col items-center justify-center gap-6  h-full">
         <div className="card-header flex items-center justify-center gap-2 flex-col">
           <div className="card-title flex items-center justify-center text-nowrap max-sm:text-lg font-title !text-3xl">
             LogIn To Society Log
@@ -68,15 +115,18 @@ function SignInForm() {
             <div className="form-item">
               <label
                 className={`form-item ${
-                  errors.identifier && 'text-destructive'
+                  errors.identifier ? 'text-destructive' : ''
                 } form-label`}
               >
                 UserName or Email
               </label>
               <input
                 type="text"
+                placeholder="Identification"
                 {...register('identifier', { required: true })}
-                className="input"
+                className={`input ${
+                  errors.identifier ? 'border-destructive' : ''
+                }`}
               />
               {errors.identifier && (
                 <p className="form-message">{errors.identifier.message}</p>
@@ -86,32 +136,37 @@ function SignInForm() {
             <div className="form-item">
               <label
                 className={`${
-                  errors.password && 'text-destructive'
+                  errors.password ? 'text-destructive' : ''
                 } form-label`}
               >
                 Password
               </label>
               <input
                 type="password"
+                placeholder="Password"
                 {...register('password', { required: true })}
-                className="input"
+                className={`input ${
+                  errors.password ? 'border-destructive' : ''
+                }`}
+                onChange={() => {
+                  setError(false);
+                }}
               />
               {errors.password && (
                 <p className="form-message">{errors.password.message}</p>
               )}
+              {isError && <p className="form-message">{error}</p>}
             </div>
 
             <div className="w-full grid place-items-center">
               <button
-                className="btn !text-lg max-sm:text-xs max-sm:px-2 max-sm:py-1"
-                disabled={isLoading}
+                className="btn outline-btn sm-btn !text-lg max-sm:text-xs max-sm:px-2 max-sm:py-1"
+                disabled={isLoading || isSubmitting}
               >
                 {isLoading ? (
                   <RiLoader5Line className="size-4 animate-spin" />
                 ) : (
-                  <>
-                    <span>Login In Now</span>
-                  </>
+                  <span>Login In Now</span>
                 )}
               </button>
             </div>
