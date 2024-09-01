@@ -213,9 +213,9 @@ function SignUpForm() {
             </div>
           </form>
         </div>
-        <div className="card-content w-full flex items-center justify-center ">
+        <div className="card-content w-full flex  items-center justify-center ">
           <Link to={'/sign-in'}>
-            <button className="btn link">ALready Having a Account?</button>
+            <button className="btn link">Already Having a Account?</button>
           </Link>
         </div>
       </div>

@@ -174,9 +174,12 @@ function SignInForm() {
             </div>
           </form>
         </div>
-        <div className="card-content w-full flex items-center justify-center ">
+        <div className="card-content w-full flex items-center justify-center flex-col ">
           <Link to={'/sign-up'}>
             <button className="btn link">Want to Create a Account?</button>
+          </Link>
+          <Link to={'/sign-in'}>
+            <button className="btn link">Forgot Password?</button>
           </Link>
         </div>
       </div>
