@@ -10,6 +10,7 @@ import '@fontsource-variable/nunito';
 import '@fontsource-variable/faustina';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Link } from 'react-router-dom';
 const SignUpSchema = z
   .object({
     username: z.string().min(8, 'Username must be at least 8 characters long'),
@@ -37,6 +38,8 @@ function SignUpForm() {
   });
 
   const onSubmit = async (formdata) => {
+    axios.defaults.withCredentials = true;
+
     setLoading(true);
     try {
       setError(false);
@@ -209,6 +212,11 @@ function SignUpForm() {
               </button>
             </div>
           </form>
+        </div>
+        <div className="card-content w-full flex items-center justify-center ">
+          <Link to={'/sign-in'}>
+            <button className="btn link">ALready Having a Account?</button>
+          </Link>
         </div>
       </div>
     </div>

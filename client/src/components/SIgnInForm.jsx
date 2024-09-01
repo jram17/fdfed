@@ -9,7 +9,7 @@ import '@fontsource-variable/fira-code';
 import '@fontsource-variable/nunito';
 import '@fontsource-variable/faustina';
 import '../index.css';
-
+import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
@@ -33,6 +33,8 @@ function SignInForm() {
   } = useForm({ resolver: zodResolver(SignUpSchema) });
 
   const onSubmit = async (formData) => {
+    axios.defaults.withCredentials = true;
+
     setLoading(true);
     setError(false);
     setErrorMsg('');
@@ -171,6 +173,11 @@ function SignInForm() {
               </button>
             </div>
           </form>
+        </div>
+        <div className="card-content w-full flex items-center justify-center ">
+          <Link to={'/sign-up'}>
+            <button className="btn link">Want to Create a Account?</button>
+          </Link>
         </div>
       </div>
     </div>
