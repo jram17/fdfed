@@ -19,8 +19,6 @@ const login = async (req, res, next) => {
         }
     })(req, res, next);
 }
-const CLIENT_URL = "http://localhost:5173/";
-const FALLBACK_URL = "http://localhost:5173/sign-in";
 const jwt_authenticate = async (req, res, next) => {
     passport.authenticate('jwt', (error, id, info) => {
         if (error) {

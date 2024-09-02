@@ -6,6 +6,7 @@ const cookieParser = require("cookie-parser");
 passport.use(cookieParser());
 var JwtStrategy = require('passport-jwt').Strategy;
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
+const { generateHash } = require("../utils/passwordUtils");
 require("dotenv").config();
 var cookieExtractor = function (req) {
     var token = null;
@@ -51,11 +52,31 @@ passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: "http://localhost:5000/auth/google/callback",
+    passReqToCallback: true
 
 },
-    function (accessToken, refreshToken, profile, cb) {
-        console.log(profile._json);
-        return cb(null, profile);
+    async function (request, accessToken, refreshToken, profile, cb) {
+        const email = profile._json.email;
+        const user = await User.findOne({ email: email });
+        const username = profile.displayName;
+        if (user) {
+            if (user.isGoogleId) {
+                return cb(null, user);
+            } else {
+                return cb("Already manually logged in", false);
+            }
+        } else {
+            const { hash } = generateHash(profile.id);
+            const newUser = new User({
+                username: username,
+                email: email,
+                password_hash: hash,
+                isGoogleId: true,
+                googleId: profile.id
+            });
+            await newUser.save();
+            return cb(null, newUser);
+        }
     }
 ));
 passport.use(strategy);
