@@ -31,7 +31,9 @@ function SignInForm() {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm({ resolver: zodResolver(SignUpSchema) });
-
+  const GoogleOauth = async () => {
+    window.location.href = 'http://localhost:5000/auth/google';
+  };
   const onSubmit = async (formData) => {
     axios.defaults.withCredentials = true;
 
@@ -96,6 +98,7 @@ function SignInForm() {
               <button
                 className="btn sm-btn !text-lg outline-btn max-sm:text-xs max-sm:px-2 max-sm:py-1"
                 disabled={isLoading}
+                onClick={GoogleOauth}
               >
                 {isLoading ? (
                   <RiLoader5Line className="size-4 animate-spin" />

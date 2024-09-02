@@ -21,6 +21,8 @@ const corsOptions = {
     optionSuccessStatus: 200,
 };
 app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
+
 require('./config/passport_config');
 app.use('/user', Auth);
 app.use('/account', Account);

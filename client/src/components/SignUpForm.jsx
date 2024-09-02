@@ -37,12 +37,7 @@ function SignUpForm() {
     resolver: zodResolver(SignUpSchema),
   });
   const GoogleOauth = async () => {
-    try {
-      const response = await axios.get('http://localhost:5000/auth/google');
-      console.log(response.status);
-    } catch (error) {
-      console.log(error);
-    }
+    window.location.href = 'http://localhost:5000/auth/google';
   };
   const onSubmit = async (formdata) => {
     axios.defaults.withCredentials = true;

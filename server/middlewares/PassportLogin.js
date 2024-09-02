@@ -19,7 +19,8 @@ const login = async (req, res, next) => {
         }
     })(req, res, next);
 }
-
+const CLIENT_URL = "http://localhost:5173/";
+const FALLBACK_URL = "http://localhost:5173/sign-in";
 const jwt_authenticate = async (req, res, next) => {
     passport.authenticate('jwt', (error, id, info) => {
         if (error) {
@@ -32,22 +33,5 @@ const jwt_authenticate = async (req, res, next) => {
         next();
     })(req, res, next);
 }
-const google = async (req, res, next) => {
-    passport.authenticate('google', { session: false }, (err, user, info) => {
-        if (err) {
-            return res.status(400).json({ message: info });
-        }
-        if (!user) {
-            return res.status(400).json({ message: info });
-        } if (user) {
-            const { token } = issueJWT(user);
-            res.cookie('jwt', token, {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
-                maxAge: 1000 * 60 * 60 * 24
-            });
-            next();
-        }
-    })(req, res, next);
-}
-module.exports = { login, jwt_authenticate, google };
+
+module.exports = { login, jwt_authenticate };

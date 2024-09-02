@@ -54,6 +54,7 @@ passport.use(new GoogleStrategy({
 
 },
     function (accessToken, refreshToken, profile, cb) {
+        console.log(profile._json);
         return cb(null, profile);
     }
 ));
