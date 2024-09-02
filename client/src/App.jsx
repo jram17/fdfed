@@ -10,6 +10,10 @@ import Home from './pages/Home';
 import Layout from './components/Layout';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Provider } from 'react-redux';
+import store from './redux/store';
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistStore } from 'redux-persist';
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Layout />}>
@@ -20,21 +24,26 @@ const router = createBrowserRouter(
   )
 );
 function App() {
+  const persistor = persistStore(store);
   return (
-    <RouterProvider router={router}>
-      <ToastContainer
-        position="bottom-right"
-        autoClose={1000}
-        hideProgressBar={false}
-        newestOnTop
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
-    </RouterProvider>
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
+        <RouterProvider router={router}>
+          <ToastContainer
+            position="bottom-right"
+            autoClose={1000}
+            hideProgressBar={false}
+            newestOnTop
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
+        </RouterProvider>
+      </PersistGate>
+    </Provider>
   );
 }
 
