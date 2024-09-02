@@ -1,12 +1,13 @@
 const passport = require("passport");
 const express = require("express");
 const route = express.Router();
-route.get('/auth/google',
+const { google } = require("../middlewares/PassportLogin");
+route.get('/',
     passport.authenticate('google', { scope: ['profile'] }));
 
-route.get('/auth/google/callback',
-    passport.authenticate('google', { failureRedirect: '/login' }),
+route.get('/callback', google
+    ,
     function (req, res) {
-        res.redirect('/');
+        res.status(200).json({ message: "successful login" });
     });
 module.exports = route;

@@ -32,5 +32,22 @@ const jwt_authenticate = async (req, res, next) => {
         next();
     })(req, res, next);
 }
-
-module.exports = { login, jwt_authenticate };
+const google = async (req, res, next) => {
+    passport.authenticate('google', { session: false }, (err, user, info) => {
+        if (err) {
+            return res.status(400).json({ message: info });
+        }
+        if (!user) {
+            return res.status(400).json({ message: info });
+        } if (user) {
+            const { token } = issueJWT(user);
+            res.cookie('jwt', token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                maxAge: 1000 * 60 * 60 * 24
+            });
+            next();
+        }
+    })(req, res, next);
+}
+module.exports = { login, jwt_authenticate, google };

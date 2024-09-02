@@ -36,7 +36,14 @@ function SignUpForm() {
   } = useForm({
     resolver: zodResolver(SignUpSchema),
   });
-
+  const GoogleOauth = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/auth/google');
+      console.log(response.status);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const onSubmit = async (formdata) => {
     axios.defaults.withCredentials = true;
 
@@ -94,6 +101,7 @@ function SignUpForm() {
               <button
                 className="btn sm-btn !text-lg  outline-btn max-sm:text-xs max-sm:px-2 max-sm:py-1"
                 disabled={isLoading}
+                onClick={GoogleOauth}
               >
                 {isLoading ? (
                   <RiLoader5Line className="size-4 animate-spin" />
@@ -121,6 +129,8 @@ function SignUpForm() {
                 UserName
               </label>
               <input
+                autoFocus
+                disabled={isLoading}
                 placeholder="UserName"
                 type="text"
                 {...register('username', { required: true })}
@@ -140,6 +150,7 @@ function SignUpForm() {
               </label>
               <input
                 type="email"
+                disabled={isLoading}
                 placeholder="Email"
                 {...register('email', { required: true })}
                 className="input"
@@ -158,6 +169,7 @@ function SignUpForm() {
                 Password
               </label>
               <input
+                disabled={isLoading}
                 placeholder="Password"
                 type="password"
                 {...register('password', { required: true })}
