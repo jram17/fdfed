@@ -68,16 +68,8 @@ function SignUpForm() {
         setError(true);
         setErrorMsg(error.response.data.message || 'An error occurred');
       } else {
-        toast.error('��� An error occurred', {
-          position: 'bottom-right',
-          autoClose: 1000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'light',
-        });
+        setError(true);
+        setErrorMsg('An error occurred in creating account');
       }
     } finally {
       setLoading(false);
