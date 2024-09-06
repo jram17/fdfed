@@ -6,6 +6,8 @@ const cookieParser = require("cookie-parser");
 passport.use(cookieParser());
 var JwtStrategy = require('passport-jwt').Strategy;
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
+const { v4: uuidv4 } = require('uuid');
+
 const { generateHash } = require("../utils/passwordUtils");
 require("dotenv").config();
 var cookieExtractor = function (req) {
@@ -67,9 +69,12 @@ passport.use(new GoogleStrategy({
             }
         } else {
             const { hash } = generateHash(profile.id);
+            const uuid = uuidv4();
+
             const newUser = new User({
                 username: username,
                 email: email,
+                uuid: uuid,
                 password_hash: hash,
                 isGoogleId: true,
                 googleId: profile.id

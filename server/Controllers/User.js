@@ -3,7 +3,7 @@ const route = express.Router();
 const User = require("../Models/UserModel");
 const { generateHash } = require("../utils/passwordUtils");
 const issueJWT = require("../utils/jwtUtils");
-
+const { v4: uuidv4 } = require('uuid');
 const { login } = require("../middlewares/PassportLogin");
 require("../config/passport_config");
 
@@ -20,10 +20,11 @@ route.post('/register', async (req, res) => {
         }
 
         const { hash } = generateHash(password);
-
+        const uuid = uuidv4();
         const newUser = new User({
             username,
             email,
+            uuid,
             password_hash: hash
         });
 

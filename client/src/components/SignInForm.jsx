@@ -126,6 +126,7 @@ function SignInForm() {
                 UserName or Email
               </label>
               <input
+                autoFocus
                 type="text"
                 placeholder="Identification"
                 {...register('identifier', { required: true })}
