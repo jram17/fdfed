@@ -10,8 +10,6 @@ import '@fontsource-variable/nunito';
 import '@fontsource-variable/faustina';
 import '../index.css';
 import { Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 
 function SignInForm() {
@@ -47,16 +45,6 @@ function SignInForm() {
       });
 
       if (response.status === 200) {
-        toast.success('Login successful!', {
-          position: 'bottom-right',
-          autoClose: 1000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'light',
-        });
         reset();
         navigate('/');
       }
@@ -65,17 +53,6 @@ function SignInForm() {
 
       setError(true);
       setErrorMsg(errorMessage);
-
-      toast.error(errorMessage, {
-        position: 'bottom-right',
-        autoClose: 1000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'light',
-      });
     } finally {
       setLoading(false);
     }

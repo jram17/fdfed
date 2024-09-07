@@ -9,6 +9,9 @@ const login = async (req, res, next) => {
         if (!user) {
             return res.status(400).json({ message: info });
         } if (user) {
+            if (user.isGoogleId) {
+                return res.status(403).json({ message: 'You are already logged in using Google.' });
+            }
             const { token } = issueJWT(user);
             res.cookie('jwt', token, {
                 httpOnly: true,

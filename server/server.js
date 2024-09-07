@@ -1,14 +1,21 @@
-const app = require(".");
-const connect = require("./config/db_config");
-const initialize = async () => {
-    try {
-        await connect();
-        app.listen(5000, () => {
-            console.log("Server started on port 5000");
-        });
-    } catch (error) {
-        console.log("Error: ", error);
+const App = require(".");
+const DbConfig = require("./config/db_config");
+require("dotenv").config();
+
+class Server {
+    constructor() {
+        this.appInstance = new App();
+        this.dbConfig = new DbConfig(process.env.MONGO_URI);
+        this.port = process.env.PORT || 3000;
+    }
+
+    async initialize() {
+        try {
+            await this.dbConfig.DbConnect();
+            this.appInstance.start(this.port);
+        } catch (error) {
+            console.error("Error during server initialization:", error);
+        }
     }
 }
-
-initialize();
+new Server().initialize();
