@@ -1,6 +1,6 @@
 import React from 'react';
 import SignUpForm from '../components/SignUpForm';
-import videoUrl from '../../public/video4.mp4';
+import videoUrl from '../../public/videoassest.mp4';
 
 function SignUp() {
     return (

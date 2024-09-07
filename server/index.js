@@ -3,9 +3,9 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const cookieParser = require('cookie-parser');
-const Auth = require('./Controllers/User');
+const Auth = require('./Routes/UserAuthRouter');
 const Account = require('./Controllers/account');
-const GoogleStrategy = require('./Controllers/GoogleOAuth');
+const GoogleStrategy = require('./Routes/GoogleAuthRouter');
 
 class App {
     constructor() {
