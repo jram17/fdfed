@@ -7,6 +7,7 @@ passport.use(cookieParser());
 var JwtStrategy = require('passport-jwt').Strategy;
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
 const { v4: uuidv4 } = require('uuid');
+const ApartmentData = require("../Models/UserApartmentModel");
 
 const { generateHash } = require("../utils/passwordUtils");
 require("dotenv").config();
@@ -80,6 +81,10 @@ passport.use(new GoogleStrategy({
                 googleId: profile.id
             });
             await newUser.save();
+            const ApartmentModel = new ApartmentData({
+                user: newUser._id
+            })
+            await ApartmentModel.save();
             return cb(null, newUser);
         }
     }

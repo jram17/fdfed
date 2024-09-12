@@ -5,6 +5,7 @@ const { v4: uuidv4 } = require('uuid');
 const CLIENT_URL = "http://localhost:5173/";
 const FALLBACK_URL = "http://localhost:5173/sign-in";
 require("../config/passport_config");
+const ApartmentData = require("../Models/UserApartmentModel");
 
 class UserAuthentication {
     constructor() {
@@ -34,7 +35,10 @@ class UserAuthentication {
 
             await newUser.save();
             this.user = newUser;
-
+            const ApartmentModel = new ApartmentData({
+                user: this.user._id
+            })
+            await ApartmentModel.save();
             const token = issueJWT(this.user);
 
             res.cookie('jwt', token, {
