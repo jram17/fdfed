@@ -1,6 +1,7 @@
 const passport = require('passport');
 const issueJWT = require("../utils/jwtUtils");
 require("dotenv").config();
+const LOGIN_URL = "http://localhost:5173/sign-in";
 const login = async (req, res, next) => {
     passport.authenticate('local', { session: false }, (err, user, info) => {
         if (err) {
@@ -24,11 +25,12 @@ const login = async (req, res, next) => {
 }
 const jwt_authenticate = async (req, res, next) => {
     passport.authenticate('jwt', (error, id, info) => {
+
         if (error) {
             return res.status(500).json({ message: info.message });
         };
         if (!id) {
-            return res.redirect("/user/login")
+            return res.status(400).json({ message: "Invalid token" });
         };
         req.id = id;
         next();

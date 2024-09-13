@@ -2,13 +2,12 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const User = require("../Models/UserModel");
 const { verifyPassword } = require("../utils/passwordUtils.js");
-const cookieParser = require("cookie-parser");
-passport.use(cookieParser());
 var JwtStrategy = require('passport-jwt').Strategy;
+const CookieParser = require('cookie-parser');
+passport.use(CookieParser());
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
 const { v4: uuidv4 } = require('uuid');
 const ApartmentData = require("../Models/UserApartmentModel");
-
 const { generateHash } = require("../utils/passwordUtils");
 require("dotenv").config();
 var cookieExtractor = function (req) {

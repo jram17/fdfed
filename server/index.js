@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 const Auth = require('./Routes/UserAuthRouter');
 const Account = require('./Controllers/account');
 const GoogleStrategy = require('./Routes/GoogleAuthRouter');
-
+const CreateRoom = require("./Routes/CreateRoomRouter");
 class App {
     constructor() {
         this.app = express();
@@ -19,10 +19,10 @@ class App {
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(bodyParser.json());
         this.app.use(express.json());
+        this.app.use(cookieParser());
 
         this.app.use(passport.initialize());
 
-        this.app.use(cookieParser());
 
         const corsOptions = {
             origin: 'http://localhost:5173',
@@ -41,6 +41,7 @@ class App {
         this.app.use('/user', Auth);
         this.app.use('/account', Account);
         this.app.use('/auth/google', GoogleStrategy);
+        this.app.use('/enroll-apartment', CreateRoom);
     }
 
     start(port) {
