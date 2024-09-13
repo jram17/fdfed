@@ -11,12 +11,15 @@ import '@fontsource-variable/faustina';
 import '../index.css';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-
+import { useDispatch } from 'react-redux';
+import { login } from '../redux/slice/authSlice.js';
+import { setUserDetails } from '../redux/slice/userSlice.js';
 function SignInForm() {
   const [isLoading, setLoading] = useState(false);
   const [isError, setError] = useState(false);
   const [error, setErrorMsg] = useState('');
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const SignUpSchema = z.object({
     identifier: z.union([z.string().email(), z.string()]),
@@ -46,9 +49,13 @@ function SignInForm() {
 
       if (response.status === 200) {
         reset();
+        dispatch(login());
+        console.log(response.data);
+        dispatch(setUserDetails(response.data));
         navigate('/');
       }
     } catch (error) {
+      console.error('Error occurred during login', error);
       const errorMessage = 'Invalid credentials';
 
       setError(true);

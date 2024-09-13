@@ -11,6 +11,10 @@ import '@fontsource-variable/faustina';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { login } from '../redux/slice/authSlice.js';
+import { setUserDetails } from '../redux/slice/userSlice.js';
+import { useNavigate } from 'react-router-dom';
 const SignUpSchema = z
   .object({
     username: z.string().min(8, 'Username must be at least 8 characters long'),
@@ -27,6 +31,8 @@ function SignUpForm() {
   const [isLoading, setLoading] = useState(false);
   const [isError, setError] = useState(false);
   const [error, setErrorMsg] = useState('');
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const {
     reset,
     register,
@@ -62,6 +68,9 @@ function SignUpForm() {
           progress: undefined,
           theme: 'light',
         });
+        dispatch(login());
+        dispatch(setUserDetails(response.data));
+        navigate('/');
       }
 
       reset();

@@ -12,7 +12,7 @@ import Layout from './components/Layout';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Provider } from 'react-redux';
-import store from './redux/store';
+import { store } from './redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistStore } from 'redux-persist';
 import AuthLayout from './components/AuthLayout';

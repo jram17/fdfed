@@ -1,9 +1,9 @@
 const express = require('express');
 const { jwt_authenticate } = require("../middlewares/PassportLogin");
-const CreateRoom = require("../Controllers/CreateRoom");
+const checkJwt = require("../Controllers/jwtVerify");
 require("../config/passport_config");
 
-class CreateRoomRouter extends CreateRoom {
+class JwtVerifyRouter extends checkJwt {
     constructor() {
         super();
         this.route = express.Router();
@@ -15,4 +15,4 @@ class CreateRoomRouter extends CreateRoom {
     }
 }
 
-module.exports = new CreateRoomRouter().route;
+module.exports = new JwtVerifyRouter().route;

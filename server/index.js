@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 const Auth = require('./Routes/UserAuthRouter');
 const Account = require('./Controllers/account');
 const GoogleStrategy = require('./Routes/GoogleAuthRouter');
-const CreateRoom = require("./Routes/CreateRoomRouter");
+const JwtVerifyRouter = require("./Routes/JwtVerifyRouter");
 class App {
     constructor() {
         this.app = express();
@@ -41,7 +41,7 @@ class App {
         this.app.use('/user', Auth);
         this.app.use('/account', Account);
         this.app.use('/auth/google', GoogleStrategy);
-        this.app.use('/enroll-apartment', CreateRoom);
+        this.app.use('/jwtVerify', JwtVerifyRouter);
     }
 
     start(port) {

@@ -47,7 +47,7 @@ class UserAuthentication {
                 maxAge: 1000 * 60 * 60 * 24
             });
 
-            res.status(200).send({ message: "Successful registration" });
+            res.status(200).send({ username: this.user.username, email: this.user.email, uuid: this.user.uuid });
         } catch (error) {
             res.status(500).send({ message: "Server error. Please try again later." });
         }

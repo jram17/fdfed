@@ -19,20 +19,26 @@ const login = async (req, res, next) => {
                 secure: process.env.NODE_ENV === 'production',
                 maxAge: 1000 * 60 * 60 * 24
             });
+            req.userDetails = user;
             next();
         }
     })(req, res, next);
 }
 const jwt_authenticate = async (req, res, next) => {
-    passport.authenticate('jwt', (error, id, info) => {
+    passport.authenticate('jwt', (error, user, info) => {
 
         if (error) {
             return res.status(500).json({ message: info.message });
         };
-        if (!id) {
+        if (!user) {
             return res.status(400).json({ message: "Invalid token" });
         };
-        req.id = id;
+        req.id = user._id;
+        req.userDetails = {
+            username: user.username,
+            email: user.email,
+            uuid: user.uuid,
+        }
         next();
     })(req, res, next);
 }

@@ -11,7 +11,7 @@ class UserAuthRouter extends UserAuth {
         this.route.post('/register', this.register.bind(this));
 
         this.route.post('/login', login, (req, res) => {
-            res.status(200).send({ message: "Successful login" });
+            res.status(200).send({ username: req.userDetails.username, email: req.userDetails.email, uuid: req.userDetails.uuid });
         });
     }
 }

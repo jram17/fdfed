@@ -3,12 +3,12 @@ require("dotenv").config();
 
 const PRIV_KEY = process.env.JWT_SECRET_KEY;
 function issueJWT(user) {
-    const _id = user._id;
+
 
     const expiresIn = '1d';
 
     const payload = {
-        sub: _id,
+        sub: user,
         iat: Date.now()
     };
 
