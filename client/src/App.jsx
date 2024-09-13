@@ -18,9 +18,14 @@ import { persistStore } from 'redux-persist';
 import AuthLayout from './components/AuthLayout';
 import { CookiesProvider } from 'react-cookie';
 import axios from 'axios';
+import usegetJwtVerify from './hooks/jwtVerify';
 
+import DashBoard from './pages/DashBoard';
+import Pricing from './pages/Pricing';
 function App() {
+  usegetJwtVerify();
   axios.defaults.withCredentials = true;
+
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<Layout />}>
@@ -49,10 +54,26 @@ function App() {
           }
         />
         <Route
-          path="enroll-apartment"
+          path="create-room"
           element={
             <AuthLayout authentication={true}>
               <CreateApartmentRoom />
+            </AuthLayout>
+          }
+        />
+        <Route
+          path="dashboard"
+          element={
+            <AuthLayout authentication={true}>
+              <DashBoard />
+            </AuthLayout>
+          }
+        />
+        <Route
+          path="pricing"
+          element={
+            <AuthLayout authentication={false}>
+              <Pricing />
             </AuthLayout>
           }
         />
@@ -63,11 +84,7 @@ function App() {
 
   return (
     <CookiesProvider>
-      <Provider store={store}>
-        <PersistGate loading={<div>Loading.....</div>} persistor={persistor}>
-          <RouterProvider router={router} />
-        </PersistGate>
-      </Provider>
+      <RouterProvider router={router} />
     </CookiesProvider>
   );
 }

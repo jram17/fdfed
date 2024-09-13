@@ -51,8 +51,14 @@ class UserAuthentication {
         } catch (error) {
             res.status(500).send({ message: "Server error. Please try again later." });
         }
-    }
+    } async logout(req, res) {
 
+        res.clearCookie('jwt');
+        return res.status(200).json({ message: 'Successfully logged out' });
+
+
+
+    }
     async GoogleCallBack(req, res) {
         try {
             if (req.user) {

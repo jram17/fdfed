@@ -50,7 +50,6 @@ function SignInForm() {
       if (response.status === 200) {
         reset();
         dispatch(login());
-        console.log(response.data);
         dispatch(setUserDetails(response.data));
         navigate('/');
       }

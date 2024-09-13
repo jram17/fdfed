@@ -8,7 +8,8 @@ export default {
   ], theme: {
     extend: {
       fontFamily: {
-        header: ['Poppins', 'sans-serif'],
+        content: ['Poppins', 'sans-serif'],
+        header: ['Public Sans Variable', 'sans-serif'],
         title: ['Faustina Variable', 'serif'],
         form: ['Fira Code Variable', 'sans-serif'],
         input: ['Nunito Variable', 'serif'],
