@@ -64,21 +64,8 @@ function App() {
   return (
     <CookiesProvider>
       <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <RouterProvider router={router}>
-            <ToastContainer
-              position="bottom-right"
-              autoClose={1000}
-              hideProgressBar={false}
-              newestOnTop
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
-              theme="light"
-            />
-          </RouterProvider>
+        <PersistGate loading={<div>Loading.....</div>} persistor={persistor}>
+          <RouterProvider router={router} />
         </PersistGate>
       </Provider>
     </CookiesProvider>

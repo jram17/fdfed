@@ -38,6 +38,7 @@ const jwt_authenticate = async (req, res, next) => {
             username: user.username,
             email: user.email,
             uuid: user.uuid,
+            id: user._id
         }
         next();
     })(req, res, next);

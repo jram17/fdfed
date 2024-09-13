@@ -7,6 +7,7 @@ import userReducer from './slice/userSlice';
 const persistConfig = {
     key: 'redux-storage',
     storage,
+    timeout: 100
 };
 
 const rootReducer = combineReducers({

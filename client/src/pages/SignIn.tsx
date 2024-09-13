@@ -1,6 +1,6 @@
 import React from 'react'
 import SignInForm from '../components/SignInForm'
-import videoUrl from '../../public/videoassest.mp4';
+import videoUrl from '/videoassest.mp4';
 
 function SignIn() {
     return (

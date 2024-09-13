@@ -17,12 +17,17 @@ function AuthLayout({ children, authentication = true }) {
     location.pathname === '/sign-in' || location.pathname === '/sign-up';
   const isVerify = useSelector((state) => state.auth.status);
   useEffect(() => {
-    if (isAuthPage && isVerify) {
-      navigate('/');
-    }
     const verifyToken = async () => {
+      if (isAuthPage && isVerify) {
+        navigate('/');
+      }
+
       if (!authentication) {
         setLoader(false);
+        return;
+      } else if (isVerify) {
+        setLoader(false);
+        return;
       } else {
         try {
           const response = await axios.get(`http://localhost:5000/jwtVerify`);
@@ -30,7 +35,6 @@ function AuthLayout({ children, authentication = true }) {
           if (response.status === 200) {
             dispatch(login());
             dispatch(setUserDetails(response.data));
-            setLoader(false);
           } else if (response.status === 400) {
             navigate('/sign-in');
           } else {
