@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../redux/slice/authSlice';
 import { setUserDetails } from '../redux/slice/userSlice';
+import { FaArrowRightLong } from 'react-icons/fa6';
 import axios from 'axios';
 function Header() {
   axios.defaults.withCredentials = true;
@@ -65,20 +66,24 @@ function Header() {
           </div>
         </NavLink>
         {isLoggedIn ? (
-          <div className="btn text-xl">
+          <div className="btn text-base bg-slate-900 text-white hover:cursor-pointer">
             <NavLink
               onClick={() => {
                 Logout();
               }}
-              className="text-xl"
+              className="text-base flex gap-2 items-center justify-center"
             >
-              LogOut
+              Logout <FaArrowRightLong />
             </NavLink>
           </div>
         ) : (
-          <div className="btn text-xl">
-            <NavLink to={'/sign-in'} className="text-xl">
-              LogIn
+          <div className="btn text-base bg-slate-900 text-white hover:cursor-pointer">
+            <NavLink
+              to={'/sign-in'}
+              className="text-base flex gap-2 items-center justify-center"
+            >
+              Login
+              <FaArrowRightLong />
             </NavLink>
           </div>
         )}

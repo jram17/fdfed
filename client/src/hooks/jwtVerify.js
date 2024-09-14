@@ -12,11 +12,11 @@ const usegetJwtVerify = async () => {
             dispatch(login());
             dispatch(setUserDetails(response.data));
         } else {
-            dispatch(logout);
+            dispatch(logout());
             dispatch(setUserDetails(null));
         }
     } catch (error) {
-        dispatch(logout);
+        dispatch(logout());
         dispatch(setUserDetails(null));
     }
 }

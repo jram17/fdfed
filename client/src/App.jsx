@@ -11,17 +11,15 @@ import Home from './pages/Home';
 import Layout from './components/Layout';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Provider } from 'react-redux';
 import { store } from './redux/store';
-import { PersistGate } from 'redux-persist/integration/react';
 import { persistStore } from 'redux-persist';
 import AuthLayout from './components/AuthLayout';
 import { CookiesProvider } from 'react-cookie';
 import axios from 'axios';
 import usegetJwtVerify from './hooks/jwtVerify';
-
 import DashBoard from './pages/DashBoard';
 import Pricing from './pages/Pricing';
+import MyRooms from './pages/MyRooms';
 function App() {
   usegetJwtVerify();
   axios.defaults.withCredentials = true;
@@ -58,6 +56,14 @@ function App() {
           element={
             <AuthLayout authentication={true}>
               <CreateApartmentRoom />
+            </AuthLayout>
+          }
+        />
+        <Route
+          path="my-rooms"
+          element={
+            <AuthLayout authentication={true}>
+              <MyRooms />
             </AuthLayout>
           }
         />
