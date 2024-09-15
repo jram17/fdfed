@@ -6,12 +6,11 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { login } from '../redux/slice/authSlice';
-import { setUserDetails } from '../redux/slice/userSlice';
-import { Link } from 'react-router-dom';
-import { RiAlarmWarningFill, RiLoader5Line } from 'react-icons/ri';
+import { RiLoader5Line } from 'react-icons/ri';
 import Country_data from '../utils/CountryList.json';
 import ReCaptcha from './ReCaptcha';
+import { FaArrowRightLong } from 'react-icons/fa6';
+
 function CreateRoomForm() {
   const reCAPTCHARef = useRef(null);
   const [token, setToken] = useState(null);
@@ -47,6 +46,11 @@ function CreateRoomForm() {
   } = useForm({ resolver: zodResolver(CreateRoomFormSchema) });
 
   const onSubmit = async (formData) => {
+    if (!token) {
+      setError(true);
+      setErrorMsg('Please complete the reCAPTCHA');
+      return;
+    }
     axios.defaults.withCredentials = true;
 
     setLoading(true);
@@ -137,7 +141,6 @@ function CreateRoomForm() {
                   {errors.registeration_num.message}
                 </p>
               )}
-              {isError && <p className="form-message">{error}</p>}
             </div>
 
             <div className="form-item">
@@ -175,7 +178,6 @@ function CreateRoomForm() {
               {errors.state && (
                 <p className="form-message">{errors.state.message}</p>
               )}
-              {isError && <p className="form-message">{error}</p>}
             </div>
             <div className="form-item">
               <label
@@ -198,7 +200,6 @@ function CreateRoomForm() {
               {errors.address && (
                 <p className="form-message">{errors.address.message}</p>
               )}
-              {isError && <p className="form-message">{error}</p>}
             </div>
             <div className="form-item">
               <label
@@ -304,10 +305,12 @@ function CreateRoomForm() {
                 )}
               </div>
             </div>
-            <div className="form-item"></div>
-            <div className="w-full grid place-items-center">
+            <div className="form-item">
+              <ReCaptcha callback={handleToken} />
+            </div>
+            <div className="w-full grid place-items-start group">
               <button
-                className="btn outline-btn sm-btn !text-lg max-sm:text-xs max-sm:px-2 max-sm:py-1"
+                className="btn outline-btn rounded-md sm-btn !text-lg max-sm:text-xs max-sm:px-2 max-sm:py-1 !bg-slate-700 text-white hover:text-white flex items-center justify-center gap-2"
                 disabled={isLoading || isSubmitting}
               >
                 {isLoading ? (
@@ -315,7 +318,13 @@ function CreateRoomForm() {
                 ) : (
                   <span>Start My Journey</span>
                 )}
+                {/* Hide the arrow by default and show it on hover */}
+                <FaArrowRightLong
+                  size={20}
+                  className="opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                />
               </button>
+              {isError && <p className="form-message">{error}</p>}
             </div>
           </form>
         </div>
