@@ -83,7 +83,7 @@ function CreateRoomForm() {
     }
   };
   return (
-    <div className="grid w-full items-center px-4 sm:justify-center border-none shadow-none font-content min-h-[60vh] min-w-[70vw] justify-center">
+    <div className="grid w-full items-start px-4 sm:justify-center border-none shadow-none font-content min-h-[60vh]  justify-center">
       <div className="card w-full max-sm:w-96 p-6 border-none shadow-none max-h-inherit max-lg:px-0 flex flex-col items-center justify-center gap-6  h-full">
         <div className="card-header flex items-center justify-center gap-2 flex-col">
           <div className="card-title flex items-center justify-center text-nowrap max-sm:text-lg font-content !text-3xl">
