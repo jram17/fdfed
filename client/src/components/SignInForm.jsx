@@ -12,7 +12,7 @@ import '../index.css';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { login } from '../redux/slice/authSlice.js';
+import { login, setGoogleID } from '../redux/slice/authSlice.js';
 import { setUserDetails } from '../redux/slice/userSlice.js';
 function SignInForm() {
   const [isLoading, setLoading] = useState(false);
@@ -33,6 +33,7 @@ function SignInForm() {
     formState: { errors, isSubmitting },
   } = useForm({ resolver: zodResolver(SignUpSchema) });
   const GoogleOauth = async () => {
+    dispatch(setGoogleID());
     window.location.href = 'http://localhost:5000/auth/google';
   };
   const onSubmit = async (formData) => {

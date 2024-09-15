@@ -3,19 +3,43 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import { useSelector, useDispatch } from 'react-redux';
-
+import { login, logout } from '../redux/slice/authSlice';
+import { setUserDetails } from '../redux/slice/userSlice';
 function AuthLayout({ children, authentication = true }) {
   const [loader, setLoader] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
   const [cookies] = useCookies();
-
+  const isRoot = location.pathname === '/';
   const isAuthPage =
     location.pathname === '/sign-in' || location.pathname === '/sign-up';
   const isVerify = useSelector((state) => state.auth.status);
+  const isGoogleId = useSelector((state) => state.auth.isGoogleid);
   useEffect(() => {
+    axios.defaults.withCredentials = true;
+
     const verifyToken = async () => {
+      if (isRoot && isGoogleId && !isVerify) {
+        let response;
+        try {
+          const response = await axios.get(`http://localhost:5000/jwtVerify`);
+          if (response.status == 200) {
+            dispatch(login());
+            dispatch(setUserDetails(response.data));
+          } else {
+            dispatch(logout());
+            dispatch(setUserDetails(null));
+          }
+        } catch (error) {
+          console.log(error);
+          dispatch(logout());
+          dispatch(setUserDetails(null));
+          navigate('/sign-in');
+        } finally {
+          setLoader(false);
+        }
+      }
       if (isAuthPage && isVerify) {
         navigate('/');
       }

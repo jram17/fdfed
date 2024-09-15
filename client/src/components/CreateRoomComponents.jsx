@@ -4,7 +4,7 @@ import { carousel, rightbar } from '../utils/Staticassests';
 import '../index.css';
 import { RiRadioButtonLine } from 'react-icons/ri';
 import { IoIosRadioButtonOff } from 'react-icons/io';
-import { GiTakeMyMoney, GiSecurityGate } from 'react-icons/gi';
+
 function RightBar() {
   return (
     <div className="grid grid-cols-1 gap-7 place-items-center justify-center w-fit">

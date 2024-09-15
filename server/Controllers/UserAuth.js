@@ -63,6 +63,7 @@ class UserAuthentication {
         try {
             if (req.user) {
                 const token = issueJWT(req.user);
+                res.clearCookie('jwt');
                 res.cookie('jwt', token, {
                     httpOnly: true,
                     secure: process.env.NODE_ENV === 'production',

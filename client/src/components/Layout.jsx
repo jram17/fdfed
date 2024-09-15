@@ -11,7 +11,7 @@ const Layout = () => {
   return (
     <div className="flex flex-col min-h-screen font-content">
       {!isAuthPage && <Header />}
-      <div className="flex-grow mt-10">
+      <div className={`flex-grow ${!isAuthPage && 'mt-10'}`}>
         <Outlet />
       </div>
       {!isAuthPage && <Footer />}

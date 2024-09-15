@@ -12,7 +12,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { login } from '../redux/slice/authSlice.js';
+import { login, setGoogleID } from '../redux/slice/authSlice.js';
 import { setUserDetails } from '../redux/slice/userSlice.js';
 import { useNavigate } from 'react-router-dom';
 const SignUpSchema = z
@@ -43,6 +43,8 @@ function SignUpForm() {
     resolver: zodResolver(SignUpSchema),
   });
   const GoogleOauth = async () => {
+    dispatch(setGoogleID());
+
     window.location.href = 'http://localhost:5000/auth/google';
   };
   const onSubmit = async (formdata) => {
