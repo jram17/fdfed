@@ -22,14 +22,14 @@ Make sure you have the following installed on your machine:
 ```bash
 
 git clone https://github.com/your-username/fdfed.git
-cd your-repo-name
+cd fdfed
 cd client && npm i
 cd ..
 cd server && npm i
 ```
 
 
-place the env files in the client and server
+place the respective env files in the client and server
 
 start the client
 ```bash
