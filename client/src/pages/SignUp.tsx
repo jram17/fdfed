@@ -2,6 +2,7 @@ import React from 'react';
 import SignUpForm from '../components/SignUpForm';
 import videoUrl from '../../public/videoassest.mp4';
 
+
 function SignUp() {
     return (
         <div className='relative w-full min-h-screen h-full'>

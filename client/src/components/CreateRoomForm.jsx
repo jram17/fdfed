@@ -318,7 +318,7 @@ function CreateRoomForm() {
                 ) : (
                   <span>Start My Journey</span>
                 )}
-                {/* Hide the arrow by default and show it on hover */}
+
                 <FaArrowRightLong
                   size={20}
                   className="opacity-0 group-hover:opacity-100 transition-opacity duration-300"

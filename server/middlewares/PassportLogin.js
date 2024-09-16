@@ -29,7 +29,6 @@ const jwt_authenticate = async (req, res, next) => {
     passport.authenticate('jwt', (error, user, info) => {
 
         if (error) {
-            console.log(error);
             return res.status(500).json({ message: info.message });
         };
         if (!user) {

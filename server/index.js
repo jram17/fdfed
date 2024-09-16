@@ -8,6 +8,7 @@ const Account = require('./Controllers/account');
 const GoogleStrategy = require('./Routes/GoogleAuthRouter');
 const JwtVerifyRouter = require("./Routes/JwtVerifyRouter");
 const CreateRoom = require("./Routes/CreateRoomRouter");
+const Rooms = require("./Routes/RoomRouter");
 class App {
     constructor() {
         this.app = express();
@@ -44,6 +45,7 @@ class App {
         this.app.use('/auth/google', GoogleStrategy);
         this.app.use('/jwtVerify', JwtVerifyRouter);
         this.app.use('/createRoom', CreateRoom);
+        this.app.use('/my-rooms', Rooms);
     }
 
     start(port) {
