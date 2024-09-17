@@ -9,16 +9,16 @@ var GoogleStrategy = require('passport-google-oauth20').Strategy;
 const { v4: uuidv4 } = require('uuid');
 const ApartmentData = require("../Models/UserApartmentModel");
 const { generateHash } = require("../utils/passwordUtils");
-require("dotenv").config();
+const env_variables = require("../utils/envutils.js");
 var cookieExtractor = function (req) {
     var token = null;
-    if (req && req.cookies) {
-        if (req.cookies['jwt'].token) token = req.cookies['jwt'].token;
-        else token = req.cookies['jwt'];
+    if (req && req.cookies && req.cookies['jwt']) {
+        token = req.cookies['jwt'].token || req.cookies['jwt'];
     }
     return token;
 };
-var opts = { secretOrKey: process.env.JWT_SECRET_KEY };
+
+var opts = { secretOrKey: env_variables.JWT_SECRET_KEY };
 opts.jwtFromRequest = cookieExtractor;
 const customFields = {
     usernameField: 'identifier',
@@ -51,8 +51,8 @@ passport.use(new JwtStrategy(opts, async (token, done) => {
 }));
 const strategy = new LocalStrategy(customFields, VerifyUser);
 passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    clientID: env_variables.GOOGLE_CLIENT_ID,
+    clientSecret: env_variables.GOOGLE_CLIENT_SECRET,
     callbackURL: "http://localhost:5000/auth/google/callback",
     passReqToCallback: true
 

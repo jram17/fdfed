@@ -5,6 +5,7 @@ const { v4: uuidv4 } = require('uuid');
 const CLIENT_URL = "http://localhost:5173/";
 const FALLBACK_URL = "http://localhost:5173/sign-in";
 require("../config/passport_config");
+const useUserHook = require("../utils/userAvatarutils");
 const ApartmentData = require("../Models/UserApartmentModel");
 
 class UserAuthentication {
@@ -46,7 +47,6 @@ class UserAuthentication {
                 secure: process.env.NODE_ENV === 'production',
                 maxAge: 1000 * 60 * 60 * 24
             });
-
             res.status(200).send({ username: this.user.username, email: this.user.email, uuid: this.user.uuid });
         } catch (error) {
             res.status(500).send({ message: "Server error. Please try again later." });

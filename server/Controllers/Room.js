@@ -9,9 +9,9 @@ class RoomController {
         const RoomMOdel = [];
         userRooms.apartments.map(async (id) => {
             const room = await RoomModel.findById(id);
-            RoomMOdel.push(room);
+            RoomMOdel.push({ apartment_id: room.apartment_id, apartment_name: room.apartment_name, ownername: room.ownername });
         })
-        res.status(200).json({ details: RoomMOdel });
+        return res.status(201).json({ details: RoomMOdel });
     }
 }
 

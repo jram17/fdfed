@@ -1,12 +1,12 @@
 const App = require(".");
 const DbConfig = require("./config/db_config");
-require("dotenv").config();
+const env_variables = require("./utils/envutils");
 
 class Server {
     constructor() {
         this.appInstance = new App();
-        this.dbConfig = new DbConfig(process.env.MONGO_URI);
-        this.port = process.env.PORT || 3000;
+        this.dbConfig = new DbConfig(env_variables.MONGO_URI);
+        this.port = env_variables.PORT || 3000;
     }
 
     async initialize() {
