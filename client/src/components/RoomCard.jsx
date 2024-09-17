@@ -1,6 +1,5 @@
-import React from 'react';
-
-function RoomCard() {
+import React, { useState, useEffect } from 'react';
+function RoomCard({ roomdata }) {
   return <div></div>;
 }
 

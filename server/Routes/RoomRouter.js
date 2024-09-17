@@ -8,7 +8,7 @@ class RoomRouter extends Room {
         this.route = express.Router();
         this.route.use(jwt_authenticate);
 
-        this.route.post('/', this.userRooms.bind(this));
+        this.route.get('/', this.userRooms.bind(this));
 
 
     }
