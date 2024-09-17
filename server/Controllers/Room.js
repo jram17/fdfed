@@ -12,7 +12,8 @@ class RoomController {
                 return {
                     apartment_id: room.apartment_id,
                     apartment_name: room.apartment_name,
-                    ownername: room.ownername
+                    ownername: room.ownername,
+                    start_date: room.createdAt
                 };
             })
         );

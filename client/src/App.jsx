@@ -20,6 +20,7 @@ import usegetJwtVerify from './hooks/jwtVerify';
 import DashBoard from './pages/DashBoard';
 import Pricing from './pages/Pricing';
 import MyRooms from './pages/MyRooms';
+import Room from './pages/Room';
 function App() {
   usegetJwtVerify();
   axios.defaults.withCredentials = true;
@@ -80,6 +81,22 @@ function App() {
           element={
             <AuthLayout authentication={false}>
               <Pricing />
+            </AuthLayout>
+          }
+        />
+        <Route
+          path="room/:id"
+          element={
+            <AuthLayout authentication={true}>
+              <Room />
+            </AuthLayout>
+          }
+        />
+        <Route
+          path="profile/:username"
+          element={
+            <AuthLayout authentication={true}>
+              <Room />
             </AuthLayout>
           }
         />

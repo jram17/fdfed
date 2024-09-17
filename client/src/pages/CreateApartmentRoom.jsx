@@ -4,7 +4,7 @@ import { Carousel, RightBar } from '../components/CreateRoomComponents';
 import { GiTakeMyMoney, GiSecurityGate } from 'react-icons/gi';
 function CreateApartmentRoom() {
   return (
-    <div className="flex gap-2 items-center justify-between flex-col">
+    <div className="flex gap-2 items-center justify-between flex-col mt-10">
       <div className="flex items-baseline gap-4 justify-center h-full">
         <div className="text-6xl break-words text-red-700 h-full flex items-center justify-center tracking-wide">
           Door To Sophistication
