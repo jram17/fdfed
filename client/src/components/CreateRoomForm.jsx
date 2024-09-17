@@ -308,9 +308,9 @@ function CreateRoomForm() {
             <div className="form-item">
               <ReCaptcha callback={handleToken} />
             </div>
-            <div className="w-full grid place-items-start group">
+            <div className="w-full grid place-items-start ">
               <button
-                className="btn outline-btn rounded-md sm-btn !text-lg max-sm:text-xs max-sm:px-2 max-sm:py-1 !bg-slate-700 text-white hover:text-white flex items-center justify-center gap-2"
+                className="btn outline-btn rounded-md  group sm-btn !text-lg max-sm:text-xs max-sm:px-2 max-sm:py-1 !bg-slate-700 text-white hover:text-white flex items-center justify-center gap-2"
                 disabled={isLoading || isSubmitting}
               >
                 {isLoading ? (
