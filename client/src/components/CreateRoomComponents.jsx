@@ -9,9 +9,9 @@ function RightBar() {
   return (
     <div className="grid grid-cols-1 gap-7 place-items-center justify-center w-fit">
       <div className="flex w-full items-center justify-center">
-        <div className="text-7xl font-bold">Why Us?</div>
+        <div className="text-5xl font-bold">Why Us?</div>
       </div>
-      <div className="flex flex-col gap-12">
+      <div className="flex flex-col gap-9">
         {rightbar.map((element, index) => (
           <div key={index} className="flex gap-4 items-center">
             <div className="w-1/3 h-64 max-w-sm flex-shrink-0">
@@ -22,8 +22,8 @@ function RightBar() {
               />
             </div>
             <div className="flex flex-col gap-4">
-              <div className="text-3xl font-semibold">{element.title}</div>
-              <div className="text-lg max-w-md">{element.text}</div>
+              <div className="text-2xl font-semibold">{element.title}</div>
+              <div className="text-base max-w-md">{element.text}</div>
             </div>
           </div>
         ))}

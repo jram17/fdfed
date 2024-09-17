@@ -94,7 +94,7 @@ function SignUpForm() {
     <div className="grid w-full items-center px-4 sm:justify-center border-none shadow-none font-form min-h-[60vh] justify-center">
       <div className="card w-full max-sm:w-96 p-6 border-none shadow-none max-h-inherit max-lg:px-0 flex flex-col items-center h-full justify-center gap-6">
         <div className="card-header flex items-center justify-center gap-2  flex-col">
-          <div className="card-title flex items-center justify-center text-nowrap max-sm:text-lg font-title !text-3xl">
+          <div className="card-title flex items-center justify-center text-nowrap max-sm:text-lg font-title !text-2xl">
             Start With Society Log
           </div>
           <div className="card-description flex items-center justify-center text-nowrap max-sm:text-xs">
@@ -105,7 +105,7 @@ function SignUpForm() {
           <div className="grid grid-cols-1 gap-y-3 gap-x-1 w-full place-items-center">
             <div className="max-sm:text-xs max-sm:px-2 max-sm:py-1">
               <button
-                className="btn sm-btn !text-lg  outline-btn max-sm:text-xs max-sm:px-2 max-sm:py-1"
+                className="btn sm-btn !text-base  outline-btn max-sm:text-xs max-sm:px-2 max-sm:py-1"
                 disabled={isLoading}
                 onClick={GoogleOauth}
               >
@@ -125,7 +125,7 @@ function SignUpForm() {
           </p>
         </div>
         <div className="card-content grid gap-y-1 w-full">
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             <div className="form-item">
               <label
                 className={`form-item ${

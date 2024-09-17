@@ -13,7 +13,7 @@ require("dotenv").config();
 var cookieExtractor = function (req) {
     var token = null;
     if (req && req.cookies) {
-        if (req.cookies['jwt'.token]) token = req.cookies['jwt'].token;
+        if (req.cookies['jwt'].token) token = req.cookies['jwt'].token;
         else token = req.cookies['jwt'];
     }
     return token;

@@ -51,27 +51,27 @@
 }
 
 .card-description {
-    @apply text-muted-foreground text-lg
+    @apply text-muted-foreground !text-sm
 }
 
 .card-content {
-    @apply p-6 pt-0
+    @apply p-3 pt-0
 }
 
 .card-title {
-    @apply text-2xl font-semibold leading-none tracking-tight
+    @apply text-xl font-semibold leading-none tracking-tight
 }
 
 .label {
-    @apply text-sm font-medium leading-none
+    @apply text-xs font-medium leading-none
 }
 
 .input {
-    @apply flex h-10 font-input w-[25vw] min-w-[90%] rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50
+    @apply flex h-10 font-input w-[25vw] min-w-[90%] rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50
 }
 
 .form-label {
-    @apply text-xl
+    @apply text-base
 }
 
 .form-item {
@@ -87,7 +87,7 @@
 }
 
 .btn {
-    @apply inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 py-2 px-4
+    @apply inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 py-2 px-3
 }
 
 @font-face {
@@ -100,7 +100,7 @@
 }
 
 .sm-btn {
-    @apply h-9 rounded-md px-3
+    @apply h-9 rounded-md px-2
 }
 
 .link {
@@ -120,7 +120,7 @@
 }
 
 .header-link {
-    @apply flex items-center text-base gap-2 justify-center p-2
+    @apply flex items-center text-sm gap-2 justify-center p-2
 }
 
 .check-box {

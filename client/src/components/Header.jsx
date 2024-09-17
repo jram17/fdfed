@@ -66,21 +66,21 @@ function Header() {
           </div>
         </NavLink>
         {isLoggedIn ? (
-          <div className="btn text-base bg-slate-900 text-white hover:cursor-pointer">
+          <div className="btn text-sm bg-slate-900 text-white hover:cursor-pointer">
             <NavLink
               onClick={() => {
                 Logout();
               }}
-              className="text-base flex gap-2 items-center justify-center"
+              className=" flex gap-2 items-center justify-center"
             >
               Logout <FaArrowRightLong />
             </NavLink>
           </div>
         ) : (
-          <div className="btn text-base bg-slate-900 text-white hover:cursor-pointer">
+          <div className="btn text-sm bg-slate-900 text-white hover:cursor-pointer">
             <NavLink
               to={'/sign-in'}
-              className="text-base flex gap-2 items-center justify-center"
+              className=" flex gap-2 items-center justify-center"
             >
               Login
               <FaArrowRightLong />
