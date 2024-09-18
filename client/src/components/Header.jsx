@@ -66,7 +66,7 @@ function Header() {
           </div>
         </NavLink>
         {isLoggedIn ? (
-          <div className="btn text-sm bg-slate-900 text-white hover:cursor-pointer">
+          <div className="btn text-sm bg-slate-900 hover:bg-slate-800 text-white hover:cursor-pointer">
             <NavLink
               onClick={() => {
                 Logout();
@@ -77,7 +77,7 @@ function Header() {
             </NavLink>
           </div>
         ) : (
-          <div className="btn text-sm bg-slate-900 text-white hover:cursor-pointer">
+          <div className="btn text-sm bg-slate-900 hover:bg-slate-800  text-white hover:cursor-pointer">
             <NavLink
               to={'/sign-in'}
               className=" flex gap-2 items-center justify-center"

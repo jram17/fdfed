@@ -19,7 +19,7 @@ const ApartmentSchema = new mongoose.Schema({
     is_deleted: { type: Boolean, default: false },
     is_archived: { type: Boolean, default: false },
 
-    super_user_id: { type: [String], default: null },
+    resident_id: { type: [String], default: null },
 }, { timestamps: true });
 
 const Apartment = mongoose.model('Apartment', ApartmentSchema);

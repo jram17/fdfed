@@ -40,6 +40,7 @@ class App {
     }
 
     setRoutes() {
+
         this.app.use('/user', Auth);
         this.app.use('/account', Account);
         this.app.use('/auth/google', GoogleStrategy);
