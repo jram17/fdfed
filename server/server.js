@@ -8,7 +8,7 @@ class Server {
         this.dbConfig = new DbConfig(env_variables.MONGO_URI);
         this.port = env_variables.PORT || 3000;
     }
-
+    
     async initialize() {
         try {
             await this.dbConfig.DbConnect();

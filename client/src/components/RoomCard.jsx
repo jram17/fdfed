@@ -29,12 +29,7 @@ function RoomCard({ roomData, id }) {
       <div className="flex flex-col items-end justify-end h-1/2 p-2 overflow-clip text-nowrap w-full">
         <span className="text-lg font-medium">{apartment_id}</span>
         <span className="text-lg w-full truncate hover-underline flex flex-row-reverse">
-          <Link
-            to={`/profile/${roomData.ownername}`}
-            className="text-left w-[80%] text-wrap"
-          >
-            {roomData.ownername}
-          </Link>
+          {roomData.ownername}
         </span>
         <span className="text-base">{createddate}</span>
       </div>
