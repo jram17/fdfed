@@ -12,6 +12,10 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 const JoinRoomSchema = z.object({
   apartment_id: z.string().length(36, 'Enter a valid apartment id'),
+  flat_id: z.string().min(3, 'Flat id must be atleast 3 characters long'),
+  terms_check: z.boolean().refine((val) => val === true, {
+    message: 'You must accept the terms and conditions',
+  }),
 });
 
 function JoinRoomModal() {
@@ -32,30 +36,7 @@ function JoinRoomModal() {
   const onSubmit = async (formdata) => {
     axios.defaults.withCredentials = true;
 
-    setLoading(true);
-    try {
-      setError(false);
-      setErrorMsg('');
-      const response = await axios.post('http://localhost:5000/user/register', {
-        apartment_id: formdata.apartment_id,
-      });
-      if (response.status === 200) {
-        navigate('/my-rooms');
-      }
-
-      reset();
-    } catch (error) {
-      if (error.response && error.response.status === 400) {
-        setError(true);
-        setErrorMsg(error.response.data.message || 'An error occurred');
-      } else {
-        setError(true);
-        setErrorMsg('An error occurred in joining the room');
-      }
-    } finally {
-      setLoading(false);
-      reset();
-    }
+    console.log(formdata);
   };
 
   return (
@@ -88,9 +69,54 @@ function JoinRoomModal() {
                 <p className=" form-message">{errors.apartment_id.message}</p>
               )}
             </div>
-            <div className="w-full grid place-items-center">
+            <div className="form-item">
+              <label
+                className={`form-item ${
+                  errors.flat_id && 'text-destructive'
+                } form-label`}
+              >
+                Enter the Flat ID
+              </label>
+              <input
+                disabled={isLoading}
+                placeholder="Flat ID"
+                type="text"
+                {...register('flat_id', { required: true })}
+                className="input"
+              />
+              {errors.flat_id && (
+                <p className=" form-message">{errors.flat_id.message}</p>
+              )}
+            </div>
+
+            <div className="items-top flex space-x-2">
+              <div className="grid gap-1.5 leading-none">
+                <div className="flex gap-2 items-center justify-left">
+                  <input
+                    type="checkbox"
+                    {...register('terms_check', { required: true })}
+                    className={`checkbox${
+                      errors.terms_check ? 'border-destructive' : ''
+                    }`}
+                  />
+                  <label
+                    htmlFor="terms_check"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    Accept terms and conditions
+                  </label>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  You agree to our Terms of Service and Privacy Policy.
+                </p>
+                {errors.terms_check && (
+                  <p className="form-message">{errors.terms_check.message}</p>
+                )}
+              </div>
+            </div>
+            <div className="w-full grid place-items-center ">
               <button
-                className="btn  !text-lg outline-btn sm-btn  max-sm:text-xs max-sm:px-2 max-sm:py-1"
+                className="btn  !text-lg   max-sm:text-xs max-sm:px-2 max-sm:py-1 bg-slate-900 hover:bg-slate-800 text-white"
                 disabled={isLoading}
               >
                 {isLoading ? (

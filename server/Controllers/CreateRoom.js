@@ -1,6 +1,7 @@
 const dbModel = require("../Models/RoomModel");
 const { v4: uuidv4 } = require('uuid');
 const userRoomdb = require("../Models/UserApartmentModel");
+const UserApartment = require("../Models/ApartmentUserModel");
 class RoomModel {
     constructor() {
 
@@ -8,8 +9,15 @@ class RoomModel {
 
     async createRoomReq(req, res) {
         try {
-            const { name, registeration_num, state, address, pincode, email, subscription } = req.body;
+            const { name, registeration_num, state, address, flat_id, pincode, email, subscription } = req.body;
             const uuid = uuidv4();
+            const newuserApartment = new UserApartment({
+                user: req.id,
+                username: req.userDetails.username + "-" + flat_id,
+                flat_id: flat_id,
+                user_designation: "Owner"
+            })
+            await newuserApartment.save();
             const newRoom = new dbModel({
                 owner: req.id,
                 ownername: req.userDetails.username,
@@ -21,6 +29,7 @@ class RoomModel {
                 registration_num: registeration_num,
                 emergency_email: email,
                 subscription: subscription,
+                resident_id: [newuserApartment._id]
             })
             await newRoom.save();
             const userRooms = await userRoomdb.find({ user: req.id });

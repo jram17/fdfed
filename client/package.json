@@ -12,6 +12,7 @@
   "dependencies": {
     "@fontsource-variable/faustina": "^5.0.15",
     "@fontsource-variable/fira-code": "^5.0.19",
+    "@fontsource-variable/inter-tight": "^5.1.0",
     "@fontsource-variable/nunito": "^5.0.20",
     "@fontsource-variable/public-sans": "^5.1.0",
     "@fontsource/poppins": "^5.1.0",

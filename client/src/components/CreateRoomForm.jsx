@@ -27,6 +27,7 @@ function CreateRoomForm() {
     registeration_num: z.string(),
     state: z.string(),
     address: z.string(),
+    flat_id: z.string().min(3, 'Flat_id should be minimum length of 3'),
     pincode: z
       .string()
       .min(6, 'Provide a valid pincode')
@@ -62,6 +63,7 @@ function CreateRoomForm() {
         name: formData.name,
         address: formData.address,
         state: formData.state,
+        flat_id: formData.flat_id,
         pincode: formData.pincode,
         registration_num: formData.registeration_num,
         email: formData.email,
@@ -280,6 +282,29 @@ function CreateRoomForm() {
               </div>
             </div>
 
+            <div className="form-item">
+              <label
+                className={`${
+                  errors.flat_id ? 'text-destructive' : ''
+                } form-label`}
+              >
+                Owner Flat ID
+              </label>
+              <input
+                type="text"
+                placeholder="Flat ID"
+                {...register('flat_id', { required: true })}
+                className={`input  !w-full ${
+                  errors.flat_id ? 'border-destructive' : ''
+                }`}
+                onChange={() => {
+                  setError(false);
+                }}
+              />
+              {errors.flat_id && (
+                <p className="form-message">{errors.flat_id.message}</p>
+              )}
+            </div>
             <div className="items-top flex space-x-2">
               <div className="grid gap-1.5 leading-none">
                 <div className="flex gap-2 items-center justify-left">

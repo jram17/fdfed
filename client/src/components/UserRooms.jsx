@@ -7,7 +7,7 @@ const UserRooms = ({ data, setModal, isModal }) => {
   console.log(data);
   return (
     <div className="min-w-[75%] w-[75%] flex mt-7 flex-col items-center justify-center gap-6">
-      <div className="flex w-full flex-row-reverse mr-20">
+      <div className="flex w-full flex-row-reverse mr-20 cursor-pointer">
         <div
           className="btn bg-[#333] flex items-center justify-center gap-2 hover:bg-[#444] text-white"
           onClick={() => setModal(true)}
