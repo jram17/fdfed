@@ -15,7 +15,7 @@ function RoomCard({ roomData, id }) {
 
   return (
     <div
-      className="h-64 w-[450px] flex flex-col p-4 pt-1 rounded-lg cursor-pointer"
+      className="h-52 w-[350px] flex flex-col p-4 pt-1 rounded-lg cursor-pointer hover:scale-105"
       style={{
         background: backgroundColor,
         boxShadow: shadow,
@@ -27,11 +27,11 @@ function RoomCard({ roomData, id }) {
         </span>
       </div>
       <div className="flex flex-col items-end justify-end h-1/2 p-2 overflow-clip text-nowrap w-full">
-        <span className="text-lg font-medium">{apartment_id}</span>
-        <span className="text-lg w-full truncate hover-underline flex flex-row-reverse">
+        <span className="text-base font-medium">{apartment_id}</span>
+        <span className="text-base w-[85%]   overflow-clip hover-underline flex justify-end">
           {roomData.ownername}
         </span>
-        <span className="text-base">{createddate}</span>
+        <span className="text-sm">{createddate}</span>
       </div>
     </div>
   );

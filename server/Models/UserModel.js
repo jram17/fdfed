@@ -7,6 +7,7 @@ const usersSchema = new mongoose.Schema({
     uuid: String,
     email: String,
     password_hash: String,
+    userAvatar: String,
     isGoogleId: { type: Boolean, default: false },
     googleId: {
         type: String, default: null

@@ -7,6 +7,7 @@ const ApartmentSchema = new mongoose.Schema({
         required: true
     },
     ownername: String,
+    avatar: String,
     apartment_name: String,
     address: String,
     apartment_id: String,

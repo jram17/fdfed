@@ -3,7 +3,10 @@ const RoomModel = require("../Models/RoomModel");
 class RoomController {
     async userRooms(req, res) {
         const userRooms = await ApartmentData.findOne({ user: req.id });
-        if (userRooms.apartments.length == 0) {
+        if (!userRooms) {
+            return res.status(200).json({ message: "User not found" });
+        }
+        if (userRooms.apartments?.length == 0) {
             return res.status(200).json({ message: "No apartments found" });
         }
         const Rooms = await Promise.all(

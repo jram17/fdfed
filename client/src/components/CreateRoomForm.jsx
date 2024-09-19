@@ -10,7 +10,8 @@ import { RiLoader5Line } from 'react-icons/ri';
 import Country_data from '../utils/CountryList.json';
 import ReCaptcha from './ReCaptcha';
 import { FaArrowRightLong } from 'react-icons/fa6';
-
+import { createAvatar } from '@dicebear/core';
+import { initials } from '@dicebear/collection';
 function CreateRoomForm() {
   const reCAPTCHARef = useRef(null);
   const [token, setToken] = useState(null);
@@ -57,29 +58,35 @@ function CreateRoomForm() {
     setLoading(true);
     setError(false);
     setErrorMsg('');
-    let response;
     try {
+      const avatar = createAvatar(initials, {
+        seed: formData.username,
+        radius: 50,
+      });
       const formdata = {
         name: formData.name,
         address: formData.address,
         state: formData.state,
         flat_id: formData.flat_id,
+        avatar: avatar.toString(),
         pincode: formData.pincode,
         registration_num: formData.registeration_num,
         email: formData.email,
         subscription: formData.subscription,
       };
-      response = await axios.post('http://localhost:5000/createRoom', formdata);
+      const response = await axios.post(
+        'http://localhost:5000/createRoom',
+        formdata
+      );
       if (response.status === 200) {
         reset();
         navigate('/dashboard');
       }
     } catch (error) {
-      if (response.status === 500) {
-        reset();
-        setError(true);
-        setErrorMsg('Error in creating message');
-      }
+      console.log(error);
+      reset();
+      setError(true);
+      setErrorMsg('Error in enrolling the apartment: ');
     } finally {
       setLoading(false);
     }

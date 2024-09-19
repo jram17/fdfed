@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const http = require('http');
 const passport = require('passport');
 const cookieParser = require('cookie-parser');
 const Auth = require('./Routes/UserAuthRouter');
@@ -13,6 +14,7 @@ const JoinRoom = require("./Routes/JoinRoomRouter");
 class App {
     constructor() {
         this.app = express();
+        this.server = http.createServer(this.app);
         this.setMiddleware();
         this.setRoutes();
     }
@@ -52,7 +54,7 @@ class App {
     }
 
     start(port) {
-        this.app.listen(port, () => {
+        this.server.listen(port, () => {
             console.log(`Server is running on port ${port}`);
         });
     }

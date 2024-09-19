@@ -21,7 +21,6 @@ function AuthLayout({ children, authentication = true }) {
 
     const verifyToken = async () => {
       if (isRoot && isGoogleId && !isVerify) {
-        let response;
         try {
           const response = await axios.get(`http://localhost:5000/jwtVerify`);
           if (response.status == 200) {

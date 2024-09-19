@@ -36,6 +36,7 @@ const jwt_authenticate = async (req, res, next) => {
         };
         req.id = user._id;
         req.userDetails = {
+            avatar: user.userAvatar,
             username: user.username,
             email: user.email,
             uuid: user.uuid,

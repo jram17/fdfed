@@ -59,6 +59,7 @@ passport.use(new GoogleStrategy({
 },
     async function (request, accessToken, refreshToken, profile, cb) {
         const email = profile._json.email;
+        console.log(profile);
         const user = await User.findOne({ email: email });
         const username = profile.displayName;
         if (user) {
@@ -68,13 +69,13 @@ passport.use(new GoogleStrategy({
                 return cb("Already manually logged in", false);
             }
         } else {
-            const { hash } = generateHash(profile.id);
             const uuid = uuidv4();
 
             const newUser = new User({
                 username: username,
                 email: email,
                 uuid: uuid,
+                userAvatar: profile._json.picture,
                 password_hash: hash,
                 isGoogleId: true,
                 googleId: profile.id

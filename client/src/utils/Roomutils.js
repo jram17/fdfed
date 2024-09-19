@@ -1,3 +1,6 @@
+import { FaPlus } from 'react-icons/fa';
+
+
 const backgroundColors = [
     {
         color: 'linear-gradient(90deg, hsla(40, 63%, 85%, 1) 0%, hsla(22, 94%, 79%, 1) 100%)',
@@ -49,4 +52,5 @@ const getApartmentId = (apartment_id) => {
 
     return `${apartment_id.slice(0, 7)}...${apartment_id.slice(-7)}`;
 }
+
 export { backgroundColors, getApartmentId, getCreatedData, toTitleCase };

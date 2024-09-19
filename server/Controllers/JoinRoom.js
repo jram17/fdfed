@@ -29,14 +29,18 @@ class JoinRoom {
             });
 
             await addUser.save();
-            const userRoom = await userRoomdb.findOneAndUpdate(
+            let userRoom = await userRoomdb.findOneAndUpdate(
                 { user: req.id },
                 { $push: { apartments: Room._id } },
                 { new: true }
             );
 
             if (!userRoom) {
-                return res.status(404).json({ message: "User's apartment data not found" });
+                userRoom = new userRoomdb({
+                    user: req.id,
+                    apartments: [Room._id]
+                })
+                await userRoom.save();
             }
             if (!Room.resident_id) {
                 Room.resident_id = [addUser._id];

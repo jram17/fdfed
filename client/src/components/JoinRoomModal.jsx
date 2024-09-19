@@ -46,17 +46,19 @@ function JoinRoomModal() {
         flat_id: formdata.flat_id,
       };
       response = await axios.post('http://localhost:5000/join-room', formData);
-      console.log(response);
       if (response.status === 200) {
         navigate(`/room/${formData.apartment_id}`);
       }
     } catch (error) {
-      if (response.status === 500) {
+      if (response?.status === 500) {
         setError(true);
         setErrorMsg('Failed to join room. Please try again');
-      } else if (response.status === 404) {
+      } else if (response?.status === 404) {
         setError(true);
         setErrorMsg('Apartment or Flat not found');
+      } else {
+        setError(true);
+        setErrorMsg('Failed to join room. Please try again');
       }
     } finally {
       setLoading(false);

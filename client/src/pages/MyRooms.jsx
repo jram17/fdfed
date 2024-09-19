@@ -3,6 +3,33 @@ import axios from 'axios';
 import UserRooms from '../components/UserRooms';
 import { MdCancel } from 'react-icons/md';
 import JoinRoomModal from '../components/JoinRoomModal';
+import { FaPlus } from 'react-icons/fa';
+import src from '/noroom.png';
+
+const NoRoom = ({ setModal }) => {
+  return (
+    <div className="h-[80vh] flex flex-col items-center justify-center gap-5">
+      <div className="flex gap-3 items-center justify-center">
+        <div className="flex flex-col items-center justify-center gap-3">
+          <div className="text-5xl text-nowrap">
+            You Have Not Joined Any Apartment Till Now
+          </div>
+          <span className="text-2xl text-nowrap">Start With Us</span>
+        </div>
+        <div>
+          <img src={src} alt="No Room" className="h-[300px] w-[300px]" />
+        </div>
+      </div>
+      <div
+        className="btn cursor-pointer text-2xl bg-[#333] flex items-center justify-center gap-4 mr-6 hover:bg-[#444] text-white"
+        onClick={() => setModal(true)}
+      >
+        <FaPlus size={15} />
+        <span>Join Room</span>
+      </div>
+    </div>
+  );
+};
 
 function MyRooms() {
   axios.defaults.withCredentials = true;
@@ -19,39 +46,35 @@ function MyRooms() {
           setEmpty(true);
         } else if (response.status === 201) {
           setData(response.data);
-        } else {
-          console.log('Error in fetching room data');
+          setEmpty(false);
         }
       } catch (error) {
         console.error(error);
+        setEmpty(true);
       } finally {
         setLoading(false);
       }
     };
+
     fetchRoomData();
   }, []);
 
   return (
-    <div>
-      <div className="min-w-[100vw] flex items-center justify-around">
-        {isLoading ? (
-          'Loading...'
-        ) : (
-          <UserRooms
-            data={data.details}
-            isModal={isModal}
-            setModal={setModal}
-          />
-        )}
-      </div>
+    <div className="min-w-[100vw] flex items-center justify-around">
+      {isLoading ? (
+        'Loading...'
+      ) : isEmpty ? (
+        <NoRoom setModal={setModal} />
+      ) : (
+        <UserRooms data={data.details} isModal={isModal} setModal={setModal} />
+      )}
+
       {isModal && (
         <div className="fixed top-1/4 left-0 right-0 flex justify-center z-50">
           <div className="relative bg-white p-4 rounded-lg shadow-lg">
             <span
               className="absolute top-2 right-2 cursor-pointer"
-              onClick={() => {
-                setModal(false);
-              }}
+              onClick={() => setModal(false)}
             >
               <MdCancel size={20} />
             </span>

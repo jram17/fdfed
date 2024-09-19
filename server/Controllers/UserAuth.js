@@ -14,7 +14,7 @@ class UserAuthentication {
     }
 
     async register(req, res) {
-        const { username, email, password } = req.body;
+        const { username, email, password, userAvatar } = req.body;
         try {
             this.user = await User.findOne({
                 $or: [{ username: username }, { email: email }]
@@ -27,10 +27,12 @@ class UserAuthentication {
             const { hash } = generateHash(password);
             const uuid = uuidv4();
 
+
             const newUser = new User({
                 username,
                 email,
                 uuid,
+                userAvatar: userAvatar,
                 password_hash: hash
             });
 
