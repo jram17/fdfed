@@ -16,7 +16,9 @@ class RoomController {
                     apartment_id: room.apartment_id,
                     apartment_name: room.apartment_name,
                     ownername: room.ownername,
-                    start_date: room.createdAt
+                    start_date: room.createdAt,
+                    avatar: room.avatar,
+                    number_of_residents: room.resident_id ? room.resident_id.length : 0
                 };
             })
         );

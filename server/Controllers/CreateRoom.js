@@ -9,7 +9,7 @@ class RoomModel {
 
     async createRoomReq(req, res) {
         try {
-            const { name, registeration_num, state, address, flat_id, avatar, pincode, email, subscription } = req.body;
+            const { name, registeration_num, state, address, flat_id, pincode, email, subscription } = req.body;
             const uuid = uuidv4();
             const newuserApartment = new UserApartment({
                 user: req.id,
@@ -23,7 +23,6 @@ class RoomModel {
                 ownername: req.userDetails.username,
                 apartment_name: name,
                 address: address,
-                avatar: avatar,
                 apartment_id: uuid,
                 state: state,
                 pincode: pincode,

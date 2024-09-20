@@ -5,7 +5,12 @@ import { MdCancel } from 'react-icons/md';
 import JoinRoomModal from '../components/JoinRoomModal';
 import { FaPlus } from 'react-icons/fa';
 import src from '/noroom.png';
-
+import LeftSideDash from '../components/LeftSideDash';
+import { useDispatch } from 'react-redux';
+import {
+  toggleSideBar,
+  toggleIconVisibility,
+} from '../redux/slice/SideDashSlice';
 const NoRoom = ({ setModal }) => {
   return (
     <div className="h-[80vh] flex flex-col items-center justify-center gap-5">
@@ -32,6 +37,7 @@ const NoRoom = ({ setModal }) => {
 };
 
 function MyRooms() {
+  const dispatch = useDispatch();
   axios.defaults.withCredentials = true;
   const [isLoading, setLoading] = useState(true);
   const [isEmpty, setEmpty] = useState(false);
@@ -58,15 +64,25 @@ function MyRooms() {
 
     fetchRoomData();
   }, []);
+  useEffect(() => {
+    dispatch(toggleIconVisibility(!isEmpty));
+  }, [isEmpty]);
 
   return (
-    <div className="min-w-[100vw] flex items-center justify-around">
+    <div className=" min-w-[100vw] h-[calc(100vh-85px)] flex items-start justify-center">
       {isLoading ? (
         'Loading...'
       ) : isEmpty ? (
         <NoRoom setModal={setModal} />
       ) : (
-        <UserRooms data={data.details} isModal={isModal} setModal={setModal} />
+        <div className="w-full  h-inherit flex items-center justify-around">
+          <LeftSideDash roomData={data.details} />
+          <UserRooms
+            data={data.details}
+            isModal={isModal}
+            setModal={setModal}
+          />
+        </div>
       )}
 
       {isModal && (

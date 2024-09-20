@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../index.css';
 import { NavLink } from 'react-router-dom';
 import '@fontsource-variable/public-sans';
@@ -12,10 +12,13 @@ import { logout } from '../redux/slice/authSlice';
 import { setUserDetails } from '../redux/slice/userSlice';
 import { FaArrowRightLong } from 'react-icons/fa6';
 import axios from 'axios';
+import { RxHamburgerMenu } from 'react-icons/rx';
+import { toggleSideBar } from '../redux/slice/SideDashSlice';
 function Header() {
   axios.defaults.withCredentials = true;
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const isHamburger = useSelector((state) => state.sideDash.iconvisibility);
   const Logout = async () => {
     try {
       const response = await axios.get(`http://localhost:5000/user/logout`);
@@ -30,8 +33,19 @@ function Header() {
   };
   const isLoggedIn = useSelector((state) => state.auth.status);
   return (
-    <div className="header font-header font-normal">
-      <div className="left-header"></div>
+    <div className="fixed  top-0 header  z-10 border-style font-header font-normal bg-white shadow">
+      <div className="left-header ml-6 flex items-center justify-center">
+        {isHamburger && (
+          <span
+            className="hover:bg-slate-300 rounded-[50%] cursor-pointer p-2"
+            onClick={() => {
+              dispatch(toggleSideBar());
+            }}
+          >
+            <RxHamburgerMenu size={20} />
+          </span>
+        )}
+      </div>
       <div className="right-header">
         <NavLink to={'/my-rooms'}>
           <div className="header-link">
