@@ -15,8 +15,7 @@ import { useDispatch } from 'react-redux';
 import { login, setGoogleID } from '../redux/slice/authSlice.js';
 import { setUserDetails } from '../redux/slice/userSlice.js';
 import { useNavigate } from 'react-router-dom';
-import { createAvatar } from '@dicebear/core';
-import { initials } from '@dicebear/collection';
+
 const SignUpSchema = z
   .object({
     username: z.string().min(8, 'Username must be at least 8 characters long'),
@@ -50,10 +49,6 @@ function SignUpForm() {
     window.location.href = 'http://localhost:5000/auth/google';
   };
   const onSubmit = async (formdata) => {
-    const avatar = createAvatar(initials, {
-      seed: formdata.username,
-      radius: 50,
-    });
     axios.defaults.withCredentials = true;
 
     setLoading(true);
@@ -63,7 +58,6 @@ function SignUpForm() {
       const response = await axios.post('http://localhost:5000/user/register', {
         username: formdata.username,
         email: formdata.email,
-        userAvatar: avatar.toString(),
         password: formdata.password,
       });
       if (response.status === 200) {

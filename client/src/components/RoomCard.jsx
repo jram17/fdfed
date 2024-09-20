@@ -15,7 +15,7 @@ function RoomCard({ roomData, id }) {
 
   return (
     <div
-      className="h-52 w-[350px] flex flex-col p-4 pt-1 rounded-lg cursor-pointer hover:scale-105"
+      className="h-52 w-[350px] flex flex-col p-4 pt-1 rounded-lg cursor-pointer hover:scale-[1.02]"
       style={{
         background: backgroundColor,
         boxShadow: shadow,

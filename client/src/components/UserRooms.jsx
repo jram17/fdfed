@@ -5,7 +5,7 @@ import { FaPlus } from 'react-icons/fa';
 import LeftSideDash from './LeftSideDash';
 const UserRooms = ({ data, setModal, isModal }) => {
   return (
-    <div className="min-w-[75%] w-[85%] flex mt-7 flex-col items-center justify-center gap-6">
+    <div className="min-w-[75%] w-[85%] flex mt-4 flex-col items-center justify-center gap-6 pb-4">
       <div className="flex w-full flex-row-reverse  cursor-pointer">
         <div
           className="btn bg-[#333] flex items-center justify-center gap-2 mr-2 hover:bg-[#444] text-white"

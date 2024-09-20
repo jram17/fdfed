@@ -112,11 +112,11 @@
 }
 
 .header {
-    @apply max-w-screen-2xl min-w-[100vw] flex justify-between items-center
+    @apply max-w-screen-2xl min-w-[100vw] flex justify-between items-center border-b-[0.8px]
 }
 
 .right-header {
-    @apply flex items-center justify-between py-6 px-4 gap-6 pr-32
+    @apply flex items-center justify-between py-4 px-4 gap-6 pr-24
 }
 
 .header-link {
@@ -133,6 +133,10 @@
 
 .select {
     @apply !w-full input rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50
+}
+
+.border-style {
+    @apply border-solid border-gray-300
 }
 
 .options {
