@@ -3,7 +3,7 @@ import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import authReducer from './slice/authSlice';
 import userReducer from './slice/userSlice';
-
+import sideDashReducer from './slice/SideDashSlice';
 const persistConfig = {
     key: 'redux-storage',
     storage,
@@ -13,6 +13,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
     auth: authReducer,
     user: userReducer,
+    sideDash: sideDashReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

@@ -10,8 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@dicebear/collection": "^9.2.2",
-    "@dicebear/core": "^9.2.2",
     "@fontsource-variable/faustina": "^5.0.15",
     "@fontsource-variable/fira-code": "^5.0.19",
     "@fontsource-variable/inter-tight": "^5.1.0",
@@ -22,7 +20,11 @@
     "@hookform/resolvers": "^3.9.0",
     "@reduxjs/toolkit": "^2.2.7",
     "axios": "^1.7.7",
+<<<<<<< HEAD
     "client": "file:",
+=======
+    "dicebear": "^9.2.2",
+>>>>>>> a2207704db2aa9d54b9e9f958eff63a46b16c409
     "react": "^18.3.1",
     "react-cookie": "^7.2.0",
     "react-dom": "^18.3.1",

@@ -14,7 +14,7 @@ class UserAuthentication {
     }
 
     async register(req, res) {
-        const { username, email, password, userAvatar } = req.body;
+        const { username, email, password } = req.body;
         try {
             this.user = await User.findOne({
                 $or: [{ username: username }, { email: email }]
@@ -32,7 +32,7 @@ class UserAuthentication {
                 username,
                 email,
                 uuid,
-                userAvatar: userAvatar,
+
                 password_hash: hash
             });
 
@@ -76,7 +76,6 @@ class UserAuthentication {
                 res.redirect(FALLBACK_URL);
             }
         } catch (error) {
-            console.log("Google callback error:", error);
             res.status(500).send({ message: "Authentication failed." });
         }
     }
