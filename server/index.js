@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const http = require('http');
 const passport = require('passport');
 const cookieParser = require('cookie-parser');
+const Iointialize = require('./Controllers/socket');
 const Auth = require('./Routes/UserAuthRouter');
 const Account = require('./Controllers/account');
 const GoogleStrategy = require('./Routes/GoogleAuthRouter');
@@ -11,15 +12,33 @@ const JwtVerifyRouter = require("./Routes/JwtVerifyRouter");
 const CreateRoom = require("./Routes/CreateRoomRouter");
 const Rooms = require("./Routes/RoomRouter");
 const JoinRoom = require("./Routes/JoinRoomRouter");
-class App {
+class App extends Iointialize {
     constructor() {
+        super();
+        this.cors=  {
+            origin: 'http://localhost:5173',
+            methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+            allowedHeaders: ['Content-Type', 'Authorization'],
+            credentials: true,
+            optionSuccessStatus: 200,
+        };
         this.app = express();
         this.server = http.createServer(this.app);
-        this.setMiddleware();
+        this.io = require('socket.io')(this.server, {
+            cors:{
+                origin: 'http://localhost:5173',
+            methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+            credentials:true
+            }
+            ,
+            connectionStateRecovery: {}
+        })
+        this.setMiddleware(this.cors);
         this.setRoutes();
+        this.initializeSocket();
     }
 
-    setMiddleware() {
+    setMiddleware(corsOptions) {
         this.app.use(bodyParser.urlencoded({ extended: true }));
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(bodyParser.json());
@@ -29,13 +48,7 @@ class App {
         this.app.use(passport.initialize());
 
 
-        const corsOptions = {
-            origin: 'http://localhost:5173',
-            methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-            allowedHeaders: ['Content-Type', 'Authorization'],
-            credentials: true,
-            optionSuccessStatus: 200,
-        };
+        
         this.app.use(cors(corsOptions));
         this.app.options('*', cors(corsOptions));
 
@@ -51,6 +64,9 @@ class App {
         this.app.use('/createRoom', CreateRoom);
         this.app.use('/my-rooms', Rooms);
         this.app.use('/join-room', JoinRoom);
+    }
+    initializeSocket(){
+        this.initSocket(this.io);
     }
 
     start(port) {
