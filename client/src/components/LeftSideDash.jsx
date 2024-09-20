@@ -3,7 +3,7 @@ import { FaHome } from 'react-icons/fa';
 import { AiFillProfile } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-
+import { toTitleCase } from '../utils/Roomutils';
 function LeftSideDash({ roomData }) {
   const { username } = useSelector((state) => state.user.userDetails);
 
@@ -57,7 +57,7 @@ function LeftSideDash({ roomData }) {
 
                 <div className="w-[65%] flex flex-col gap-[2px]">
                   <span className="truncate overflow-hidden text-ellipsis group-hover:underline">
-                    {ele.apartment_name}
+                    {toTitleCase(ele.apartment_name)}
                   </span>
                   <span className="truncate overflow-hidden text-ellipsis">
                     {ele.ownername}

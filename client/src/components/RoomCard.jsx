@@ -28,7 +28,7 @@ function RoomCard({ roomData, id }) {
       </div>
       <div className="flex flex-col items-end justify-end h-1/2 p-2 overflow-clip text-nowrap w-full">
         <span className="text-base font-medium">{apartment_id}</span>
-        <span className="text-base w-[85%]   overflow-clip hover-underline flex justify-end">
+        <span className="text-base w-[85%] truncate text-ellipsis  overflow-clip hover-underline flex justify-end">
           {roomData.ownername}
         </span>
         <span className="text-sm">{createddate}</span>
