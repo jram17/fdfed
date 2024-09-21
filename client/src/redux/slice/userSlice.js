@@ -13,8 +13,9 @@ const userSlice = createSlice({
         setUserDetails: (state, action) => {
             state.userDetails = action.payload;
         },
-        setRole: (state, action) => {
-            state.role = action.payload;
+        setApartmentDetails: (state, action) => {
+            state.role = action.payload['role'];
+            state.apartment_username = action.payload['apartment_username'];
         },
         setDataReset: (state, action) => {
             state.role = null;
@@ -25,5 +26,5 @@ const userSlice = createSlice({
     },
 });
 
-export const { setUserDetails, reset, setRole, setDataReset } = userSlice.actions;
+export const { setUserDetails, reset, setApartmentDetails, setDataReset } = userSlice.actions;
 export default userSlice.reducer;

@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useCookies } from 'react-cookie';
 import { useSelector, useDispatch } from 'react-redux';
 import { login, logout } from '../redux/slice/authSlice';
-import { setUserDetails } from '../redux/slice/userSlice';
+import { setUserDetails, setDataReset } from '../redux/slice/userSlice';
+
 function AuthLayout({ children, authentication = true }) {
   const [loader, setLoader] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
-  const [cookies] = useCookies();
+  dispatch(setDataReset());
   const isRoot = location.pathname === '/';
   const isAuthPage =
     location.pathname === '/sign-in' || location.pathname === '/sign-up';
@@ -31,7 +31,6 @@ function AuthLayout({ children, authentication = true }) {
             dispatch(setUserDetails(null));
           }
         } catch (error) {
-          console.log(error);
           dispatch(logout());
           dispatch(setUserDetails(null));
           navigate('/sign-in');

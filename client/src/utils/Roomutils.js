@@ -1,5 +1,6 @@
 import { FaPlus } from 'react-icons/fa';
 
+import axios from 'axios';
 
 const backgroundColors = [
     {
@@ -52,5 +53,30 @@ const getApartmentId = (apartment_id) => {
 
     return `${apartment_id.slice(0, 7)}...${apartment_id.slice(-7)}`;
 }
+const fetchRoomData = async () => {
+    axios.defaults.withCredentials = true;
+    try {
+        const response = await axios.get('http://localhost:5000/my-rooms');
+        if (response.status === 200) {
+            return {
+                status: 'data is empty',
+                rooms: []
+            };
+        } else if (response.status === 201) {
+            return {
+                status: 'data fetched',
+                rooms: response.data
+            };
+        }
+    } catch (error) {
+        return {
+            status: 'error occurred',
+            rooms: []
+        }
+    }
+};
 
-export { backgroundColors, getApartmentId, getCreatedData, toTitleCase };
+
+
+
+export { backgroundColors, getApartmentId, getCreatedData, toTitleCase, fetchRoomData };

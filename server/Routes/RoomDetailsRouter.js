@@ -8,7 +8,7 @@ class RoomDetailsRouter extends RoomDetails {
         this.route = express.Router();
         this.route.use(jwt_authenticate);
 
-        this.route.get('/', this.fetchDetails.bind(this));
+        this.route.get('/:apartment_id', this.fetchDetails.bind(this));
 
 
     }

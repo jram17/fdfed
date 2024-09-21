@@ -76,7 +76,7 @@ function MyRooms() {
         <NoRoom setModal={setModal} />
       ) : (
         <div className="w-full  h-inherit flex items-center justify-around">
-          <LeftSideDash roomData={data.details} />
+          <LeftSideDash />
           <UserRooms
             data={data.details}
             isModal={isModal}

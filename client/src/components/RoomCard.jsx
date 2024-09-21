@@ -5,7 +5,6 @@ import {
   getCreatedData,
   toTitleCase,
 } from '../utils/Roomutils';
-import { Link } from 'react-router-dom';
 
 function RoomCard({ roomData, id }) {
   const apartment_id = getApartmentId(roomData.apartment_id);

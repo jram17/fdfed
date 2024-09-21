@@ -7,7 +7,6 @@ import { toggleIconVisibility } from '../redux/slice/SideDashSlice';
 import { useEffect } from 'react';
 import { setDataReset } from '../redux/slice/userSlice';
 const footerRoutes = [/^\/my-rooms(\/.*)?$/, /^\/room\/[^/]+$/];
-
 const Layout = () => {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -27,7 +26,7 @@ const Layout = () => {
     <div className="flex flex-col min-h-screen font-content">
       {!isAuthPage && <Header />}
 
-      <div className={`flex-grow ${!isAuthPage ? 'mt-[70px]' : ''}`}>
+      <div className={`flex-grow ${!isAuthPage ? 'mt-[70px]' : ''}  `}>
         <Outlet />
       </div>
 

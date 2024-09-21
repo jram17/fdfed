@@ -1,17 +1,17 @@
 const dbModel = require("../Models/RoomModel");
-const ApartmentUser = require("../Models/ApartmentUserModel");
+const ApartmentUserModel = require("../Models/ApartmentUserModel");
 
 
 class RoomDetails {
     async fetchDetails(req, res) {
-        const { apartment_id } = req.params.apartment_id;
 
+        const { apartment_id } = req.params;
         try {
             const roomDetails = await dbModel.findOne({ apartment_id });
             if (!roomDetails) {
                 return res.status(404).json({ message: 'Room not found' });
             }
-            const ApartmentUser = await dbModel.findOne({ apartment_id: apartment_id, user: req.id });
+            const ApartmentUser = await ApartmentUserModel.findOne({ apartment_id: apartment_id, user: req.id });
             if (!ApartmentUser) {
                 return res.status(401).json({ message: 'Unauthorized access' });
             }
@@ -23,7 +23,7 @@ class RoomDetails {
                     start_date: roomDetails.createdAt,
                     number_of_residents: roomDetails.resident_id ? roomDetails.resident_id.length : 0,
                     user_id: req.id,
-                    isAuthoriy: ApartmentUser.user_designation === 'Owner' || ApartmentUser.user_designation === 'Authority' || ApartmentUser.user_designation === 'Security',
+                    isAuthority: ApartmentUser.user_designation === 'Owner' || ApartmentUser.user_designation === 'Authority' || ApartmentUser.user_designation === 'Security',
                     username: ApartmentUser.username
 
                 }

@@ -11,16 +11,16 @@ import Home from './pages/Home';
 import Layout from './components/Layout';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { store } from './redux/store';
-import { persistStore } from 'redux-persist';
+
 import AuthLayout from './components/AuthLayout';
-import { CookiesProvider } from 'react-cookie';
 import axios from 'axios';
 import usegetJwtVerify from './hooks/jwtVerify';
 import DashBoard from './pages/DashBoard';
 import Pricing from './pages/Pricing';
 import MyRooms from './pages/MyRooms';
 import Room from './pages/Room';
+import Error from './pages/Error';
+import QueryProvider from './components/ReactQueryProvider';
 function App() {
   usegetJwtVerify();
   axios.defaults.withCredentials = true;
@@ -85,7 +85,39 @@ function App() {
           }
         />
         <Route
-          path="room/*"
+          path="room/:apartment_id/log"
+          element={
+            <AuthLayout authentication={true}>
+              <Room />
+            </AuthLayout>
+          }
+        />
+        <Route
+          path="room/:apartment_id/details"
+          element={
+            <AuthLayout authentication={true}>
+              <Room />
+            </AuthLayout>
+          }
+        />
+        <Route
+          path="room/:apartment_id/parcel"
+          element={
+            <AuthLayout authentication={true}>
+              <Room />
+            </AuthLayout>
+          }
+        />
+        <Route
+          path="room/:apartment_id/complaints"
+          element={
+            <AuthLayout authentication={true}>
+              <Room />
+            </AuthLayout>
+          }
+        />
+        <Route
+          path="room/:apartment_id"
           element={
             <AuthLayout authentication={true}>
               <Room />
@@ -100,15 +132,23 @@ function App() {
             </AuthLayout>
           }
         />
+        {/* Catch-all route for undefined paths */}
+        <Route
+          path="*"
+          element={
+            <AuthLayout authentication={false}>
+              <Error /> {/* Or create a 404 page */}
+            </AuthLayout>
+          }
+        />
       </Route>
     )
   );
-  const persistor = persistStore(store);
 
   return (
-    <CookiesProvider>
+    <QueryProvider>
       <RouterProvider router={router} />
-    </CookiesProvider>
+    </QueryProvider>
   );
 }
 

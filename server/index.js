@@ -65,7 +65,7 @@ class App extends Iointialize {
         this.app.use('/createRoom', CreateRoom);
         this.app.use('/my-rooms', Rooms);
         this.app.use('/join-room', JoinRoom);
-        this.app.use('/room-details/', RoomDetails);
+        this.app.use('/room-details', RoomDetails);
     }
     initializeSocket() {
         this.initSocket(this.io);
