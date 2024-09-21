@@ -12,10 +12,11 @@ const JwtVerifyRouter = require("./Routes/JwtVerifyRouter");
 const CreateRoom = require("./Routes/CreateRoomRouter");
 const Rooms = require("./Routes/RoomRouter");
 const JoinRoom = require("./Routes/JoinRoomRouter");
+const RoomDetails = require("./Routes/RoomDetailsRouter");
 class App extends Iointialize {
     constructor() {
         super();
-        this.cors=  {
+        this.cors = {
             origin: 'http://localhost:5173',
             methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
             allowedHeaders: ['Content-Type', 'Authorization'],
@@ -25,10 +26,10 @@ class App extends Iointialize {
         this.app = express();
         this.server = http.createServer(this.app);
         this.io = require('socket.io')(this.server, {
-            cors:{
+            cors: {
                 origin: 'http://localhost:5173',
-            methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-            credentials:true
+                methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+                credentials: true
             }
             ,
             connectionStateRecovery: {}
@@ -48,7 +49,7 @@ class App extends Iointialize {
         this.app.use(passport.initialize());
 
 
-        
+
         this.app.use(cors(corsOptions));
         this.app.options('*', cors(corsOptions));
 
@@ -64,8 +65,9 @@ class App extends Iointialize {
         this.app.use('/createRoom', CreateRoom);
         this.app.use('/my-rooms', Rooms);
         this.app.use('/join-room', JoinRoom);
+        this.app.use('/room-details/', RoomDetails);
     }
-    initializeSocket(){
+    initializeSocket() {
         this.initSocket(this.io);
     }
 

@@ -1,6 +1,6 @@
 const Message = require('../Models/userChatMessage');
 const SelectedUsers = require('../Models/userSelected');
-
+const AnnouncementModel = require("../Models/ApartmentAnnouncementsModel");
 let users = {};
 class Iointialize {
     constructor() {
@@ -16,6 +16,11 @@ class Iointialize {
                 console.log(`${username} was identified with socket: ${socket.id}`);
                 socket.username = username;
                 socket.aptId = aptId;
+            })
+
+            socket.on('room-identify', async ({ apartment_id }) => {
+                console.log(`Connected to ${apartment_id}`);
+                socket.apartment_id = apartment_id;
             })
 
 

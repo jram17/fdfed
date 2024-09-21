@@ -5,13 +5,13 @@ import '@fontsource/poppins';
 import { useDispatch } from 'react-redux';
 import { toggleIconVisibility } from '../redux/slice/SideDashSlice';
 import { useEffect } from 'react';
-
+import { setDataReset } from '../redux/slice/userSlice';
 const footerRoutes = [/^\/my-rooms(\/.*)?$/, /^\/room\/[^/]+$/];
 
 const Layout = () => {
   const dispatch = useDispatch();
   const location = useLocation();
-
+  dispatch(setDataReset());
   const shouldHideFooter = footerRoutes.some((pattern) =>
     pattern.test(location.pathname)
   );

@@ -85,7 +85,7 @@ function App() {
           }
         />
         <Route
-          path="room/:id"
+          path="room/*"
           element={
             <AuthLayout authentication={true}>
               <Room />
