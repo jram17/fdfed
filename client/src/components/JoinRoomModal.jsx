@@ -50,15 +50,18 @@ function JoinRoomModal() {
         navigate(`/room/${formData.apartment_id}`);
       }
     } catch (error) {
-      if (response?.status === 500) {
+      if (error.response?.status === 500) {
         setError(true);
         setErrorMsg('Failed to join room. Please try again');
-      } else if (response?.status === 404) {
+      } else if (error.response?.status === 404) {
         setError(true);
         setErrorMsg('Apartment or Flat not found');
+      } else if (error.response.status === 400) {
+        setError(true);
+        setErrorMsg('Flat ID is already registered ');
       } else {
         setError(true);
-        setErrorMsg('Failed to join room. Please try again');
+        setErrorMsg('Failed to join . Please try again');
       }
     } finally {
       setLoading(false);
@@ -140,6 +143,8 @@ function JoinRoomModal() {
                 )}
               </div>
             </div>
+            {isError && <p className=" form-message">{error}</p>}
+
             <div className="w-full grid place-items-center ">
               <button
                 className="btn  !text-lg   max-sm:text-xs max-sm:px-2 max-sm:py-1 bg-slate-900 hover:bg-slate-800 text-white"
@@ -154,7 +159,6 @@ function JoinRoomModal() {
                 )}
               </button>
             </div>
-            {isError && <p className=" form-message">{error}</p>}
           </form>
         </div>
       </div>

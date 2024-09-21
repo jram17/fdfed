@@ -3,26 +3,22 @@ import Header from './Header';
 import Footer from './Footer';
 import '@fontsource/poppins';
 import { useDispatch } from 'react-redux';
-import {
-  toggleIconVisibility,
-  toggleSideBar,
-} from '../redux/slice/SideDashSlice';
-const isFooter = ['/my-rooms'];
+import { toggleIconVisibility } from '../redux/slice/SideDashSlice';
 import { useEffect } from 'react';
+
+const footerRoutes = [/^\/my-rooms(\/.*)?$/, /^\/room\/[^/]+$/];
+
 const Layout = () => {
   const dispatch = useDispatch();
-
   const location = useLocation();
 
-  const isIcon = isFooter.includes(location.pathname);
+  const shouldHideFooter = footerRoutes.some((pattern) =>
+    pattern.test(location.pathname)
+  );
 
   useEffect(() => {
-    if (isIcon) {
-      dispatch(toggleIconVisibility(true));
-    } else {
-      dispatch(toggleIconVisibility(false));
-    }
-  }, [isIcon, dispatch]);
+    dispatch(toggleIconVisibility(shouldHideFooter));
+  }, [shouldHideFooter, dispatch]);
 
   const isAuthPage =
     location.pathname === '/sign-in' || location.pathname === '/sign-up';
@@ -35,7 +31,7 @@ const Layout = () => {
         <Outlet />
       </div>
 
-      {!isAuthPage && isFooter.includes(location.pathname) && <Footer />}
+      {!isAuthPage && !shouldHideFooter && <Footer />}
     </div>
   );
 };

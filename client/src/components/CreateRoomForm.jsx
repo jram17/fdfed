@@ -77,10 +77,15 @@ function CreateRoomForm() {
         navigate('/dashboard');
       }
     } catch (error) {
-      console.log(error);
-      reset();
-      setError(true);
-      setErrorMsg('Error in enrolling the apartment: ');
+      if (error.response.status === 400) {
+        setError(true);
+        setErrorMsg('Apartment already registered with this registration_num');
+        reset();
+      } else {
+        reset();
+        setError(true);
+        setErrorMsg('Error in enrolling the apartment: ');
+      }
     } finally {
       setLoading(false);
     }

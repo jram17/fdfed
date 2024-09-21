@@ -69,7 +69,7 @@ function MyRooms() {
   }, [isEmpty]);
 
   return (
-    <div className=" min-w-[100vw] h-[calc(100vh-85px)] flex items-start justify-center">
+    <div className=" min-w-[100vw]  flex items-start justify-center">
       {isLoading ? (
         'Loading...'
       ) : isEmpty ? (
