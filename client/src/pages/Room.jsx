@@ -88,7 +88,7 @@ function Room() {
           </div>
         )}
         {location.pathname === `/room/${apartment_id}/details` && (
-          <div className="mt-[69px] w-full p-6 flex flex-col items-center justify-center gap-5">
+          <div className="mt-[69px] max-w-[calc(100vw-275px)] w-full p-6 flex flex-col items-center justify-center gap-5">
             <RoomDetails apartment_id={apartment_id} />
           </div>
         )}

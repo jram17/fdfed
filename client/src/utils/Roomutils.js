@@ -98,7 +98,7 @@ const fetchRoomDetails = async (apartment_id) => {
         );
         const { data } = response;
         if (response.status === 200) {
-            return response;
+            return response.data;
 
         }
     } catch (error) {
