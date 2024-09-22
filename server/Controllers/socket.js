@@ -20,13 +20,12 @@ class Iointialize {
 
                 const uniqueUsers = await Message.distinct('userId', { aptId: aptId });
                 io.emit('user-list', uniqueUsers);
-                
             })
 
-            socket.on('room-identify', async ({ apartment_id }) => {
-                console.log(`Connected to ${apartment_id}`);
-                socket.apartment_id = apartment_id;
-            })
+
+
+
+
 
 
 

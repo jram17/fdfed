@@ -4,7 +4,6 @@ const initialState = {
     userDetails: null,
     isRole: null,
     Role: null,
-
     apartment_username: null
 };
 

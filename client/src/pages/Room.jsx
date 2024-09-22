@@ -5,7 +5,7 @@ import { NavLink, Link } from 'react-router-dom';
 import { IoIosChatbubbles } from 'react-icons/io';
 import { useLocation } from 'react-router-dom';
 import AnnoucementDetails from '../components/AnnoucementDetails';
-
+import RoomDetails from '../components/RoomDetails';
 function Room() {
   const location = useLocation();
   const { apartment_id } = useParams();
@@ -84,6 +84,11 @@ function Room() {
         {location.pathname === `/room/${apartment_id}` && (
           <div className="mt-[69px] w-full p-6 flex flex-col items-center justify-center gap-5">
             <AnnoucementDetails apartment_id={apartment_id} />
+          </div>
+        )}
+        {location.pathname === `/room/${apartment_id}/details` && (
+          <div className="mt-[69px] w-full p-6 flex flex-col items-center justify-center gap-5">
+            <RoomDetails apartment_id={apartment_id} />
           </div>
         )}
       </div>

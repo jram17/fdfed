@@ -10,14 +10,18 @@ const footerRoutes = [/^\/my-rooms(\/.*)?$/, /^\/room\/[^/]+$/];
 const Layout = () => {
   const dispatch = useDispatch();
   const location = useLocation();
-  dispatch(setDataReset());
-  const shouldHideFooter = footerRoutes.some((pattern) =>
+    const shouldHideFooter = footerRoutes.some((pattern) =>
     pattern.test(location.pathname)
   );
-
+  
   useEffect(() => {
+    const isChatPage = location.pathname.endsWith('/chat');
+    console.log(isChatPage);
+    if (!isChatPage) {
+      dispatch(setDataReset());
+    }
     dispatch(toggleIconVisibility(shouldHideFooter));
-  }, [shouldHideFooter, dispatch]);
+  }, [shouldHideFooter, dispatch,location.pathname]);
 
   const isAuthPage =
     location.pathname === '/sign-in' || location.pathname === '/sign-up';

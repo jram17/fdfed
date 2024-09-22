@@ -3,14 +3,13 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { login, logout } from '../redux/slice/authSlice';
-import { setUserDetails, setDataReset } from '../redux/slice/userSlice';
+import { setUserDetails } from '../redux/slice/userSlice';
 
 function AuthLayout({ children, authentication = true }) {
   const [loader, setLoader] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
-  dispatch(setDataReset());
   const isRoot = location.pathname === '/';
   const isAuthPage =
     location.pathname === '/sign-in' || location.pathname === '/sign-up';
