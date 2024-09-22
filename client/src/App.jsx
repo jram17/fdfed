@@ -11,7 +11,7 @@ import Home from './pages/Home';
 import Layout from './components/Layout';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import RoomChat from './pages/RoomChat';
+import ChatPage from './pages/ChatPage';
 import AuthLayout from './components/AuthLayout';
 import axios from 'axios';
 import usegetJwtVerify from './hooks/jwtVerify';
@@ -96,7 +96,8 @@ function App() {
           path="room/:apartment_id/chat"
           element={
             <AuthLayout authentication={true}>
-              <RoomChat />
+
+              <ChatPage />
             </AuthLayout>
           }
         />

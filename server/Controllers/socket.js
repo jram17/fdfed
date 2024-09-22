@@ -1,7 +1,9 @@
 const Message = require('../Models/userChatMessage');
 const SelectedUsers = require('../Models/userSelected');
 const AnnouncementModel = require("../Models/ApartmentAnnouncementsModel");
-let users = {};
+const Apartment= require("../Models/ApartmentUserModel");
+
+let users={}
 class Iointialize {
     constructor() {
         this.io = null;
@@ -18,7 +20,7 @@ class Iointialize {
                 socket.username = username;
                 socket.aptId = aptId;
 
-                const uniqueUsers = await Message.distinct('userId', { aptId: aptId });
+                const uniqueUsers = await Apartment.distinct('username', { apartment_id: aptId });
                 io.emit('user-list', uniqueUsers);
             })
 

@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState,useEffect } from 'react';
 import { io } from 'socket.io-client';
-const socket = io('http://localhost:9000');
+const socket = io('http://localhost:5000');
 import EmojiPicker from 'emoji-picker-react';
 import ScrollToBottom from 'react-scroll-to-bottom';
+
 function GroupChat({user,aptId}) {
 
   const [messages, setMessages] = useState([]);

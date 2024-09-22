@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useState,useEffect } from 'react';
 import Contentbox from '../components/ContentBox';
 import { io } from 'socket.io-client';
-const socket = io('http://localhost:9000');
-function Content( onChatSelect, user ,aptId) {
+const socket = io('http://localhost:5000');
+function Content( {onChatSelect, user ,aptId}) {
 
   const [availableUsers, setAvailableUsers] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState(['groupchat']);
