@@ -52,6 +52,7 @@ class RoomModel {
 
         }
     }
+
 }
 
 module.exports = RoomModel;

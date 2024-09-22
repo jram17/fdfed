@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { login, logout } from '../redux/slice/authSlice';
 import { setUserDetails } from '../redux/slice/userSlice';
-
+import { setApartmentDetails } from '../redux/slice/userSlice';
 function AuthLayout({ children, authentication = true }) {
   const [loader, setLoader] = useState(true);
   const navigate = useNavigate();

@@ -6,12 +6,13 @@ import { IoIosChatbubbles } from 'react-icons/io';
 import { useLocation } from 'react-router-dom';
 import AnnoucementDetails from '../components/AnnoucementDetails';
 import RoomDetails from '../components/RoomDetails';
+import { useQuery } from '@tanstack/react-query';
+import { fetchData } from '../utils/Roomutils';
+import { useDispatch } from 'react-redux';
+import { setApartmentDetails } from '../redux/slice/userSlice';
 function Room() {
   const location = useLocation();
   const { apartment_id } = useParams();
-
-  const [roomData, setRoomData] = useState(null);
-  const [isLoading, setLoading] = useState(true);
 
   return (
     <div className="w-full h-inherit flex items-center justify-end">

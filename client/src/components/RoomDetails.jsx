@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { fetchRoomDetails, fetchData } from '../utils/Roomutils';
 import { useDispatch } from 'react-redux';
 import { setApartmentDetails } from '../redux/slice/userSlice';
-import { fetchData } from '../utils/Roomutils';
+
 function RoomDetails({ apartment_id }) {
   const dispatch = useDispatch();
   const {
     data: roomData,
-    isError,
+    isError: roomerr,
     isLoading,
   } = useQuery({
     queryKey: ['room', `${apartment_id}`],
@@ -20,6 +21,17 @@ function RoomDetails({ apartment_id }) {
       dispatch(setApartmentDetails(roomData));
     }
   }, [roomData]);
+  const {
+    data: roomdetailsData,
+    isError: detailserror,
+    isLoading: detailsloading,
+  } = useQuery({
+    queryKey: ['details', `${apartment_id}`],
+    queryFn: () => {
+      return fetchRoomDetails(apartment_id);
+    },
+  });
+
   return <div></div>;
 }
 

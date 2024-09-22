@@ -104,7 +104,7 @@ function AnnoucementDetails({ apartment_id }) {
   const dispatch = useDispatch();
   const {
     data: roomData,
-    isError,
+    isError: roomerr,
     isLoading,
   } = useQuery({
     queryKey: ['room', `${apartment_id}`],

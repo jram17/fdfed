@@ -1,6 +1,6 @@
 const dbModel = require("../Models/RoomModel");
 const ApartmentUserModel = require("../Models/ApartmentUserModel");
-
+const userModel = require("../Models/UserModel");
 
 class RoomDetails {
     async fetchDetails(req, res) {
@@ -31,6 +31,33 @@ class RoomDetails {
             });
         } catch (error) {
             return res.status(500).json({ error: error.message });
+        }
+    }
+    async RoomDetails(req, res) {
+        const { apartment_id } = req.params;
+        try {
+            const room = await dbModel.findOne({ apartment_id });
+            if (!room) {
+                return res.status(404).json({ message: 'Room not found' });
+            }
+
+            const ApartmentUsers = await ApartmentUserModel.find({ apartment_id: apartment_id });
+            const users = await Promise.all(ApartmentUsers.map(async (user) => {
+                const userDetails = await userModel.findById(user.user);
+                return {
+                    user_id: user.user,
+                    username: userDetails.username,
+                    apartment_name: user.username,
+                    role: user.user_designation,
+                    email: userDetails.email,
+                    isAuthority: user.user_designation === 'Owner' || user.user_designation === 'Authority' || user.user_designation === 'Security'
+                };
+            }));
+
+            return res.status(200).json({ roomdetails: room, apartment_users: users });
+        } catch (error) {
+            return res.status(500).json({ error: error.message });
+
         }
     }
 }
