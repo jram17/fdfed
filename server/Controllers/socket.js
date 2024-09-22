@@ -7,6 +7,10 @@ class Iointialize {
         this.io = null;
     }
     initSocket(io) {
+<<<<<<< Updated upstream
+=======
+        console.log("hit");
+>>>>>>> Stashed changes
         this.io = io;
         io.on('connection', async (socket) => {
             console.log(`${socket.id} is connected`);
@@ -16,21 +20,37 @@ class Iointialize {
                 console.log(`${username} was identified with socket: ${socket.id}`);
                 socket.username = username;
                 socket.aptId = aptId;
+<<<<<<< Updated upstream
             })
 
             socket.on('room-identify', async ({ apartment_id }) => {
                 console.log(`Connected to ${apartment_id}`);
                 socket.apartment_id = apartment_id;
             })
+=======
+>>>>>>> Stashed changes
 
+                const uniqueUsers = await Message.distinct('userId', { aptId: aptId });
+                io.emit('user-list', uniqueUsers);
 
+<<<<<<< Updated upstream
 
             const uniqueUsers = await Message.distinct('userId', { aptId: aptId });
             io.emit('user-list', uniqueUsers);
+=======
+            })
+>>>>>>> Stashed changes
 
 
 
 
+<<<<<<< Updated upstream
+=======
+
+
+
+
+>>>>>>> Stashed changes
             socket.on('get-selected-users', async ({ username, aptId }) => {
                 try {
                     if (!username || username.trim() === '') {
@@ -76,6 +96,10 @@ class Iointialize {
                     userId: msg.userId,
                     to: msg.to,
                     msg: msg.msg,
+<<<<<<< Updated upstream
+=======
+                    // aptId:socket.aptId,
+>>>>>>> Stashed changes
                     aptId: msg.aptId,
                 });
                 try {
@@ -123,6 +147,10 @@ class Iointialize {
                     userId: msg.userId,
                     to: 'groupchat',
                     msg: msg.msg,
+<<<<<<< Updated upstream
+=======
+                    // aptId:socket.aptId,
+>>>>>>> Stashed changes
                     aptId: msg.aptId,
 
                 }); try {
