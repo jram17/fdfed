@@ -75,8 +75,21 @@ const fetchRoomData = async () => {
         }
     }
 };
+const fetchData = async (apartment_id) => {
+    try {
+        const response = await axios.get(
+            `http://localhost:5000/room-details/${apartment_id}`
+        );
+        const { data } = response;
+        if (response.status === 200) {
+            return data.details;
+
+        }
+    } catch (error) {
+        return null
+    }
+};
 
 
 
-
-export { backgroundColors, getApartmentId, getCreatedData, toTitleCase, fetchRoomData };
+export { backgroundColors, getApartmentId, getCreatedData, toTitleCase, fetchRoomData, fetchData };

@@ -23,6 +23,7 @@ class RoomDetails {
                     start_date: roomDetails.createdAt,
                     number_of_residents: roomDetails.resident_id ? roomDetails.resident_id.length : 0,
                     user_id: req.id,
+                    role: ApartmentUser.user_designation,
                     isAuthority: ApartmentUser.user_designation === 'Owner' || ApartmentUser.user_designation === 'Authority' || ApartmentUser.user_designation === 'Security',
                     username: ApartmentUser.username
 

@@ -2,7 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     userDetails: null,
-    role: null,
+    isRole: null,
+    Role: null,
+
     apartment_username: null
 };
 
@@ -14,12 +16,14 @@ const userSlice = createSlice({
             state.userDetails = action.payload;
         },
         setApartmentDetails: (state, action) => {
-            state.role = action.payload['role'];
-            state.apartment_username = action.payload['apartment_username'];
+            state.role = action.payload['isAuthority'];
+            state.apartment_username = action.payload['username']
+            state.Role = action.payload['role'];
         },
         setDataReset: (state, action) => {
             state.role = null;
             state.apartment_username = null;
+            state.Role = null;
         },
         reset: () => initialState
 
