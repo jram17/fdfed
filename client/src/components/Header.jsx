@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import '../index.css';
 import { NavLink } from 'react-router-dom';
 import '@fontsource-variable/public-sans';
 import { FaHandshake, FaHome } from 'react-icons/fa';
 import { MdDashboard } from 'react-icons/md';
 import { IoIosPricetag } from 'react-icons/io';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../redux/slice/authSlice';
 import { setUserDetails } from '../redux/slice/userSlice';
@@ -14,12 +13,14 @@ import { FaArrowRightLong } from 'react-icons/fa6';
 import axios from 'axios';
 import { RxHamburgerMenu } from 'react-icons/rx';
 import { toggleSideBar } from '../redux/slice/SideDashSlice';
-import src from '/min-logo.svg';
+import src from '/logo.svg';
+
 function Header() {
   axios.defaults.withCredentials = true;
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isHamburger = useSelector((state) => state.sideDash.iconvisibility);
+  
   const Logout = async () => {
     try {
       const response = await axios.get(`http://localhost:5000/user/logout`);
@@ -32,9 +33,11 @@ function Header() {
       console.log(error);
     }
   };
+  
   const isLoggedIn = useSelector((state) => state.auth.status);
+
   return (
-    <div className="fixed  top-0 header  z-10 border-style font-header font-normal bg-white shadow">
+    <div className="fixed top-0 header z-10 border-style font-header font-normal bg-white shadow">
       <div className="left-header ml-6 flex items-center justify-center gap-3">
         <span
           className={`hover:bg-slate-300 rounded-[50%] cursor-pointer p-2 ${
@@ -48,13 +51,13 @@ function Header() {
         </span>
 
         <NavLink to={'/'}>
-          <span className="h-full flex items-center justify-center">
+          <span className="h-full flex items-center justify-center ml-0">
             <img
               src={src}
               alt="logo"
               className="object-cover"
-              width={70}
-              height={50}
+              width={150} 
+              height={70}  
             />
           </span>
         </NavLink>
@@ -98,16 +101,16 @@ function Header() {
               onClick={() => {
                 Logout();
               }}
-              className=" flex gap-2 items-center justify-center"
+              className="flex gap-2 items-center justify-center"
             >
               Logout <FaArrowRightLong />
             </NavLink>
           </div>
         ) : (
-          <div className="btn text-sm bg-slate-900 hover:bg-slate-800  text-white hover:cursor-pointer">
+          <div className="btn text-sm bg-slate-900 hover:bg-slate-800 text-white hover:cursor-pointer">
             <NavLink
               to={'/sign-in'}
-              className=" flex gap-2 items-center justify-center"
+              className="flex gap-2 items-center justify-center"
             >
               Login
               <FaArrowRightLong />
