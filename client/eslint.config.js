@@ -32,6 +32,7 @@ export default [
       'no-unused-vars': 'off',
       'react/prop-types': 'off',
       'react-hooks/rules-of-hooks': 'off',
+      'no-undef': 'off',
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true },
