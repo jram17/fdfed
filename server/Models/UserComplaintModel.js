@@ -9,6 +9,7 @@ const mongoose = require('mongoose');
     username: { type: String, required: true }, // New field
     apartment_id: { type: String, required: true }, // New field
     flat_id: { type: String, required: true }, // New field
+    isSolved:{type:Boolean,default:false}
 }, { timestamps: true });
 
 

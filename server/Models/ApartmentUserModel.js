@@ -9,7 +9,7 @@ const ApartmentUserSchema = new mongoose.Schema({
     username: { type: String, required: true },
     flat_id: { type: String, default: '001' },
     apartment_id: { type: String, required: true },
-    user_designation: { type: String, required: true }
+    user_designation: { type: String, required: true },
 
 
 }, { timestamps: true });

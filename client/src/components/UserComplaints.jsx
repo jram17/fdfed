@@ -1,5 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import LeftSideDash from '../components/LeftSideDash';
+import { fetchData } from '../utils/Roomutils';
+import { useQuery } from '@tanstack/react-query';
+import { useDispatch, useSelector } from 'react-redux';
+import { setApartmentDetails } from '../redux/slice/userSlice';
+import { NavLink } from 'react-router-dom';
+import { FaClipboardList } from 'react-icons/fa';
 
 function ComplaintForm({ apartment_id }) {
   const [complaintTitle, setComplaintTitle] = useState('');
@@ -7,23 +13,40 @@ function ComplaintForm({ apartment_id }) {
   const [complaintDetail, setComplaintDetail] = useState('');
   const [anonymous, setAnonymous] = useState(false); // Default to false (not anonymous)
   const [error, setError] = useState('');
+  const dispatch = useDispatch();
 
-  const roomData = []; // or fetch it from an API or state management
+  const { Role } = useSelector((state) => state.user);
+  console.log(Role);
+
+  const {
+    data: roomData,
+    isError: roomerr,
+    isLoading,
+  } = useQuery({
+    queryKey: ['room', `${apartment_id}`],
+    queryFn: () => {
+      return fetchData(apartment_id);
+    },
+  });
+
+  useEffect(() => {
+    if (roomData) {
+      dispatch(setApartmentDetails(roomData));
+    }
+  }, [roomData]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Validation logic here
 
     const complaintData = {
       complaintTitle,
       complaintType,
       complaintDetail,
       apartment_id,
-      anonymous, 
+      anonymous,
     };
-    console.log(complaintData);
-    setError(''); 
+
+    setError(''); // Clear previous error
 
     fetch('http://localhost:5000/complaints', {
       method: 'POST',
@@ -40,7 +63,6 @@ function ComplaintForm({ apartment_id }) {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
         setComplaintTitle('');
         setComplaintType('');
         setComplaintDetail('');
@@ -52,8 +74,18 @@ function ComplaintForm({ apartment_id }) {
   };
 
   return (
-    <div className="flex justify-center mt-10">
-      <LeftSideDash roomData={roomData} />
+    <div className="w-full items-center flex flex-col justify-end mt-10">
+      {(Role === 'Owner' || Role === 'Authority' || Role === 'Security') && (
+        <div className="w-full items-center justify-end">
+          <NavLink to={`/${apartment_id}/complaints/list`}>
+            <div className="mr-6 btn bg-[#333] flex items-center justify-center gap-2 hover:bg-[#444] text-white cursor-pointer">
+              <FaClipboardList size={15} />
+              <span>User Complaints</span>
+            </div>
+          </NavLink>
+        </div>
+      )}
+
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-2xl p-10 !flex flex-col !items-center !justify-center bg-white rounded-lg shadow-md border border-gray-200"
@@ -125,9 +157,7 @@ function ComplaintForm({ apartment_id }) {
               onChange={() => setAnonymous(true)}
               className="mr-2"
             />
-            <label className="text-sm font-medium text-gray-700">
-              Yes
-            </label>
+            <label className="text-sm font-medium text-gray-700">Yes</label>
           </div>
           <div className="flex items-center mt-2">
             <input
@@ -138,9 +168,7 @@ function ComplaintForm({ apartment_id }) {
               onChange={() => setAnonymous(false)}
               className="mr-2"
             />
-            <label className="text-sm font-medium text-gray-700">
-              No
-            </label>
+            <label className="text-sm font-medium text-gray-700">No</label>
           </div>
         </div>
 

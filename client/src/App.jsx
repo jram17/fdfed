@@ -20,6 +20,7 @@ import Pricing from './pages/Pricing';
 import MyRooms from './pages/MyRooms';
 import Room from './pages/Room';
 import Error from './pages/Error';
+import ComplaintDisplay from './pages/ComplaintDisplay';
 import QueryProvider from './components/ReactQueryProvider';
 function App() {
   usegetJwtVerify();
@@ -59,6 +60,14 @@ function App() {
               <CreateApartmentRoom />
             </AuthLayout>
           }
+        />
+        <Route
+        path='/:apartment_id/complaints/list'
+        element={
+          <AuthLayout authentication={true}>
+            <ComplaintDisplay />
+          </AuthLayout>
+        }
         />
         <Route
           path="my-rooms"
