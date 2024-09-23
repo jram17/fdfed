@@ -6,11 +6,12 @@ const selectedUserSchema = new mongoose.Schema({
         required: true,
     },
     selectedUsers:{
-        type:String,
+        type:[String],
         default:['groupchat'],
     },
     aptId:{
-        type:String
+        type:String,
+        required: true,
     }
 });
 

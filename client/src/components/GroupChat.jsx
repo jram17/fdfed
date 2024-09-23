@@ -11,10 +11,10 @@ function GroupChat({user,aptId}) {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const to = 'groupchat';
 
-  useEffect(() => {
-    console.log("Current user:", user);
-    socket.emit('identify', {username:user,aptId:aptId});
-  }, [user])
+  // useEffect(() => {
+  //   console.log("Current user:", user);
+  //   socket.emit('identify', {username:user,aptId:aptId});
+  // }, [user])
 
   useEffect(() => {
     // socket.on('to', to)

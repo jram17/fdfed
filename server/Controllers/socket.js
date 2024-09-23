@@ -16,19 +16,13 @@ class Iointialize {
 
             socket.on('identify', async ({ username, aptId }) => {
                 users[username] = socket.id;
-                console.log(`${username} was identified with socket: ${socket.id}`);
+                console.log(`${username} was from apt :${aptId} identified with socket: ${socket.id}`);
                 socket.username = username;
                 socket.aptId = aptId;
 
                 const uniqueUsers = await Apartment.distinct('username', { apartment_id: aptId });
                 io.emit('user-list', uniqueUsers);
             })
-
-
-
-
-
-
 
 
             socket.on('get-selected-users', async ({ username, aptId }) => {
@@ -61,7 +55,7 @@ class Iointialize {
                         const newUser = new SelectedUsers({ username, selectedUsers, aptId });
                         await newUser.save();
                     }
-                    console.log(`Selected users for ${username} in aptId ${aptId} saved successfully`);
+                    console.log(`Selected users for ${username} in aptId:${aptId} saved successfully`);
                 } catch (error) {
                     console.error('Error saving selected users:', error);
                 }

@@ -10,6 +10,7 @@ function Content( {onChatSelect, user ,aptId}) {
 
   useEffect(() => {
     console.log("Current user:", user);
+    console.log(aptId)
     socket.emit('identify', {username:user,aptId:aptId});
   }, [user])
 
@@ -37,7 +38,8 @@ function Content( {onChatSelect, user ,aptId}) {
       setSelectedUsers(updatedUsers);
       socket.emit('save-selected-users', {
         username: user,
-        selectedUsers: updatedUsers
+        selectedUsers: updatedUsers,
+        aptId:aptId
       });
     }
     setShowDropdown(false);

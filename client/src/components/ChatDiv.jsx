@@ -1,53 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import { io } from 'socket.io-client';
-const socket = io('http://localhost:5000');
+import React from 'react'
 import EmojiPicker from 'emoji-picker-react';
 import ScrollToBottom from 'react-scroll-to-bottom';
-function PrivateChat({ username, currentUser,aptId }) {
-
-  const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState('');
-  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-
-
-  // useEffect(() => {
-  //   socket.emit('identify', {username:currentUser,aptId:aptId});
-
-  // }, [currentUser])
-
-  useEffect(() => {
-    if (username) {
-
-      socket.emit('get-priv-chat-history', { from: currentUser, to: username,aptId:aptId });
-
-      socket.on('priv-chat-history', (msg) => {
-        setMessages(msg);
-      });
-
-      socket.on('priv-chat-msgs', (msg) => {
-        setMessages((prev) => [...prev, msg]);
-      });
-      return () => {
-        socket.off('priv-chat-history');
-        socket.off('priv-chat-msgs');
-      };
-    }
-  }, [username, currentUser, messages])
-
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-    if (input.trim()) {
-      socket.emit('priv-chat-msgs', { userId: currentUser, to: username, msg: input ,aptId:aptId});
-      setInput('');
-    }
-  };
-  const onEmojiClick = (emojiObject) => {
-    setInput((prev) => prev + emojiObject.emoji)
-    console.log(emojiObject.emoji)
-  }
+function ChatDiv({currentUser,name}) {
   return (
     <div className='groupchat'>
-      <div className="chatname">{username}</div>
+      <div className="chatname">{name}</div>
       <ScrollToBottom className="msgsdiv">
         <ul id='msgs'>
           {messages.map((msg, index) => (
@@ -84,7 +41,7 @@ function PrivateChat({ username, currentUser,aptId }) {
         <button className='send-button'>send</button>
       </form>
     </div>
-  );
+  )
 }
 
-export default PrivateChat;
+export default ChatDiv
