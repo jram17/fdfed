@@ -3,26 +3,24 @@ const Complaint = require('../models/UserComplaintModel');
 
 const createComplaint = async (req, res) => {
     const { complaintTitle, complaintType, complaintDetail,anonymous,apartment_id } = req.body;
-    const userId = req.id; // Use req.user if available
+    const userId = req.id; 
 
 try {
     let UserDetails
     if(!anonymous){
         UserDetails= await ApartmentUser.findOne({user:req.id,apartment_id:apartment_id});
-        console.log(UserDetails);
     }
     const complaint_details=    {complaintTitle: complaintTitle,
     complaintType: complaintType,
     complaintDetail: complaintDetail,
     anonymous:anonymous,
     userId:req.id,
-    username: anonymous?'Anonymous':UserDetails.username, // New field
-    apartment_id: apartment_id, // New field
-    flat_id: anonymous?'000':UserDetails.flat_id} // New field
+    username: anonymous?'Anonymous':UserDetails.username, 
+    apartment_id: apartment_id,
+    flat_id: anonymous?'000':UserDetails.flat_id} 
     const complaint=new Complaint(complaint_details);
     await complaint.save();
-    return
-
+    return res.status(200).send(complaint);
 
     
 } catch (error) {
@@ -43,4 +41,25 @@ const getApartmentDetails=async(req,res)=>{
   }
 }
 
-module.exports={getApartmentDetails,createComplaint};
+
+const updateIsSolved = async (req, res) => {
+  const { id } = req.params;
+  const { isSolved } = req.body; // Get the new status from the request body
+
+  try {
+    const complaint = await Complaint.findById(id);
+
+    if (!complaint) {
+      return res.status(404).json({ message: 'Complaint not found' });
+    }
+
+    complaint.isSolved = isSolved;
+    await complaint.save();
+
+    return res.status(200).json({ message: 'Complaint status updated successfully', complaint });
+  } catch (error) {
+    return res.status(500).json({ message: 'Server error', error });
+  }
+};
+
+module.exports={getApartmentDetails,createComplaint,updateIsSolved};

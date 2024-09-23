@@ -38,6 +38,20 @@ function ComplaintForm({ apartment_id }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // Clear previous error
+    setError('');
+
+    // Validate complaint title and detail
+    if (complaintTitle.length < 8) {
+      setError('Complaint title must be at least 8 characters long.');
+      return;
+    }
+
+    if (complaintDetail.length < 20) {
+      setError('Complaint detail must be at least 20 characters long.');
+      return;
+    }
+
     const complaintData = {
       complaintTitle,
       complaintType,
@@ -45,8 +59,6 @@ function ComplaintForm({ apartment_id }) {
       apartment_id,
       anonymous,
     };
-
-    setError(''); // Clear previous error
 
     fetch('http://localhost:5000/complaints', {
       method: 'POST',
