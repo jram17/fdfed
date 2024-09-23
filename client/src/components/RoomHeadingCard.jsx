@@ -1,9 +1,11 @@
 import React from 'react';
-import roomcard1 from '/roomcard1.jpg';
+import roomcard1 from '/roomcard1.jpeg';
 import roomcard2 from '/roomcard2.jpeg';
 import roomcard3 from '/roomcard3.jpeg';
+import roomcard4 from '/roomcard4.jpeg';
+import roomcard5 from '/roomcard5.jpeg';
 import { toTitleCase } from '../utils/Roomutils';
-const RoomCards = [roomcard1, roomcard2, roomcard3];
+const RoomCards = [roomcard1, roomcard2, roomcard3, roomcard4, roomcard5];
 const RandomRoomCard = () => {
   const randomIndex = Math.floor(Math.random() * RoomCards.length);
   return RoomCards[randomIndex];
