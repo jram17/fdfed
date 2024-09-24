@@ -10,6 +10,8 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchData } from '../utils/Roomutils';
 import { useDispatch } from 'react-redux';
 import { setApartmentDetails } from '../redux/slice/userSlice';
+import { io } from 'socket.io-client';
+const socket = io('http://localhost:5000');
 function AnnouncementForm() {
   const [isForm, setIsForm] = useState(false);
   const [isFormLoading, setFormLoading] = useState(false);
@@ -19,7 +21,7 @@ function AnnouncementForm() {
     annoucement: z.string().min(1, 'Announcement cannot be empty'),
   });
 
-  const AnnoucementSubmit = () => {};
+  const AnnoucementSubmit = () => { };
   const {
     reset,
     register,
@@ -48,9 +50,8 @@ function AnnouncementForm() {
             autoFocus
             placeholder="Enter Your Announcement"
             {...register('announcement', { required: true })}
-            className={`textarea w-full h-16 px-4 py-2 border rounded-md focus:outline-none border-style border-b-[1px] ${
-              errors.announcement ? 'border-red-500' : 'border-gray-300'
-            }`}
+            className={`textarea w-full h-16 px-4 py-2 border rounded-md focus:outline-none border-style border-b-[1px] ${errors.announcement ? 'border-red-500' : 'border-gray-300'
+              }`}
           />
           {errors.announcement && (
             <p className="text-red-500 text-sm mt-1">
