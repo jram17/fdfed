@@ -67,26 +67,27 @@ class RoomDetails {
     }
 
     async DeleteUsers(req, res) {
-        const { apartment_id, user_id } = req.body;
+        const { apartment_id, username } = req.body;
         try {
-            const ApartmentUser = await ApartmentUserModel.findOneAndDelete({ apartment_id: apartment_id, user: user_id });
+            const ApartmentUser = await ApartmentUserModel.findOneAndDelete({ apartment_id: apartment_id, user: username });
             if (!ApartmentUser) {
                 return res.status(404).json({ message: 'User not found' });
             }
 
             const room = await dbModel.findOne({ apartment_id });
-            if (room.resident_id && room.resident_id.includes(user_id)) {
-                room.resident_id = room.resident_id.filter((id) => id !== user_id);
+            if (room.resident_id && room.resident_id.includes(username)) {
+                room.resident_id = room.resident_id.filter((id) => id !== username);
                 await room.save();
             }
 
-            const user_rooms = await UserApartment.findOne({ user: user_id });
+            const user_rooms = await UserApartment.findOne({ user: username });
             if (user_rooms.apartments.includes(room._id)) {
                 user_rooms.apartments = user_rooms.apartments.filter((id) => id !== room._id);
                 await user_rooms.save();
             }
             return res.status(200).json({ message: "Successfully removed user" });
         } catch (error) {
+            console.log(error);
             return res.status(500).json({ error: error.message });
         }
     }

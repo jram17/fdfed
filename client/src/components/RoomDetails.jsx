@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchRoomDetails, fetchData } from '../utils/Roomutils';
 import { useDispatch } from 'react-redux';
 import { setApartmentDetails } from '../redux/slice/userSlice';
-import { Navigate, NavLink } from 'react-router-dom';
+import { Navigate, NavLink, useParams } from 'react-router-dom';
 import { IoMan, IoPeopleCircleSharp } from 'react-icons/io5';
 import { CiMail } from 'react-icons/ci';
 import { MdOutlineAttachMoney } from 'react-icons/md';
@@ -11,17 +11,25 @@ import { HiHomeModern } from 'react-icons/hi2';
 import { LuClipboard } from 'react-icons/lu';
 import { MdOutgoingMail } from 'react-icons/md';
 
+import { MdCancel } from 'react-icons/md';
+import UserDetailsTabs from './rsuiteUI/UserDetailsTabs';
+import { useSelector } from 'react-redux';
+
 import { getCreatedData, toTitleCase } from '../utils/Roomutils';
 function RoomDetails({ apartment_id }) {
+  const [isModal, setModal] = useState(false);
   const [roomDetails, setroomDetails] = useState(null);
   const [authority, setAuthorityUsers] = useState([]);
   const [residentusers, setResidentUsers] = useState([]);
   const dispatch = useDispatch();
+  const { Role } = useSelector((state) => state.user);
   const handleClipBoard = async () => {
     try {
       await navigator.clipboard.writeText(roomDetails.apartment_id);
+      alert('Apartment ID copied to clipboard!');
     } catch (error) {
       console.error(error);
+      alert('Failed to copy to clipboard');
     }
   };
 
@@ -54,14 +62,13 @@ function RoomDetails({ apartment_id }) {
   });
 
   useEffect(() => {
+    setAuthorityUsers([]);
+    setResidentUsers([]);
+
     if (roomdetailsData && roomdetailsData.roomdetails) {
       setroomDetails(roomdetailsData.roomdetails);
-      roomdetailsData.apartment_users.map((ele) => {
-        if (
-          ele.role === 'Authority' ||
-          ele.role === 'Security' ||
-          ele.role === 'Owner'
-        ) {
+      roomdetailsData.apartment_users.forEach((ele) => {
+        if (['Authority', 'Security', 'Owner'].includes(ele.role)) {
           setAuthorityUsers((prev) => [...prev, ele]);
         } else {
           setResidentUsers((prev) => [...prev, ele]);
@@ -81,8 +88,8 @@ function RoomDetails({ apartment_id }) {
 
       {roomDetails && (
         <div className="max-w-[70vw] w-full flex flex-col items-start justify-center gap-6">
-          <div className="text-5xl w-full flex items-start justify-start pl-6 text-red-700">
-            About My Apartment
+          <div className="text-5xl w-full flex items-center justify-between pl-6 text-red-700">
+            <span>About My Apartment</span>
           </div>
           {/* Avatar and Apartment Name */}
           <div className="bg-white rounded-lg p-6 flex items-center gap-4">
@@ -98,6 +105,16 @@ function RoomDetails({ apartment_id }) {
                 {toTitleCase(roomDetails?.apartment_name)}
               </span>
             </NavLink>
+            {Role === 'Owner' && (
+              <div
+                onClick={() => {
+                  setModal(true);
+                }}
+                className=" btn bg-[#333] flex items-center justify-center gap-2 hover:bg-[#444] text-white cursor-pointer"
+              >
+                <span>Manage Users</span>
+              </div>
+            )}
           </div>
 
           {/* Details Section */}
@@ -288,6 +305,22 @@ function RoomDetails({ apartment_id }) {
                 </div>
               </div>
             )}
+          </div>
+        </div>
+      )}
+      {isModal && (
+        <div className="fixed top-1/4 left-0 right-0 flex justify-center z-50">
+          <div className="relative bg-white p-4 rounded-lg shadow-lg">
+            <span
+              className="absolute top-2 right-2 cursor-pointer"
+              onClick={() => setModal(false)}
+            >
+              <MdCancel size={20} />
+            </span>
+            <UserDetailsTabs
+              roomdetailsData={roomdetailsData}
+              apartment_id={apartment_id}
+            />
           </div>
         </div>
       )}
