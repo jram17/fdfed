@@ -8,13 +8,14 @@ import { FaArrowLeftLong } from 'react-icons/fa6';
 import React, { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { fetchData } from '../utils/Roomutils';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setApartmentDetails } from '../redux/slice/userSlice';
 function AnnouncementForm() {
   const [isForm, setIsForm] = useState(false);
   const [isFormLoading, setFormLoading] = useState(false);
   const [isError, setError] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+
   const AnnouncementSchema = z.object({
     annoucement: z.string().min(1, 'Announcement cannot be empty'),
   });
@@ -102,6 +103,8 @@ function AnnouncementForm() {
 
 function AnnoucementDetails({ apartment_id }) {
   const dispatch = useDispatch();
+  const { Role } = useSelector((state) => state.user);
+  const isRole = Role === 'Owner' || Role === 'Authority';
   const {
     data: roomData,
     isError: roomerr,
@@ -129,7 +132,7 @@ function AnnoucementDetails({ apartment_id }) {
           <div>Loading...</div>
         )}
       </div>
-      <AnnouncementForm />
+      {isRole && <AnnouncementForm />}
     </div>
   );
 }
