@@ -3,7 +3,7 @@ const ApartmentUserModel = require("../Models/ApartmentUserModel");
 const userModel = require("../Models/UserModel");
 const userComplaints = require("../Models/ComplaintModel");
 const UserApartment = require("../Models/UserApartmentModel");
-
+const { ObjectId } = require('mongodb');
 class RoomDetails {
     async fetchDetails(req, res) {
 
@@ -37,31 +37,33 @@ class RoomDetails {
     }
 
     async ComplaintFilebyOwner(req, res) {
-        const { apartment_id } = req.params;
         try {
-            const { user_id, complaint, severity } = req.body;
+            const { apartment_id, user_id, complaint, severity } = req.body;
             const Usercomplaint = new userComplaints({
-                user: user_id,
+                user: req.id,
                 complaint: complaint,
                 severity: severity,
                 apartment_id: apartment_id
             });
-            await UserComplaints.save();
-            res.status(200).json(UserComplaints);
+            await Usercomplaint.save();
+            res.status(200).json(Usercomplaint);
         } catch (error) {
+
             return res.status(500).json({ error: error.message });
         }
     }
 
     async RoleModification(req, res) {
-        const { apartment_id, user_id, new_role } = req.body;
+        const { apartment_id, username, role } = req.body;
+        const user_id = new ObjectId(username);
         try {
-            const ApartmentUser = await ApartmentUserModel.findOneAndUpdate({ apartment_id: apartment_id, user: user_id }, { user_designation: new_role }, { new: true });
+            const ApartmentUser = await ApartmentUserModel.findOneAndUpdate({ apartment_id: apartment_id, user: user_id }, { user_designation: role }, { new: true });
             if (!ApartmentUser) {
                 return res.status(404).json({ message: 'User not found' });
             }
             return res.status(200).json(ApartmentUser);
         } catch (error) {
+            console.log(error);
             return res.status(500).json({ error: error.message });
         }
     }

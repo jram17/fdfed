@@ -11,6 +11,8 @@ class RoomDetailsRouter extends RoomDetails {
         this.route.get('/:apartment_id', this.fetchDetails.bind(this));
         this.route.get('/:apartment_id/details', this.RoomDetails.bind(this));
         this.route.post('/deleteuser', this.DeleteUsers.bind(this));
+        this.route.post('/raise-ticket', this.ComplaintFilebyOwner.bind(this));
+        this.route.put('/role-assign', this.RoleModification.bind(this));
 
 
     }

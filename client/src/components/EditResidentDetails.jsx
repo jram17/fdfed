@@ -11,13 +11,29 @@ const RemoveUserSchema = z.object({
     message: 'You must check the conditions below',
   }),
 });
+const ComplaintUserSchema = z.object({
+  complaint: z
+    .string()
+    .min(10, 'Please enter atleast 10 characters about the complaint'),
+  username: z.string().min(1, 'Please enter a username to remove'),
+  severity: z.string().min(1, 'Please enter a severity'),
+  terms_check: z.boolean().refine((val) => val === true, {
+    message: 'You must check the conditions below',
+  }),
+});
+
+const RoleAssigningSchema = z.object({
+  role: z.string().min(1, `Please enter the role for modification`),
+  username: z.string().min(1, 'Please enter a username to remove'),
+  terms_check: z.boolean().refine((val) => val === true, {
+    message: 'You must check the conditions below',
+  }),
+});
 function RemoveUserDetails({ apartment_id, roomdetailsData }) {
-  console.log(roomdetailsData);
   const [isLoading, setLoading] = useState(false);
   const [isError, setError] = useState(false);
   const [error, setErrorMsg] = useState('');
   const navigate = useNavigate();
-  console.log(apartment_id, roomdetailsData);
   const {
     reset,
     register,
@@ -167,7 +183,6 @@ function EditUserRoles({ apartment_id, roomdetailsData }) {
   const [isError, setError] = useState(false);
   const [error, setErrorMsg] = useState('');
   const navigate = useNavigate();
-  console.log(apartment_id, roomdetailsData);
   const {
     reset,
     register,
@@ -175,7 +190,7 @@ function EditUserRoles({ apartment_id, roomdetailsData }) {
     formState: { errors, isSubmitting },
     getValues,
   } = useForm({
-    resolver: zodResolver(RemoveUserSchema),
+    resolver: zodResolver(RoleAssigningSchema),
   });
 
   const onSubmit = async (formdata) => {
@@ -189,8 +204,12 @@ function EditUserRoles({ apartment_id, roomdetailsData }) {
       const formData = {
         apartment_id: apartment_id,
         username: formdata.username,
+        role: formdata.role,
       };
-      response = await axios.post('http://localhost:5000/join-room', formData);
+      response = await axios.put(
+        'http://localhost:5000/room-details/role-assign',
+        formData
+      );
       if (response.status === 200) {
         navigate(`/room/${formData.apartment_id}`);
       }
@@ -199,6 +218,7 @@ function EditUserRoles({ apartment_id, roomdetailsData }) {
         setError(true);
         setErrorMsg('Failed to join room. Please try again');
       } else if (error.response?.status === 404) {
+        console.log(error);
         setError(true);
         setErrorMsg('Apartment or Flat not found');
       } else if (error.response.status === 400) {
@@ -225,22 +245,86 @@ function EditUserRoles({ apartment_id, roomdetailsData }) {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             <div className="form-item">
               <label
-                className={`form-item ${
-                  errors.username && 'text-destructive'
+                className={`${
+                  errors.username ? 'text-destructive' : ''
                 } form-label`}
               >
-                Enter the Username of the Resident
+                Select The UserName
               </label>
-              <input
-                autoFocus
-                disabled={isLoading}
-                placeholder="Username"
-                type="text"
+              <select
                 {...register('username', { required: true })}
-                className="input"
-              />
+                className={`select !w-full ${
+                  errors.state ? 'border-destructive' : ''
+                }`}
+                id="country"
+                defaultValue={' '}
+              >
+                <option
+                  value=""
+                  disabled
+                  selected
+                  className="bg-background text-muted-foreground"
+                >
+                  Select Your Resident Name
+                </option>
+                {roomdetailsData.apartment_users.map((residents) => {
+                  return (
+                    <option key={residents.user_id} value={residents.user_id}>
+                      {residents.apartment_name}
+                    </option>
+                  );
+                })}
+              </select>
               {errors.username && (
-                <p className=" form-message">{errors.username.message}</p>
+                <p className="form-message">{errors.username.message}</p>
+              )}
+            </div>
+            <div className="form-item">
+              <label
+                className={`${
+                  errors.role ? 'text-destructive' : ''
+                } form-label`}
+              >
+                Role Level
+              </label>
+              <select
+                {...register('role', { required: true })}
+                className={`select !w-full ${
+                  errors.state ? 'border-destructive' : ''
+                }`}
+                id="country"
+                defaultValue={' '}
+              >
+                <option
+                  value=""
+                  disabled
+                  selected
+                  className="bg-background text-muted-foreground"
+                ></option>
+                <option
+                  value="Resident"
+                  selected
+                  className="bg-background text-muted-foreground"
+                >
+                  Resident
+                </option>
+                <option
+                  value="Authority"
+                  selected
+                  className="bg-background text-muted-foreground"
+                >
+                  Authority
+                </option>
+                <option
+                  value="Security"
+                  selected
+                  className="bg-background text-muted-foreground"
+                >
+                  Security
+                </option>
+              </select>
+              {errors.role && (
+                <p className="form-message">{errors.role.message}</p>
               )}
             </div>
 
@@ -295,7 +379,6 @@ function RaiseTicketOnResident({ apartment_id, roomdetailsData }) {
   const [isError, setError] = useState(false);
   const [error, setErrorMsg] = useState('');
   const navigate = useNavigate();
-  console.log(apartment_id, roomdetailsData);
   const {
     reset,
     register,
@@ -303,7 +386,7 @@ function RaiseTicketOnResident({ apartment_id, roomdetailsData }) {
     formState: { errors, isSubmitting },
     getValues,
   } = useForm({
-    resolver: zodResolver(RemoveUserSchema),
+    resolver: zodResolver(ComplaintUserSchema),
   });
 
   const onSubmit = async (formdata) => {
@@ -317,8 +400,13 @@ function RaiseTicketOnResident({ apartment_id, roomdetailsData }) {
       const formData = {
         apartment_id: apartment_id,
         username: formdata.username,
+        complaint: formdata.complaint,
+        severity: formdata.severity,
       };
-      response = await axios.post('http://localhost:5000/join-room', formData);
+      response = await axios.post(
+        'http://localhost:5000/room-details/raise-ticket',
+        formData
+      );
       if (response.status === 200) {
         navigate(`/room/${formData.apartment_id}`);
       }
@@ -333,6 +421,7 @@ function RaiseTicketOnResident({ apartment_id, roomdetailsData }) {
         setError(true);
         setErrorMsg('Flat ID is already registered ');
       } else {
+        console.log(error);
         setError(true);
         setErrorMsg('Failed to join . Please try again');
       }
@@ -346,29 +435,106 @@ function RaiseTicketOnResident({ apartment_id, roomdetailsData }) {
       <div className="card w-full max-sm:w-96 p-6 border-none shadow-none max-h-inherit max-lg:px-0 flex flex-col items-center h-full justify-center gap-6">
         <div className="card-header flex items-center justify-center gap-2  flex-col">
           <div className="card-title flex items-center justify-center text-nowrap max-sm:text-lg font-title !text-2xl">
-            Remove Users From The Apartments
+            Raise Tickets On Residents
           </div>
         </div>
         <div className="card-content grid gap-y-1 w-full">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             <div className="form-item">
               <label
-                className={`form-item ${
-                  errors.username && 'text-destructive'
+                className={`${
+                  errors.username ? 'text-destructive' : ''
                 } form-label`}
               >
-                Enter the Username of the Resident
+                Select The UserName
+              </label>
+              <select
+                {...register('username', { required: true })}
+                className={`select !w-full ${
+                  errors.state ? 'border-destructive' : ''
+                }`}
+                id="country"
+                defaultValue={' '}
+              >
+                <option
+                  value=""
+                  disabled
+                  selected
+                  className="bg-background text-muted-foreground"
+                >
+                  Select Your Resident Name
+                </option>
+                {roomdetailsData.apartment_users.map((residents) => {
+                  return (
+                    <option key={residents.user_id} value={residents.user_id}>
+                      {residents.apartment_name}
+                    </option>
+                  );
+                })}
+              </select>
+              {errors.username && (
+                <p className="form-message">{errors.username.message}</p>
+              )}
+            </div>
+            <div className="form-item">
+              <label
+                className={`${
+                  errors.severity ? 'text-destructive' : ''
+                } form-label`}
+              >
+                Severity Level
+              </label>
+              <select
+                {...register('severity', { required: true })}
+                className={`select !w-full ${
+                  errors.state ? 'border-destructive' : ''
+                }`}
+                id="country"
+                defaultValue={' '}
+              >
+                <option
+                  value=""
+                  disabled
+                  selected
+                  className="bg-background text-muted-foreground"
+                ></option>
+                <option
+                  value="warning"
+                  selected
+                  className="bg-background text-muted-foreground"
+                >
+                  Warning
+                </option>
+                <option
+                  value="severe"
+                  selected
+                  className="bg-background text-muted-foreground"
+                >
+                  Severe
+                </option>
+              </select>
+              {errors.severity && (
+                <p className="form-message">{errors.severity.message}</p>
+              )}
+            </div>
+            <div className="form-item">
+              <label
+                className={`form-item ${
+                  errors.complaint && 'text-destructive'
+                } form-label`}
+              >
+                Describe The Complaint
               </label>
               <input
                 autoFocus
                 disabled={isLoading}
-                placeholder="Username"
+                placeholder="complaint"
                 type="text"
-                {...register('username', { required: true })}
-                className="input"
+                {...register('complaint', { required: true })}
+                className="textarea"
               />
-              {errors.username && (
-                <p className=" form-message">{errors.username.message}</p>
+              {errors.complaint && (
+                <p className=" form-message">{errors.complaint.message}</p>
               )}
             </div>
 
@@ -406,7 +572,7 @@ function RaiseTicketOnResident({ apartment_id, roomdetailsData }) {
                   <RiLoader5Line className="size-4 animate-spin" />
                 ) : (
                   <>
-                    <span>Delete User</span>
+                    <span>Raise The Issue</span>
                   </>
                 )}
               </button>
