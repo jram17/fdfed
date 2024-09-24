@@ -3,7 +3,7 @@ const ApartmentUserModel = require("../Models/ApartmentUserModel");
 const userModel = require("../Models/UserModel");
 const userComplaints = require("../Models/ComplaintModel");
 const UserApartment = require("../Models/UserApartmentModel");
-
+const { ObjectId } = require('mongodb');
 class RoomDetails {
     async fetchDetails(req, res) {
 
@@ -37,56 +37,68 @@ class RoomDetails {
     }
 
     async ComplaintFilebyOwner(req, res) {
-        const { apartment_id } = req.params;
         try {
-            const { user_id, complaint, severity } = req.body;
+            const { apartment_id, user_id, complaint, severity } = req.body;
             const Usercomplaint = new userComplaints({
-                user: user_id,
+                user: req.id,
                 complaint: complaint,
                 severity: severity,
                 apartment_id: apartment_id
             });
-            await UserComplaints.save();
-            res.status(200).json(UserComplaints);
+            await Usercomplaint.save();
+            res.status(200).json(Usercomplaint);
         } catch (error) {
+
             return res.status(500).json({ error: error.message });
         }
     }
 
     async RoleModification(req, res) {
-        const { apartment_id, user_id, new_role } = req.body;
+        const { apartment_id, username, role } = req.body;
+        const user_id = new ObjectId(username);
         try {
-            const ApartmentUser = await ApartmentUserModel.findOneAndUpdate({ apartment_id: apartment_id, user: user_id }, { user_designation: new_role }, { new: true });
+            const ApartmentUser = await ApartmentUserModel.findOne({ apartment_id: apartment_id, user: user_id });
             if (!ApartmentUser) {
                 return res.status(404).json({ message: 'User not found' });
             }
+            else if (role === 'Security') {
+                const SecurityUser = await ApartmentUserModel.findOne({ user: user_id, user_designation: 'Security' });
+                if (SecurityUser) {
+                    return res.status(400).json({ message: 'User already has a Security role' });
+                }
+
+            }
+            ApartmentUser.user_designation = role;
+            await ApartmentUser.save();
             return res.status(200).json(ApartmentUser);
         } catch (error) {
+            console.log(error);
             return res.status(500).json({ error: error.message });
         }
     }
 
     async DeleteUsers(req, res) {
-        const { apartment_id, user_id } = req.body;
+        const { apartment_id, username } = req.body;
         try {
-            const ApartmentUser = await ApartmentUserModel.findOneAndDelete({ apartment_id: apartment_id, user: user_id });
+            const ApartmentUser = await ApartmentUserModel.findOneAndDelete({ apartment_id: apartment_id, user: username });
             if (!ApartmentUser) {
                 return res.status(404).json({ message: 'User not found' });
             }
 
             const room = await dbModel.findOne({ apartment_id });
-            if (room.resident_id && room.resident_id.includes(user_id)) {
-                room.resident_id = room.resident_id.filter((id) => id !== user_id);
+            if (room.resident_id && room.resident_id.includes(username)) {
+                room.resident_id = room.resident_id.filter((id) => id !== username);
                 await room.save();
             }
 
-            const user_rooms = await UserApartment.findOne({ user: user_id });
+            const user_rooms = await UserApartment.findOne({ user: username });
             if (user_rooms.apartments.includes(room._id)) {
                 user_rooms.apartments = user_rooms.apartments.filter((id) => id !== room._id);
                 await user_rooms.save();
             }
             return res.status(200).json({ message: "Successfully removed user" });
         } catch (error) {
+            console.log(error);
             return res.status(500).json({ error: error.message });
         }
     }
