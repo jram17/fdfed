@@ -57,10 +57,19 @@ class RoomDetails {
         const { apartment_id, username, role } = req.body;
         const user_id = new ObjectId(username);
         try {
-            const ApartmentUser = await ApartmentUserModel.findOneAndUpdate({ apartment_id: apartment_id, user: user_id }, { user_designation: role }, { new: true });
+            const ApartmentUser = await ApartmentUserModel.findOne({ apartment_id: apartment_id, user: user_id });
             if (!ApartmentUser) {
                 return res.status(404).json({ message: 'User not found' });
             }
+            else if (role === 'Security') {
+                const SecurityUser = await ApartmentUserModel.findOne({ user: user_id, user_designation: 'Security' });
+                if (SecurityUser) {
+                    return res.status(400).json({ message: 'User already has a Security role' });
+                }
+
+            }
+            ApartmentUser.user_designation = role;
+            await ApartmentUser.save();
             return res.status(200).json(ApartmentUser);
         } catch (error) {
             console.log(error);

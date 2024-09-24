@@ -92,7 +92,7 @@ function RemoveUserDetails({ apartment_id, roomdetailsData }) {
       <div className="card w-full max-sm:w-96 p-6 border-none shadow-none max-h-inherit max-lg:px-0 flex flex-col items-center h-full justify-center gap-6">
         <div className="card-header flex items-center justify-center gap-2  flex-col">
           <div className="card-title flex items-center justify-center text-nowrap max-sm:text-lg font-title !text-2xl">
-            Remove Users From The Apartments
+            Remove Users
           </div>
         </div>
         <div className="card-content grid gap-y-1 w-full">
@@ -223,7 +223,9 @@ function EditUserRoles({ apartment_id, roomdetailsData }) {
         setErrorMsg('Apartment or Flat not found');
       } else if (error.response.status === 400) {
         setError(true);
-        setErrorMsg('Flat ID is already registered ');
+        setErrorMsg(
+          'User is Already having a security role in another apartment'
+        );
       } else {
         setError(true);
         setErrorMsg('Failed to join . Please try again');
@@ -238,7 +240,7 @@ function EditUserRoles({ apartment_id, roomdetailsData }) {
       <div className="card w-full max-sm:w-96 p-6 border-none shadow-none max-h-inherit max-lg:px-0 flex flex-col items-center h-full justify-center gap-6">
         <div className="card-header flex items-center justify-center gap-2  flex-col">
           <div className="card-title flex items-center justify-center text-nowrap max-sm:text-lg font-title !text-2xl">
-            Remove Users From The Apartments
+            Edit User Roles
           </div>
         </div>
         <div className="card-content grid gap-y-1 w-full">
@@ -362,7 +364,7 @@ function EditUserRoles({ apartment_id, roomdetailsData }) {
                   <RiLoader5Line className="size-4 animate-spin" />
                 ) : (
                   <>
-                    <span>Delete User</span>
+                    <span>Modify Roles</span>
                   </>
                 )}
               </button>
