@@ -13,7 +13,7 @@ const Layout = () => {
   const shouldHideFooter = footerRoutes.some((pattern) =>
     pattern.test(location.pathname)
   );
-
+  const dash_regex = /^\/dashboard\/[^/]+$/;
   useEffect(() => {
     const isChatPage = location.pathname.endsWith('/chat');
     if (!isChatPage) {
@@ -22,18 +22,19 @@ const Layout = () => {
     dispatch(toggleIconVisibility(shouldHideFooter));
   }, [shouldHideFooter, dispatch, location.pathname]);
 
-  const isAuthPage =
+  const isAuth =
     location.pathname === '/sign-in' || location.pathname === '/sign-up';
+  const isDashBoard = dash_regex.test(location.pathname);
 
   return (
     <div className="flex flex-col min-h-screen font-content">
-      {!isAuthPage && <Header />}
+      {!isAuth && !isDashBoard && <Header />}
 
-      <div className={`flex-grow ${!isAuthPage ? 'mt-[70px]' : ''}  `}>
+      <div className={`flex-grow ${!isAuth ? 'mt-[70px]' : ''}  `}>
         <Outlet />
       </div>
 
-      {!isAuthPage && !shouldHideFooter && <Footer />}
+      {!isAuth && !shouldHideFooter && !isDashBoard && <Footer />}
     </div>
   );
 };

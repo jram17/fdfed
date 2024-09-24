@@ -62,12 +62,12 @@ function App() {
           }
         />
         <Route
-        path='/:apartment_id/complaints/list'
-        element={
-          <AuthLayout authentication={true}>
-            <ComplaintDisplay />
-          </AuthLayout>
-        }
+          path="/:apartment_id/complaints/list"
+          element={
+            <AuthLayout authentication={true}>
+              <ComplaintDisplay />
+            </AuthLayout>
+          }
         />
         <Route
           path="my-rooms"
@@ -79,6 +79,22 @@ function App() {
         />
         <Route
           path="dashboard"
+          element={
+            <AuthLayout authentication={true}>
+              <DashBoard />
+            </AuthLayout>
+          }
+        />
+        <Route
+          path="dashboard/myprofile"
+          element={
+            <AuthLayout authentication={true}>
+              <DashBoard />
+            </AuthLayout>
+          }
+        />
+        <Route
+          path="dashboard/myapartments"
           element={
             <AuthLayout authentication={true}>
               <DashBoard />
@@ -105,7 +121,6 @@ function App() {
           path="room/:apartment_id/chat"
           element={
             <AuthLayout authentication={true}>
-
               <ChatPage />
             </AuthLayout>
           }

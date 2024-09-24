@@ -11,6 +11,7 @@ node_modules
 dist
 dist-ssr
 *.local
+dashideas.txt
 .env
 .env.local
 # Editor directories and files

@@ -1,6 +1,8 @@
 const dbModel = require("../Models/RoomModel");
 const ApartmentUserModel = require("../Models/ApartmentUserModel");
 const userModel = require("../Models/UserModel");
+const userComplaints = require("../Models/ComplaintModel");
+const UserApartment = require("../Models/UserApartmentModel");
 
 class RoomDetails {
     async fetchDetails(req, res) {
@@ -29,6 +31,61 @@ class RoomDetails {
 
                 }
             });
+        } catch (error) {
+            return res.status(500).json({ error: error.message });
+        }
+    }
+
+    async ComplaintFilebyOwner(req, res) {
+        const { apartment_id } = req.params;
+        try {
+            const { user_id, complaint, severity } = req.body;
+            const Usercomplaint = new userComplaints({
+                user: user_id,
+                complaint: complaint,
+                severity: severity,
+                apartment_id: apartment_id
+            });
+            await UserComplaints.save();
+            res.status(200).json(UserComplaints);
+        } catch (error) {
+            return res.status(500).json({ error: error.message });
+        }
+    }
+
+    async RoleModification(req, res) {
+        const { apartment_id, user_id, new_role } = req.body;
+        try {
+            const ApartmentUser = await ApartmentUserModel.findOneAndUpdate({ apartment_id: apartment_id, user: user_id }, { user_designation: new_role }, { new: true });
+            if (!ApartmentUser) {
+                return res.status(404).json({ message: 'User not found' });
+            }
+            return res.status(200).json(ApartmentUser);
+        } catch (error) {
+            return res.status(500).json({ error: error.message });
+        }
+    }
+
+    async DeleteUsers(req, res) {
+        const { apartment_id, user_id } = req.body;
+        try {
+            const ApartmentUser = await ApartmentUserModel.findOneAndDelete({ apartment_id: apartment_id, user: user_id });
+            if (!ApartmentUser) {
+                return res.status(404).json({ message: 'User not found' });
+            }
+
+            const room = await dbModel.findOne({ apartment_id });
+            if (room.resident_id && room.resident_id.includes(user_id)) {
+                room.resident_id = room.resident_id.filter((id) => id !== user_id);
+                await room.save();
+            }
+
+            const user_rooms = await UserApartment.findOne({ user: user_id });
+            if (user_rooms.apartments.includes(room._id)) {
+                user_rooms.apartments = user_rooms.apartments.filter((id) => id !== room._id);
+                await user_rooms.save();
+            }
+            return res.status(200).json({ message: "Successfully removed user" });
         } catch (error) {
             return res.status(500).json({ error: error.message });
         }
