@@ -34,7 +34,7 @@ function ChatPage() {
           aptId={aptId}
         />
         {currentChat === 'groupchat' ? (
-          <GroupChat user={username} />
+          <GroupChat user={username} aptId={aptId}/>
         ) : (
 
           <PrivateChat username={currentChat} currentUser={username} aptId={aptId} />

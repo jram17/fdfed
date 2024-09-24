@@ -1,10 +1,10 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { io } from 'socket.io-client';
 const socket = io('http://localhost:5000');
 import EmojiPicker from 'emoji-picker-react';
 import ScrollToBottom from 'react-scroll-to-bottom';
 
-function GroupChat({user,aptId}) {
+function GroupChat({ user, aptId }) {
 
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
@@ -24,7 +24,17 @@ function GroupChat({user,aptId}) {
     //     setMessages(msgs);
     // });
 
-    socket.emit('get-grp-chat-history', { to: to,aptId:aptId });
+
+    socket.on('message-deleted', ({ msgId, replacementMsg }) => {
+      setMessages((prev) =>
+        prev.map((msg) =>
+          msg._id === msgId ? { ...msg, msg: replacementMsg } : msg
+        )
+      );
+    });
+
+
+    socket.emit('get-grp-chat-history', { to: to, aptId: aptId });
     socket.on('grp-chat-history', (msg) => {
       setMessages(msg);
     });
@@ -38,12 +48,16 @@ function GroupChat({user,aptId}) {
       socket.off('chat-history');
       socket.off('chat-msgs');
     };
-  }, [user]);
+  }, [user, messages]);
+
+  const currTime = new Date();
+  const formatTime = `${currTime.getHours().toString().padStart(2, '0')}:${currTime.getMinutes().toString().padStart(2, '0')}`
+
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
     if (input.trim()) {
-      socket.emit('chat-msgs', { userId: user, to: to, msg: input,aptId:aptId });
+      socket.emit('chat-msgs', { userId: user, to: to, msg: input, aptId: aptId, time: formatTime });
       setInput('');
     }
   };
@@ -51,6 +65,11 @@ function GroupChat({user,aptId}) {
   const onEmojiClick = (emojiObject) => {
     setInput((prev) => prev + emojiObject.emoji)
     console.log(emojiObject.emoji)
+  }
+
+  const handleDelete = (msgId) => {
+    console.log('hit')
+    socket.emit('handle-delete-msgs', { msgId });
   }
 
 
@@ -68,7 +87,10 @@ function GroupChat({user,aptId}) {
               <li className={msg.userId === user ? 'my-message' : 'other-message'}>
                 <strong>{msg.userId}</strong>
                 <br />
-                {msg.msg}
+                {msg.msg}<br />
+                {msg.deleteForAll === false && <div>{msg.time}</div>}
+                {(msg.userId === user) && (msg.deleteForAll === false) && <button onClick={() => handleDelete(msg._id)}>D</button>}
+
               </li>
             </div>
           ))}

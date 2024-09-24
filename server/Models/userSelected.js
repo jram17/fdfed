@@ -12,7 +12,8 @@ const selectedUserSchema = new mongoose.Schema({
     aptId:{
         type:String,
         required: true,
-    }
+    },
+    
 });
 
 const SelectedUsers=mongoose.model('SelectedUsers',selectedUserSchema);

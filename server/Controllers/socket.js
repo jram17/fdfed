@@ -63,15 +63,14 @@ class Iointialize {
 
             socket.on('priv-chat-msgs', async (msg) => {
                 console.log(`${socket.id} sent a private message to ${msg.to}:`, msg);
-                if (users[msg.to]) {
-                    socket.to(users[msg.to]).emit('priv-chat-msgs', msg);
-                }
+    
                 const newMessage = new Message({
                     userId: msg.userId,
                     to: msg.to,
                     msg: msg.msg,
                     // aptId:socket.aptId,
                     aptId: msg.aptId,
+                    time:msg.time
                 });
                 try {
                     await newMessage.save();
@@ -120,11 +119,30 @@ class Iointialize {
                     msg: msg.msg,
                     // aptId:socket.aptId,
                     aptId: msg.aptId,
+                    time:msg.time,
 
                 }); try {
                     await newMessage.save()
                 } catch (error) {
                     console.error(error)
+                }
+            });
+            socket.on('handle-delete-msgs', async ({ msgId }) => {
+                try {
+                    const message = await Message.findById(msgId);
+                    if (!message) {
+                        console.error(`Message with ID ${msgId} not found.`);
+                        return;
+                    }
+                    const replacementMsg = '🛇 This message was deleted';
+                    // const encryptedText=encrypt(replacementMsg);
+                    await Message.findByIdAndUpdate(msgId, { deleteForAll: true, msg: replacementMsg });
+                    socket.emit('message-deleted', {
+                        msgId,
+                        replacementMsg: replacementMsg,
+                    });
+                } catch (error) {
+                    console.error('Error deleting message:', error);
                 }
             });
 
