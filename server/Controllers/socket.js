@@ -1,9 +1,9 @@
 const Message = require('../Models/userChatMessage');
 const SelectedUsers = require('../Models/userSelected');
 const AnnouncementModel = require("../Models/ApartmentAnnouncementsModel");
-const Apartment= require("../Models/ApartmentUserModel");
-
-let users={}
+const Apartment = require("../Models/ApartmentUserModel");
+const { encrypt, decrypt } = require("../utils/encryptionutils");
+let users = {}
 class Iointialize {
     constructor() {
         this.io = null;
@@ -63,14 +63,14 @@ class Iointialize {
 
             socket.on('priv-chat-msgs', async (msg) => {
                 console.log(`${socket.id} sent a private message to ${msg.to}:`, msg);
-    
+                const encryptedText = encrypt(msg.msg)
                 const newMessage = new Message({
                     userId: msg.userId,
                     to: msg.to,
-                    msg: msg.msg,
+                    msg: encryptedText,
                     // aptId:socket.aptId,
                     aptId: msg.aptId,
-                    time:msg.time
+                    time: msg.time
                 });
                 try {
                     await newMessage.save();
@@ -89,7 +89,11 @@ class Iointialize {
                             { userId: to, to: from, aptId: aptId }
                         ]
                     }).sort({ timestamp: 1 });
-                    socket.emit('priv-chat-history', messages);
+                    const decryptedMessages = messages.map((msg) => ({
+                        ...msg._doc,
+                        msg: decrypt(msg.msg)
+                    }));
+                    socket.emit('priv-chat-history', decryptedMessages);
                 } catch (error) {
                     console.error('Error fetching private chat history:', error);
                 }
@@ -103,7 +107,11 @@ class Iointialize {
                     const messages = await Message.find({
                         to: to, aptId: aptId,
                     }).sort({ timestamp: 1 });
-                    socket.emit('grp-chat-history', messages);
+                    const decryptedMessages = messages.map((msg) => ({
+                        ...msg._doc,
+                        msg: decrypt(msg.msg)
+                    }));
+                    socket.emit('grp-chat-history', decryptedMessages);
                 } catch (error) {
                     console.error('Error fetching group chat history:', error);
                 }
@@ -112,14 +120,14 @@ class Iointialize {
 
             socket.on('chat-msgs', async (msg) => {
                 console.log(`${socket.id} said: `, msg);
-                io.emit('chat-msgs', msg);
+                const encryptedText = encrypt(msg.msg);
                 const newMessage = new Message({
                     userId: msg.userId,
                     to: 'groupchat',
-                    msg: msg.msg,
+                    msg: encryptedText,
                     // aptId:socket.aptId,
                     aptId: msg.aptId,
-                    time:msg.time,
+                    time: msg.time,
 
                 }); try {
                     await newMessage.save()
@@ -135,11 +143,11 @@ class Iointialize {
                         return;
                     }
                     const replacementMsg = '🛇 This message was deleted';
-                    // const encryptedText=encrypt(replacementMsg);
-                    await Message.findByIdAndUpdate(msgId, { deleteForAll: true, msg: replacementMsg });
+                    const encryptedText = encrypt(replacementMsg);
+                    await Message.findByIdAndUpdate(msgId, { deleteForAll: true, msg: encryptedText });
                     socket.emit('message-deleted', {
                         msgId,
-                        replacementMsg: replacementMsg,
+                        replacementMsg: decrypt(encryptedText),
                     });
                 } catch (error) {
                     console.error('Error deleting message:', error);

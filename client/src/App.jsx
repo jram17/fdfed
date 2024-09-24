@@ -22,6 +22,7 @@ import Room from './pages/Room';
 import Error from './pages/Error';
 import ComplaintDisplay from './pages/ComplaintDisplay';
 import QueryProvider from './components/ReactQueryProvider';
+
 function App() {
   usegetJwtVerify();
   axios.defaults.withCredentials = true;
