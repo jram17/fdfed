@@ -1,6 +1,7 @@
 const Apartment = require('../Models/RoomModel');
 const ApartmentUser = require('../Models/ApartmentUserModel');
 const ResidentLog = require("../Models/LogModel");
+const Parcel = require('../Models/ParcelModel');
 
 class LogController {
     // Method to get all residents of a specific apartment
@@ -84,6 +85,34 @@ class LogController {
             return res.status(500).json({ error: 'Server error' });
         }
     }
+
+    async createParcel(req, res) {
+        const { residentName, parcelReachedTime, parcelType, senderAddress, apartment_id } = req.body;
+        try {
+            const newParcel = new Parcel({
+                apartment_id: apartment_id,
+                residentName,
+                parcelReachedTime,
+                parcelType,
+                senderAddress,
+            });
+            await newParcel.save();
+            res.status(201).json(newParcel);
+        } catch (error) {
+            res.status(500).json({ message: 'Error creating parcel', error });
+        }
+    };
+
+    // Function to get all parcels
+    async getParcels(req, res) {
+        try {
+            const { apartment_id } = req.params;
+            const parcels = await Parcel.find({ apartment_id: apartment_id });
+            res.status(200).json(parcels);
+        } catch (error) {
+            res.status(500).json({ message: 'Error fetching parcels', error });
+        }
+    };
 }
 
 module.exports = LogController;

@@ -6,6 +6,7 @@ import DashBoardSideDash from '../components/DashBoardSideDash';
 import { DataTableDisplay } from '../components/ApartmentsTable';
 import { useLocation } from 'react-router-dom';
 import AddLog from '../components/Addlog';
+import AddParcel from '../components/AddParcel';
 
 function DashBoard() {
   const location = useLocation();
@@ -34,7 +35,7 @@ function DashBoard() {
         )}
         {location.pathname === '/dashboard' && <AddLog />}
         {location.pathname === '/dashboard/security-log' && <AddLog />}
-        {location.pathname === '/dashboard/parcel-log'}
+        {location.pathname === '/dashboard/parcel-log' && <AddParcel />}
       </div>
     </div>
   );

@@ -8,7 +8,7 @@ import AnnoucementDetails from '../components/AnnoucementDetails';
 import RoomDetails from '../components/RoomDetails';
 import UserLogDetails from '../components/UserLogDetails';
 import UserComplaints from '../components/UserComplaints';
-
+import ViewParcels from '../components/ParcelViewer';
 function Room() {
   const location = useLocation();
   const { apartment_id } = useParams();
@@ -94,6 +94,11 @@ function Room() {
         {location.pathname === `/room/${apartment_id}/log` && (
           <div className="mt-[69px] max-w-[calc(100vw-275px)] w-full p-6 flex flex-col items-center justify-center gap-5">
             <UserLogDetails apartment_id={apartment_id} />
+          </div>
+        )}
+        {location.pathname === `/room/${apartment_id}/parcel` && (
+          <div className="mt-[69px] max-w-[calc(100vw-275px)] w-full p-6 flex flex-col items-center justify-center gap-5">
+            <ViewParcels apartment_id={apartment_id} />
           </div>
         )}
         {location.pathname === `/room/${apartment_id}/complaints` && (
