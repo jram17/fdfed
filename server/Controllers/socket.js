@@ -75,8 +75,8 @@ class Iointialize {
                 try {
                     const msg1 = await newMessage.save();
                     msg1.msg = msg.msg;
-                    socket.emit('priv-chat-msgs',msg);
-                    socket.to(users[msg.to]).emit('priv-chat-msgs', msg1);
+                    // socket.emit('priv-chat-msgs',msg);
+                    // socket.to(users[msg.to]).emit('priv-chat-msgs', msg1);
                 }
                 catch (error) {
                     console.error(error)
