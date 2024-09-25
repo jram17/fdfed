@@ -14,6 +14,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import ChatPage from './pages/ChatPage';
 import AuthLayout from './components/AuthLayout';
 import axios from 'axios';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import usegetJwtVerify from './hooks/jwtVerify';
 import DashBoard from './pages/DashBoard';
 import Pricing from './pages/Pricing';
@@ -22,6 +24,8 @@ import Room from './pages/Room';
 import Error from './pages/Error';
 import ComplaintDisplay from './pages/ComplaintDisplay';
 import QueryProvider from './components/ReactQueryProvider';
+
+gsap.registerPlugin(ScrollTrigger);
 
 function App() {
   usegetJwtVerify();
@@ -96,6 +100,22 @@ function App() {
         />
         <Route
           path="dashboard/myapartments"
+          element={
+            <AuthLayout authentication={true}>
+              <DashBoard />
+            </AuthLayout>
+          }
+        />
+        <Route
+          path="dashboard/security-log"
+          element={
+            <AuthLayout authentication={true}>
+              <DashBoard />
+            </AuthLayout>
+          }
+        />
+        <Route
+          path="dashboard/parcel-log"
           element={
             <AuthLayout authentication={true}>
               <DashBoard />

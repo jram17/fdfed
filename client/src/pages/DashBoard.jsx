@@ -3,12 +3,19 @@ import { Button, ConfigProvider, Flex, Tooltip } from 'antd';
 import { TbHomeShare } from 'react-icons/tb';
 import { Link } from 'react-router-dom';
 import DashBoardSideDash from '../components/DashBoardSideDash';
-import ApartmentTable from '../components/ApartmentsTable';
+import { DataTableDisplay } from '../components/ApartmentsTable';
+import { useLocation } from 'react-router-dom';
+import AddLog from '../components/Addlog';
+import AddParcel from '../components/AddParcel';
 
 function DashBoard() {
+  const location = useLocation();
   return (
-    <div className="w-full flex items-end justify-end">
+    <div className="w-full flex flex-col items-end justify-start relative">
+      {/* Sidebar */}
       <DashBoardSideDash />
+
+      {/* Floating Go Back Button */}
       <Link to={'/'}>
         <span className="fixed bottom-8 right-5">
           <Tooltip title="Go back to Homepage">
@@ -20,8 +27,15 @@ function DashBoard() {
           </Tooltip>
         </span>
       </Link>
-      <div className="h-screen max-h-[100vh] w-[70vw]">
-        <ApartmentTable />
+
+      {/* Main Content Area */}
+      <div className="h-screen max-h-[100vh] w-[85vw] max-w-[85vw] flex items-center justify-center">
+        {location.pathname === '/dashboard/myapartments' && (
+          <DataTableDisplay />
+        )}
+        {location.pathname === '/dashboard' && <AddLog />}
+        {location.pathname === '/dashboard/security-log' && <AddLog />}
+        {location.pathname === '/dashboard/parcel-log' && <AddParcel />}
       </div>
     </div>
   );

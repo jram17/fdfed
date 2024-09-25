@@ -14,8 +14,9 @@ const Rooms = require("./Routes/RoomRouter");
 const JoinRoom = require("./Routes/JoinRoomRouter");
 const RoomDetails = require("./Routes/RoomDetailsRouter");
 const CreateRoomComplaint = require("./Routes/UserComplaintRouter");
-
+const SecurityLog = require("./Routes/LogRouter");
 const Dashboard = require("./Routes/DashBoardRouter");
+const isRoleVerify = require('./Routes/RoleVerification');
 class App extends Iointialize {
     constructor() {
         super();
@@ -71,7 +72,10 @@ class App extends Iointialize {
         this.app.use('/room-details', RoomDetails);
         this.app.use('/complaints', CreateRoomComplaint);
         this.app.use('/dashboard', Dashboard);
+        this.app.use('/api/residents', SecurityLog);
+        this.app.use('/isSuperRole', isRoleVerify);
     }
+
     initializeSocket() {
         this.initSocket(this.io);
     }

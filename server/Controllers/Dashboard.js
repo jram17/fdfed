@@ -1,7 +1,7 @@
 const dbModel = require("../Models/RoomModel");
 const UserApartment = require("../Models/ApartmentUserModel");
 const User = require("../Models/UserModel");
-const userComplaints = require("../Models/ComplaintModel");
+const userComplaintsModel = require("../Models/ComplaintModel");
 class DashBoardController {
     async UserApartmentDetails(req, res) {
         try {
@@ -17,7 +17,7 @@ class DashBoardController {
                     if (!room) {
                         return { message: `No room found for apartment_id ${userApartment.apartment_id}`, username: userApartment.username };
                     }
-                    return { ...room.toObject(), username: userApartment.username };
+                    return { ...room.toObject(), username: userApartment.username, flat_id: userApartment.flat_id, designation: userApartment.user_designation };
                 })
             );
 
@@ -31,18 +31,25 @@ class DashBoardController {
 
     async UserDashDetails(req, res) {
         try {
+            console.log("hit");
             const user = await User.findById(req.id);
-            const userComplaints = await userComplaints.find({ user: req.id });
+            const userComplaints = await userComplaintsModel.find({ user: req.id });
+            const apartment = await UserApartment.find({ user: req.id });
+            console.log(user, userComplaints, apartment);
 
 
 
-
-            return res.status(200).json({ user: user, complaints: userComplaints });
+            return res.status(200).json({ user: user, complaints: userComplaints, apartment: apartment });
 
         } catch (error) {
+            console.log(error);
             return res.status(500).json({ error: error.message });
         }
     }
+
+
+
+
 }
 
 module.exports = DashBoardController;

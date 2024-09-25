@@ -1,9 +1,23 @@
 import { HiUserCircle } from "react-icons/hi2";
 import { TbHomeSearch } from "react-icons/tb";
 import axios from 'axios';
+import { MdOutlineSecurity } from "react-icons/md";
+import { FaBox } from "react-icons/fa";
 const DashBoardSideDashutils = [
     {
         "Personals": [
+            {
+                "name": "My Profile",
+                "path": "/dashboard",
+                "icon": HiUserCircle
+            },
+            {
+                "name": "My Apartments",
+                "path": "/dashboard/myapartments",
+                "icon": TbHomeSearch
+            }
+        ],
+        "Owner Announcements": [
             {
                 "name": "My Profile",
                 "path": "/dashboard/myprofile",
@@ -14,20 +28,46 @@ const DashBoardSideDashutils = [
                 "path": "/dashboard/myapartments",
                 "icon": TbHomeSearch
             }
-        ]
+        ],
+        "Security Announcements": [
+            {
+                "name": "InOut Log",
+                "path": "/dashboard/security-log",
+                "icon": MdOutlineSecurity
+            },
+            {
+                "name": "Parcel Log",
+                "path": "/dashboard/parcel-log",
+                "icon": FaBox
+            }
+        ],
     }
 ];
 const getApartmentDetails = async () => {
     try {
         const response = await axios.get(`http://localhost:5000/dashboard/apartment_details`);
         if (response.status === 200) {
-            console.log(response);
             return response.data;
         }
     } catch (error) {
         console.error(error);
-        throw new Error('Failed to fetch apartment details');
+        return null;
     }
 };
 
-export { DashBoardSideDashutils, getApartmentDetails };
+const UserDetailsforApartment = async () => {
+    try {
+        const response = await axios.get('http://localhost:5000/dashboard/user_apartment_details', {
+            withCredentials: true
+        });
+        if (response.status === 200) {
+            return response.data;
+        }
+    } catch (error) {
+        console.log(error);
+        return null;
+
+    }
+}
+
+export { DashBoardSideDashutils, getApartmentDetails, UserDetailsforApartment };
