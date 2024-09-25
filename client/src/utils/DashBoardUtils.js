@@ -14,20 +14,58 @@ const DashBoardSideDashutils = [
                 "path": "/dashboard/myapartments",
                 "icon": TbHomeSearch
             }
-        ]
+        ],
+        "Owner Announcements": [
+            {
+                "name": "My Profile",
+                "path": "/dashboard/myprofile",
+                "icon": HiUserCircle
+            },
+            {
+                "name": "My Apartments",
+                "path": "/dashboard/myapartments",
+                "icon": TbHomeSearch
+            }
+        ],
+        "Security Announcements": [
+            {
+                "name": "My Profile",
+                "path": "/dashboard/myprofile",
+                "icon": HiUserCircle
+            },
+            {
+                "name": "My Apartments",
+                "path": "/dashboard/myapartments",
+                "icon": TbHomeSearch
+            }
+        ],
     }
 ];
 const getApartmentDetails = async () => {
     try {
         const response = await axios.get(`http://localhost:5000/dashboard/apartment_details`);
         if (response.status === 200) {
-            console.log(response);
             return response.data;
         }
     } catch (error) {
         console.error(error);
-        throw new Error('Failed to fetch apartment details');
+        return null;
     }
 };
 
-export { DashBoardSideDashutils, getApartmentDetails };
+const UserDetailsforApartment = async () => {
+    try {
+        const response = await axios.get('http://localhost:5000/dashboard/user_apartment_details', {
+            withCredentials: true
+        });
+        if (response.status === 200) {
+            return response.data;
+        }
+    } catch (error) {
+        console.log(error);
+        return null;
+
+    }
+}
+
+export { DashBoardSideDashutils, getApartmentDetails, UserDetailsforApartment };

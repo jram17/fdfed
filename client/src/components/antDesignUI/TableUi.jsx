@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Space, Table } from 'antd';
+import { Button, Space, Table, Tag } from 'antd';
 
-const App = ({ data }) => {
+const DataTable = ({ data }) => {
   const [filteredInfo, setFilteredInfo] = useState({});
   const [sortedInfo, setSortedInfo] = useState({});
   const [columns, setColumns] = useState([]);
@@ -108,7 +108,6 @@ const App = ({ data }) => {
   }, [data, filteredInfo, sortedInfo]);
 
   const handleChange = (pagination, filters, sorter) => {
-    console.log('Various parameters', pagination, filters, sorter);
     setFilteredInfo(filters);
     setSortedInfo(sorter);
   };
@@ -130,4 +129,78 @@ const App = ({ data }) => {
   );
 };
 
-export default App;
+const UserApartments_table = ({ data }) => {
+  const [expandedRowKeys, setExpandedRowKeys] = useState([]);
+
+  const columns = [
+    {
+      title: 'Apartment',
+      dataIndex: 'apt_name',
+      key: 'apt_name',
+    },
+
+    {
+      title: 'OwnerName',
+      dataIndex: 'owner_name',
+      key: 'owner_name',
+    },
+    {
+      title: 'Apartment UserName',
+      dataIndex: 'name',
+      key: 'name',
+    },
+    {
+      title: 'Flat Id',
+      dataIndex: 'flat_id',
+      key: 'flat_id',
+    },
+    {
+      title: 'Address',
+      dataIndex: 'address',
+      key: 'address',
+    },
+    {
+      title: 'Designation',
+      dataIndex: 'designation',
+      key: 'designation',
+      render: (_, { designation }) => {
+        let color = designation === 'Owner' ? 'red' : 'green';
+        return (
+          <Tag color={color} key={designation}>
+            {designation.toUpperCase()}
+          </Tag>
+        );
+      },
+    },
+  ];
+
+  // Function to handle expand/collapse state
+  const handleExpand = (expanded, record) => {
+    const key = record.flat_id; // Use a unique identifier, such as flat_id
+    setExpandedRowKeys(expanded ? [key] : []); // Allow only one row to be expanded at a time
+  };
+
+  return (
+    <Table
+      columns={columns}
+      expandable={{
+        expandedRowRender: (record) => (
+          <p
+            style={{
+              margin: 0,
+            }}
+          >
+            {record.address}
+          </p>
+        ),
+        rowExpandable: (record) => record.owner_name !== 'Not Expandable',
+        expandedRowKeys: expandedRowKeys, // Control expanded row state
+        onExpand: handleExpand, // Handle expand/collapse action
+      }}
+      dataSource={data}
+      rowKey="flat_id" // Use a unique identifier for each row
+    />
+  );
+};
+
+export { DataTable, UserApartments_table };

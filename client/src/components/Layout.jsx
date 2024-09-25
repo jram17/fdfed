@@ -30,7 +30,9 @@ const Layout = () => {
     <div className="flex flex-col min-h-screen font-content">
       {!isAuth && !isDashBoard && <Header />}
 
-      <div className={`flex-grow ${!isAuth ? 'mt-[70px]' : ''}  `}>
+      <div
+        className={`flex-grow ${!isAuth && !isDashBoard ? 'mt-[70px]' : ''}  `}
+      >
         <Outlet />
       </div>
 
