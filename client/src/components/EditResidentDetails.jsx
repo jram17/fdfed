@@ -533,7 +533,7 @@ function RaiseTicketOnResident({ apartment_id, roomdetailsData }) {
                 placeholder="complaint"
                 type="text"
                 {...register('complaint', { required: true })}
-                className="textarea"
+                className="textarea !px-2 !py-1"
               />
               {errors.complaint && (
                 <p className=" form-message">{errors.complaint.message}</p>

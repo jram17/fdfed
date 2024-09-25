@@ -107,6 +107,22 @@ function App() {
           }
         />
         <Route
+          path="dashboard/security-log"
+          element={
+            <AuthLayout authentication={true}>
+              <DashBoard />
+            </AuthLayout>
+          }
+        />
+        <Route
+          path="dashboard/parcel-log"
+          element={
+            <AuthLayout authentication={true}>
+              <DashBoard />
+            </AuthLayout>
+          }
+        />
+        <Route
           path="pricing"
           element={
             <AuthLayout authentication={false}>

@@ -90,6 +90,20 @@ const fetchData = async (apartment_id) => {
     }
 };
 
+const fetchisRole = async (role) => {
+    try {
+        const response = await axios.get(`http://localhost:5000/isSuperRole/${role}`, {
+            withCredentials: true
+        });
+        const { data } = response;
+        return data;
+    } catch (error) {
+        return null;
+
+    }
+
+}
+
 
 const fetchRoomDetails = async (apartment_id) => {
     try {
@@ -108,4 +122,4 @@ const fetchRoomDetails = async (apartment_id) => {
 }
 
 
-export { backgroundColors, getApartmentId, getCreatedData, toTitleCase, fetchRoomData, fetchData, fetchRoomDetails };
+export { backgroundColors, getApartmentId, getCreatedData, toTitleCase, fetchRoomData, fetchData, fetchRoomDetails, fetchisRole };
