@@ -4,7 +4,8 @@ const initialState = {
     userDetails: null,
     isRole: null,
     Role: null,
-    apartment_username: null
+    apartment_username: null,
+    apartment_id: null
 };
 
 const userSlice = createSlice({
@@ -18,11 +19,17 @@ const userSlice = createSlice({
             state.role = action.payload['isAuthority'];
             state.apartment_username = action.payload['username']
             state.Role = action.payload['role'];
+            state.apartment_id = action.payload['apartment_id'];
         },
         setDataReset: (state, action) => {
             state.role = null;
             state.apartment_username = null;
             state.Role = null;
+            state.apartment_id = null;
+
+
+
+
         },
         reset: () => initialState
 

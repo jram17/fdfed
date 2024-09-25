@@ -80,7 +80,7 @@ function DataTableDisplay() {
   return (
     <div className="rounded-md flex flex-col w-full items-center justify-center">
       {/* Title Section */}
-      <div className="text-red-700 text-3xl w-full text-center mb-4">
+      <div className="text-red-700 text-5xl w-full text-center mb-4">
         Apartment Details
       </div>
 

@@ -1,12 +1,14 @@
 import { HiUserCircle } from "react-icons/hi2";
 import { TbHomeSearch } from "react-icons/tb";
 import axios from 'axios';
+import { MdOutlineSecurity } from "react-icons/md";
+import { FaBox } from "react-icons/fa";
 const DashBoardSideDashutils = [
     {
         "Personals": [
             {
                 "name": "My Profile",
-                "path": "/dashboard/myprofile",
+                "path": "/dashboard",
                 "icon": HiUserCircle
             },
             {
@@ -29,14 +31,14 @@ const DashBoardSideDashutils = [
         ],
         "Security Announcements": [
             {
-                "name": "My Profile",
-                "path": "/dashboard/myprofile",
-                "icon": HiUserCircle
+                "name": "InOut Log",
+                "path": "/dashboard/security-log",
+                "icon": MdOutlineSecurity
             },
             {
-                "name": "My Apartments",
-                "path": "/dashboard/myapartments",
-                "icon": TbHomeSearch
+                "name": "Parcel Log",
+                "path": "/dashboard/parcel-log",
+                "icon": FaBox
             }
         ],
     }

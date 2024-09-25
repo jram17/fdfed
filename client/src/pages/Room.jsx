@@ -6,11 +6,9 @@ import { IoIosChatbubbles } from 'react-icons/io';
 import { useLocation } from 'react-router-dom';
 import AnnoucementDetails from '../components/AnnoucementDetails';
 import RoomDetails from '../components/RoomDetails';
-import { useQuery } from '@tanstack/react-query';
-import { fetchData } from '../utils/Roomutils';
-import { useDispatch } from 'react-redux';
-import { setApartmentDetails } from '../redux/slice/userSlice';
+import UserLogDetails from '../components/UserLogDetails';
 import UserComplaints from '../components/UserComplaints';
+
 function Room() {
   const location = useLocation();
   const { apartment_id } = useParams();
@@ -91,6 +89,11 @@ function Room() {
         {location.pathname === `/room/${apartment_id}/details` && (
           <div className="mt-[69px] max-w-[calc(100vw-275px)] w-full p-6 flex flex-col items-center justify-center gap-5">
             <RoomDetails apartment_id={apartment_id} />
+          </div>
+        )}
+        {location.pathname === `/room/${apartment_id}/log` && (
+          <div className="mt-[69px] max-w-[calc(100vw-275px)] w-full p-6 flex flex-col items-center justify-center gap-5">
+            <UserLogDetails apartment_id={apartment_id} />
           </div>
         )}
         {location.pathname === `/room/${apartment_id}/complaints` && (
