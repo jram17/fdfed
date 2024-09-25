@@ -6,8 +6,7 @@ const AnnouncementSchema = new mongoose.Schema({
     apartment_id: { type: String, required: true },
     user_designation: { type: String, required: true },
     announcement_msg: { type: String, required: true },
-
-
+    timestamp: { type: Date, default: Date.now }
 }, { timestamps: true });
 
 const Announcement = mongoose.model('Announcement', AnnouncementSchema);

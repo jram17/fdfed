@@ -28,7 +28,7 @@ function GroupChat({ user, aptId }) {
     socket.on('message-deleted', ({ msgId, replacementMsg }) => {
       setMessages((prev) =>
         prev.map((msg) =>
-          msg._id === msgId ? { ...msg, msg: replacementMsg } : msg
+          msg._id === msgId ? { ...msg, msg: replacementMsg ,deleteForAll:true} : msg
         )
       );
     });
@@ -48,7 +48,7 @@ function GroupChat({ user, aptId }) {
       socket.off('chat-history');
       socket.off('chat-msgs');
     };
-  }, [user, messages]);
+  }, [user]);
 
   const currTime = new Date();
   const formatTime = `${currTime.getHours().toString().padStart(2, '0')}:${currTime.getMinutes().toString().padStart(2, '0')}`
