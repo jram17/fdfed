@@ -1,30 +1,55 @@
 import React, { useEffect, useState } from 'react';
 import { useSpring, animated } from 'react-spring';
-import { carousel, rightbar } from '../utils/Staticassests';
+import { carousel } from '../utils/Staticassests';
 import '../index.css';
 import { RiRadioButtonLine } from 'react-icons/ri';
 import { IoIosRadioButtonOff } from 'react-icons/io';
+
+const rightbarData = [
+  {
+    title: 'Engagement',
+    text: 'Engage with your neighbors through our platform. Post updates, ask questions, and receive quick responses to foster a friendly environment.',
+    src: 'assest6.png',
+  },
+  {
+    title: 'Assistance',
+    text: 'Have a concern? Report it directly through our interface, and get timely assistance from your community managers.',
+    src: 'assest4.png',
+  },
+  {
+    title: 'Coordination',
+    text: 'Stay updated about community events and easily organize your own. Our platform helps you create, promote, and manage local gatherings.',
+    src: 'assest1.png',
+  },
+];
 
 function RightBar() {
   return (
     <div className="grid grid-cols-1 gap-7 place-items-center justify-center w-fit">
       <div className="flex w-full items-center justify-center">
-        <div className="text-5xl font-bold">Why Us?</div>
+        <div className="text-4xl font-bold text-gray-800">Why Us?</div>
       </div>
       <div className="flex flex-col gap-9">
-        {rightbar.map((element, index) => (
-          <div key={index} className="flex gap-4 items-center">
-            <div className="w-1/3 h-64 max-w-sm flex-shrink-0">
-              <img
-                src={element.src}
-                alt="image"
-                className="w-full h-full object-cover rounded-lg"
-              />
+        {rightbarData.map((element, index) => (
+          <div key={index} className="flex flex-col items-center gap-4">
+            <div className="flex gap-4 items-center">
+              <div className="w-1/3 h-64 max-w-sm flex-shrink-0">
+                <img
+                  src={element.src}
+                  alt="image"
+                  className="w-full h-full object-cover rounded-lg"
+                />
+              </div>
+              <div className="flex flex-col gap-4">
+                <div className="text-2xl font-semibold text-gray-700">
+                  {element.title}
+                </div>
+                <div className="text-base text-gray-600 max-w-md">
+                  {element.text}
+                </div>
+              </div>
             </div>
-            <div className="flex flex-col gap-4">
-              <div className="text-2xl font-semibold">{element.title}</div>
-              <div className="text-base max-w-md">{element.text}</div>
-            </div>
+            <hr className="w-full border-gray-300 mt-2" />
           </div>
         ))}
       </div>
@@ -49,9 +74,9 @@ function Carousel() {
 
   return (
     <div className="flex items-center justify-center mt-4">
-      <div className="max-w-[1200px]  h-[400px] flex items-center  flex-col justify-center space-y-4">
-        <div className="card shadow-md rounded-sm w-full h-full mx-auto">
-          <div className="carousel-container w-full h-full overflow-hidden">
+      <div className="max-w-[1200px] h-[400px] flex items-center flex-col justify-center space-y-4">
+        <div className="card shadow-lg rounded-lg w-full h-full mx-auto">
+          <div className="carousel-container w-full h-full overflow-hidden rounded-lg">
             <div className="carousel-slide flex" style={{ width: '100%' }}>
               <animated.div
                 style={props}
@@ -64,26 +89,23 @@ function Carousel() {
                       index === i ? 'active' : 'inactive'
                     }`}
                   >
-                    {/* Image */}
                     <img
                       src={image.src}
                       alt={`Slide ${i}`}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover rounded-lg"
                     />
-                    <div className="absolute bottom-0 flex items-center justify-center text-white">
+                    <div className="absolute bottom-0 flex items-center justify-center text-white bg-black bg-opacity-50 px-4 py-2 rounded-lg">
                       {image.text}
                     </div>
-                    {/* Black tint overlay */}
-                    <div className="absolute inset-0 bg-black opacity-20"></div>
                   </div>
                 ))}
               </animated.div>
             </div>
           </div>
         </div>
-        <div className="flex items-center justify-left space-x-2 w-full h-full">
+        <div className="flex items-center justify-center space-x-2 w-full h-full">
           {carousel.map((_, i) => (
-            <span key={i} className="text-xl">
+            <span key={i} className="text-xl text-gray-600">
               {index === i ? <RiRadioButtonLine /> : <IoIosRadioButtonOff />}
             </span>
           ))}
