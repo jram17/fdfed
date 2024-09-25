@@ -13,7 +13,6 @@ route.get('/:role', async function (req, res) {
     const userId = req.id;  // Assuming req.id is set by jwt_auth middleware
 
     try {
-        // Check for 'Security' role
         if (role === 'Security') {
             const isSecurity = await ApartmentUser.findOne({ user: userId, user_designation: role });
             if (!isSecurity) {
@@ -21,13 +20,15 @@ route.get('/:role', async function (req, res) {
             }
             return res.status(200).json({ details: isSecurity });
         }
-        // Check for 'Owner' role
         else if (role === 'Owner') {
-            const isOwner = await Room.find({ owner: userId });
-            if (!isOwner || isOwner.length === 0) {
+            const OwnerRooms = await Room.find({ owner: userId });
+            if (!OwnerRooms || OwnerRooms.length === 0) {
                 return res.status(400).json({ message: "You are not an owner" });
             }
-            return res.status(200).json({ details: isOwner });
+            const details = OwnerRooms.map((room) => {
+                return { apartment_name: room.apartment_name, apartment_id: room.apartment_id }
+            });
+            return res.status(200).json({ details: details });
         }
         // Invalid role
         else {

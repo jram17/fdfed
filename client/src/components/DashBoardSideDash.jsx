@@ -1,8 +1,9 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLoaderData } from 'react-router-dom';
 import { DashBoardSideDashutils } from '../utils/DashBoardUtils';
-
+import { useLocation } from 'react-router-dom';
 const DashBoardSideDash = () => {
+  const location = useLocation();
   return (
     <div className="fixed top-0 left-0 min-h-screen w-64 border-style border-r-[1px] flex flex-col gap-5">
       <div className="w-full mt-10 p-6">
@@ -26,8 +27,10 @@ const DashBoardSideDash = () => {
                       <item.icon className="text-xl text-red-400" />
                       <NavLink
                         to={item.path}
-                        className={({ isActive }) =>
-                          isActive ? 'text-red-600' : 'hover:underline'
+                        className={() =>
+                          location.pathname === item.path
+                            ? 'text-red-600'
+                            : 'hover:underline'
                         }
                       >
                         {item.name}

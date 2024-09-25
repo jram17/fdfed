@@ -3,6 +3,9 @@ import { TbHomeSearch } from "react-icons/tb";
 import axios from 'axios';
 import { MdOutlineSecurity } from "react-icons/md";
 import { FaBox } from "react-icons/fa";
+import { SlCalender } from "react-icons/sl"
+import { TfiLayoutAccordionSeparated } from "react-icons/tfi";
+
 const DashBoardSideDashutils = [
     {
         "Personals": [
@@ -19,14 +22,14 @@ const DashBoardSideDashutils = [
         ],
         "Owner Announcements": [
             {
-                "name": "My Profile",
-                "path": "/dashboard/myprofile",
-                "icon": HiUserCircle
+                "name": "Create Events",
+                "path": "/dashboard/owner/createevents",
+                "icon": SlCalender
             },
             {
-                "name": "My Apartments",
-                "path": "/dashboard/myapartments",
-                "icon": TbHomeSearch
+                "name": "My Abodes",
+                "path": "/dashboard/owners/myapartments",
+                "icon": TfiLayoutAccordionSeparated
             }
         ],
         "Security Announcements": [

@@ -7,7 +7,8 @@ import { DataTableDisplay } from '../components/ApartmentsTable';
 import { useLocation } from 'react-router-dom';
 import AddLog from '../components/Addlog';
 import AddParcel from '../components/AddParcel';
-
+import OwnerVerify from '../components/OwnerVerify';
+import { EventForm } from '../components/EditResidentDetails';
 function DashBoard() {
   const location = useLocation();
   return (
@@ -29,11 +30,16 @@ function DashBoard() {
       </Link>
 
       {/* Main Content Area */}
-      <div className="h-screen max-h-[100vh] w-[85vw] max-w-[85vw] flex items-center justify-center">
+      <div className="h-full max-h-[100vh] w-[85vw] max-w-[85vw] flex items-top flex-col justify-center">
         {location.pathname === '/dashboard/myapartments' && (
           <DataTableDisplay />
         )}
-        {location.pathname === '/dashboard' && <AddLog />}
+        {location.pathname === '/dashboard/owner/createevents' && (
+          <OwnerVerify>
+            <EventForm />
+          </OwnerVerify>
+        )}
+        {location.pathname === '/dashboard'}
         {location.pathname === '/dashboard/security-log' && <AddLog />}
         {location.pathname === '/dashboard/parcel-log' && <AddParcel />}
       </div>

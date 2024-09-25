@@ -3,6 +3,7 @@ const ApartmentUserModel = require("../Models/ApartmentUserModel");
 const userModel = require("../Models/UserModel");
 const userComplaints = require("../Models/ComplaintModel");
 const UserApartment = require("../Models/UserApartmentModel");
+const CalenderModel = require("../Models/CalenderModel");
 const { ObjectId } = require('mongodb');
 class RoomDetails {
     async fetchDetails(req, res) {
@@ -128,6 +129,36 @@ class RoomDetails {
             return res.status(500).json({ error: error.message });
 
         }
+    }
+
+    async ScheduleEvent(req, res) {
+        try {
+            const { apartment_id, date, event } = req.body;
+
+            const Details = await CalenderModel.findOne({ apartment_id });
+            if (!Details) {
+                const newDetails = new CalenderModel({
+                    apartment_id: apartment_id,
+                    events: [{
+                        event: event,
+                        date: date
+                    }]
+                });
+                await newDetails.save();
+            } else {
+                Details.events.push({
+                    event: event,
+                    date: date
+                });
+                await Details.save();
+            }
+            return res.status(200).json({ message: "Event scheduled successfully" });
+
+        } catch (error) {
+            return res.status(500).json({ message: "Error saving details" });
+
+        }
+
     }
 }
 
