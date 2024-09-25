@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { getApartmentDetails } from '../utils/DashBoardUtils';
 import { useQuery } from '@tanstack/react-query';
-
-function DataTable({ columns }) {
+import TableUI from './antDesignUI/TableUi';
+import { getCreatedData } from '../utils/Roomutils';
+function DataTable() {
+  const [tableData, setTableData] = useState([]);
   const {
     data: apartment_details,
     isError,
@@ -19,26 +21,44 @@ function DataTable({ columns }) {
     return <div>Error loading data.</div>;
   }
 
+  useEffect(() => {
+    if (apartment_details) {
+      const newTableData = apartment_details.apartments
+        .map((ele) => {
+          if (ele._id) {
+            const {
+              address,
+              apartment_name,
+              emergency_email,
+              ownername,
+              registration_num,
+              state,
+              subscription,
+              pincode,
+            } = ele;
+
+            return {
+              name: apartment_name,
+              state: state,
+              registration_number: registration_num,
+              subscription: subscription,
+              started_at: getCreatedData(ele.createdAt),
+              address: pincode,
+            };
+          }
+          return null;
+        })
+        .filter(Boolean);
+
+      setTableData((prev) => [...newTableData]);
+    }
+  }, [apartment_details, isError, isLoading]);
+
   return (
-    <div className="rounded-md border">
-      {/* <table className="min-w-full">
-        <thead>
-          <tr>
-            {columns.map((column) => (
-              <th key={column.accessor}>{column.header}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {apartment_details?.map((row) => (
-            <tr key={row.id}>
-              {columns.map((column) => (
-                <td key={column.accessor}>{row[column.accessor]}</td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table> */}
+    <div className="rounded-md ">
+      <div>
+        <TableUI data={tableData} />
+      </div>
     </div>
   );
 }

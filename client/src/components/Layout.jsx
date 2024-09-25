@@ -13,7 +13,7 @@ const Layout = () => {
   const shouldHideFooter = footerRoutes.some((pattern) =>
     pattern.test(location.pathname)
   );
-  const dash_regex = /^\/dashboard\/[^/]+$/;
+  const dash_regex = /^\/dashboard(\/[^/]+)?$/;
   useEffect(() => {
     const isChatPage = location.pathname.endsWith('/chat');
     if (!isChatPage) {
