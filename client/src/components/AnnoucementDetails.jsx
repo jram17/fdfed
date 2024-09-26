@@ -58,7 +58,7 @@ function AnnoucementDetails({ apartment_id }) {
           apartment_id={apartment_id}
           isRole={isRole}
           Role={Role}
-          apartment_username={roomData.ownername} // Use safely after ensuring roomData is fetched
+          apartment_username={roomData.details.ownername} // Use safely after ensuring roomData is fetched
         />
       }
     </div>

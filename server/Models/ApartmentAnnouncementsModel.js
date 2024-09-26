@@ -7,6 +7,7 @@ const AnnouncementSchema = new mongoose.Schema({
     user_designation: { type: String, required: true },
     announcement_msg: { type: String, required: true },
     fileUrl:{type:String},
+    filename:{type:String},
     timestamp: { type: Date, default: Date.now }
 }, { timestamps: true });
 

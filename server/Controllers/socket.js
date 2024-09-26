@@ -169,33 +169,33 @@ class Iointialize {
                 }
             });
 
-                socket.on('get-announcement-messages-history', async ({ aptId }) => {
-                    try {
-                        const announcement_messages = await Announcement.find({
-                            apartment_id: aptId
-                        }).sort({ timestamp: -1 });
-                        socket.emit('announcement-messages-history', announcement_messages);
-                    } catch (error) {
-                        console.error('Error fetching announcement messages:', error);
-                    }
-                });
-                socket.on('announcement-messages', async (msg) => {
-                    const newMessage = new Announcement({
-                        apartment_username: msg.username,
-                        apartment_id: msg.aptId,
-                        user_designation: msg.role,
-                        announcement_msg: msg.msg,
-                    });
-                    try {
-                        const msg1 = await newMessage.save();
+                // socket.on('get-announcement-messages-history', async ({ aptId }) => {
+                //     try {
+                //         const announcement_messages = await Announcement.find({
+                //             apartment_id: aptId
+                //         }).sort({ timestamp: -1 });
+                //         socket.emit('announcement-messages-history', announcement_messages);
+                //     } catch (error) {
+                //         console.error('Error fetching announcement messages:', error);
+                //     }
+                // });
+                // socket.on('announcement-messages', async (msg) => {
+                //     const newMessage = new Announcement({
+                //         apartment_username: msg.username,
+                //         apartment_id: msg.aptId,
+                //         user_designation: msg.role,
+                //         announcement_msg: msg.msg,
+                //     });
+                //     try {
+                //         const msg1 = await newMessage.save();
 
 
-                        io.emit('announcement-messages', msg1)
-                    } catch (error) {
-                        console.error('could not save message!!')
-                    }
+                //         io.emit('announcement-messages', msg1)
+                //     } catch (error) {
+                //         console.error('could not save message!!')
+                //     }
 
-                })
+                // })
 
 
 

@@ -285,3 +285,12 @@
 #announcement-msg-header {
   
 }
+
+#fileupload{
+    border: 1px solid black;
+    width: fit-content;
+    padding: 10px;
+    border-radius: 15px;
+    background-color: rgba(54, 60, 62, 0.139);
+    margin: 10px;
+}

@@ -17,6 +17,8 @@ const CreateRoomComplaint = require("./Routes/UserComplaintRouter");
 const SecurityLog = require("./Routes/LogRouter");
 const Dashboard = require("./Routes/DashBoardRouter");
 const isRoleVerify = require('./Routes/RoleVerification');
+const Annoucement =require("./Routes/AnnouncementRoute");
+const path = require('path');
 class App extends Iointialize {
     constructor() {
         super();
@@ -49,7 +51,7 @@ class App extends Iointialize {
         this.app.use(bodyParser.json());
         this.app.use(express.json());
         this.app.use(cookieParser());
-
+        // this.app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
         this.app.use(passport.initialize());
 
 
@@ -74,6 +76,7 @@ class App extends Iointialize {
         this.app.use('/dashboard', Dashboard);
         this.app.use('/api/residents', SecurityLog);
         this.app.use('/isSuperRole', isRoleVerify);
+        this.app.use('/announcement',Annoucement);
     }
 
     initializeSocket() {
