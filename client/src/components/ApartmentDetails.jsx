@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { fetchData } from '../utils/Roomutils';
 import { IoMan, IoPeopleCircleSharp } from 'react-icons/io5';
 import { CiMail } from 'react-icons/ci';
 import { MdOutlineAttachMoney } from 'react-icons/md';
 import { HiHomeModern } from 'react-icons/hi2';
-import { LuClipboard } from 'react-icons/lu';
-import { MdOutgoingMail, MdCancel } from 'react-icons/md';
+
 import { toTitleCase } from '../utils/Roomutils';
 import { getCreatedData } from '../utils/Roomutils';
 function ApartmentDetails({ apartment_id }) {
+  const [editData, setEditData] = useState(null);
+  const [room, setRoom] = useState(null);
   const {
     data: roomData,
     isError: Roomerr,
@@ -23,8 +24,14 @@ function ApartmentDetails({ apartment_id }) {
   if (Roomerr) return <p>Error loading room data</p>;
 
   // Add a fallback check for roomData
-  const room = roomData?.room || {};
-
+  useEffect(() => {
+    setRoom(roomData?.room || {});
+    if (room) {
+      setEditData({
+        ...room,
+      });
+    }
+  }, [roomData]);
   return (
     <div className="p-6 flex flex-col gap-6 min-w-[55vw] max-w-[80vw] bg-gray-50 text-gray-800">
       {/* Common container to align labels and inputs */}

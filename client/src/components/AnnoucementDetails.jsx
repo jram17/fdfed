@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchData } from '../utils/Roomutils';
 import { useDispatch, useSelector } from 'react-redux';
 import { setApartmentDetails } from '../redux/slice/userSlice';
-import Announcement from "./Announcement";
+import Announcement from './Announcement';
 
 function AnnoucementDetails({ apartment_id }) {
   const dispatch = useDispatch();
@@ -12,7 +12,11 @@ function AnnoucementDetails({ apartment_id }) {
   const isRole = Role === 'Owner' || Role === 'Authority';
 
   // Fetch room data using react-query
-  const { data: roomData, isError, isLoading } = useQuery({
+  const {
+    data: roomData,
+    isError,
+    isLoading,
+  } = useQuery({
     queryKey: ['room', apartment_id], // Use the apartment_id directly without `${}` unless needed
     queryFn: () => fetchData(apartment_id),
   });
@@ -20,7 +24,7 @@ function AnnoucementDetails({ apartment_id }) {
   // Store the room data in Redux when it's successfully fetched
   useEffect(() => {
     if (roomData) {
-      dispatch(setApartmentDetails(roomData));
+      dispatch(setApartmentDetails(roomData.details));
     }
   }, [roomData, dispatch]);
 
@@ -43,20 +47,20 @@ function AnnoucementDetails({ apartment_id }) {
       <div className="max-w-[70vw] w-[70vw] flex items-center justify-center">
         {/* Display the RoomHeadingCard only when roomData is available */}
         <RoomHeadingCard
-          apartment_name={roomData.apartment_name}
-          owner_name={roomData.ownername}
+          apartment_name={roomData.details.apartment_name}
+          owner_name={roomData.details.ownername}
         />
       </div>
 
       {/* Render Announcement component only when necessary props are available */}
-      {(
+      {
         <Announcement
           apartment_id={apartment_id}
           isRole={isRole}
           Role={Role}
           apartment_username={roomData.ownername} // Use safely after ensuring roomData is fetched
         />
-      )}
+      }
     </div>
   );
 }
