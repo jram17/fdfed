@@ -25,10 +25,8 @@ route.get('/:role', async function (req, res) {
             if (!OwnerRooms || OwnerRooms.length === 0) {
                 return res.status(400).json({ message: "You are not an owner" });
             }
-            const details = OwnerRooms.map((room) => {
-                return { apartment_name: room.apartment_name, apartment_id: room.apartment_id }
-            });
-            return res.status(200).json({ details: details });
+
+            return res.status(200).json({ details: OwnerRooms });
         }
         // Invalid role
         else {

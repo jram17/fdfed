@@ -12,7 +12,7 @@ import { LuClipboard } from 'react-icons/lu';
 import { MdOutgoingMail } from 'react-icons/md';
 
 import { MdCancel } from 'react-icons/md';
-import UserDetailsTabs from './rsuiteUI/UserDetailsTabs';
+import { UserDetailsTabs } from './rsuiteUI/UserDetailsTabs';
 import { useSelector } from 'react-redux';
 
 import { getCreatedData, toTitleCase } from '../utils/Roomutils';

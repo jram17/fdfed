@@ -1,11 +1,12 @@
 import { fetchisRole } from '../utils/Roomutils';
-import React, { useState, useEffect, cloneElement } from 'react';
-
-function OwnerVerify({ children }) {
+import React, { useState, useEffect } from 'react';
+import { EventForm } from './EditResidentDetails';
+import OwnerTable from './OwnerTable';
+function OwnerVerify() {
   const [apartmentNames, setApartmentNames] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [apartment_name, setApartmentName] = useState(null);
-  console.log(apartment_name);
+  console.log(apartmentNames);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -62,7 +63,8 @@ function OwnerVerify({ children }) {
           {/* Pass prop to children */}
           <div className="w-full items-center justify-center">
             {' '}
-            {children && cloneElement(children, { apartment_name })}
+            <EventForm apartment_name={apartment_name} />
+            <OwnerTable apartmentNames={apartmentNames} />
           </div>
         </div>
       ) : (
