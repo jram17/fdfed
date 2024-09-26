@@ -1,57 +1,37 @@
-import React, { useRef, useEffect } from "react";
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger'; // Import ScrollTrigger
+import { useRef } from "react";
 
-gsap.registerPlugin(ScrollTrigger); // Register ScrollTrigger
-
-const HeroSection = () => {
-  const titleRef = useRef(null); // Create a ref for the title
-  const paragraphRef = useRef(null); // Create a ref for the paragraph
-
-  useEffect(() => {
-    console.log("HeroSection mounted"); 
-    // Create a timeline for more controlled animations
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: titleRef.current,
-        start: "top center", // Adjust this if needed
-        // Once the animation has completed, you can remove the trigger
-        once: true, // Animation will only happen once
-      },
-    });
-
-    // Animation for the title
-    tl.from(titleRef.current, {
-      opacity: 0,
-      y: -50,
-      duration: 1,
-      ease: 'power2.out',
-    })
-    .from(paragraphRef.current, {
-      opacity: 0,
-      y: 20,
-      duration: 1,
-      delay: 0.5, // Delay to start after the title animation
-      ease: 'power2.out',
-    });
-
-    // Cleanup function to kill the ScrollTrigger instance when the component unmounts
-    return () => {
-      tl.kill();
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-    };
-  }, []);
+const Hero = () => {
+  const comp = useRef(null);
 
   return (
-    <section className="hero-section bg-black text-white min-h-screen flex flex-col items-center justify-center">
-      <h1 ref={titleRef} className="text-5xl font-bold mb-4">
-        Welcome to Your Community Hub
-      </h1>
-      <p ref={paragraphRef} className="text-xl mb-8">
-        Stay connected, stay informed, and manage your residence with ease.
-      </p>
-    </section>
+    <div className="relative" ref={comp}>
+      <div
+        id="intro-slider"
+        className="h-screen p-10 bg-gray-50 absolute top-0 left-0 font-spaceGrotesk z-10 w-full flex flex-col gap-10 tracking-tight"
+      >
+        <h1 className="text-9xl" id="title-1">
+          Community.
+        </h1>
+        <h1 className="text-9xl" id="title-2">  
+          Simplified.
+        </h1>
+        <h1 className="text-9xl" id="title-3">
+          Effortless.
+        </h1>
+      </div>
+      <div className="h-screen flex flex-col bg-gray-950 justify-center items-center">
+        <h1
+          id="welcome"
+          className="text-9xl font-bold text-gray-100 font-spaceGrotesk"
+        >
+          Society Log
+        </h1>
+        <h2 id="tagline" className="text-3xl  text-gray-400 mt-4">
+          "Making Apartment Life Less... Apartment-y!"
+        </h2>
+      </div>
+    </div>
   );
 };
 
-export default HeroSection;
+export default Hero;
