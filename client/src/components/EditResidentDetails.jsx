@@ -125,7 +125,10 @@ function RemoveUserDetails({ apartment_id, roomdetailsData }) {
                 </option>
                 {roomdetailsData.apartment_users.map((residents) => {
                   return (
-                    <option key={residents.user_id} value={residents.user_id}>
+                    <option
+                      key={residents.apartment_name}
+                      value={residents.apartment_name}
+                    >
                       {residents.apartment_name}
                     </option>
                   );
@@ -637,6 +640,7 @@ function EventForm({ apartment_name }) {
 
       if (response.status === 200) {
         alert('Success in creating the event');
+        reset();
       }
     } catch (error) {
       if (error.response?.status === 500) {

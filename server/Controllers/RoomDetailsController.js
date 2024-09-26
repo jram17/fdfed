@@ -80,28 +80,42 @@ class RoomDetails {
 
     async DeleteUsers(req, res) {
         const { apartment_id, username } = req.body;
+
         try {
-            const ApartmentUser = await ApartmentUserModel.findOneAndDelete({ apartment_id: apartment_id, user: username });
+            // Find the user in the ApartmentUser model using the username string
+            const ApartmentUser = await ApartmentUserModel.findOneAndDelete({ apartment_id, username });
+
             if (!ApartmentUser) {
                 return res.status(404).json({ message: 'User not found' });
             }
 
+
+            // Find the room by apartment_id
             const room = await dbModel.findOne({ apartment_id });
-            if (room.resident_id && room.resident_id.includes(username)) {
-                room.resident_id = room.resident_id.filter((id) => id !== username);
+
+            if (room && room.resident_id && room.resident_id.includes(ApartmentUser._id)) {
+                // Remove the user's ID from resident_id array
+                room.resident_id = room.resident_id.filter((residentId) => !residentId.equals(ApartmentUser._id));
                 await room.save();
             }
 
-            const user_rooms = await UserApartment.findOne({ user: username });
-            if (user_rooms.apartments.includes(room._id)) {
-                user_rooms.apartments = user_rooms.apartments.filter((id) => id !== room._id);
+
+            // Find the user's apartments list
+            const user_rooms = await UserApartment.findOne({ user: ApartmentUser.user });
+
+            if (user_rooms && user_rooms.apartments.includes(room._id)) {
+                // Remove the apartment ID from the user's apartments list
+                user_rooms.apartments = user_rooms.apartments.filter((apartmentId) => !apartmentId.equals(room._id));
                 await user_rooms.save();
             }
+
+
             return res.status(200).json({ message: "Successfully removed user" });
         } catch (error) {
             console.log(error);
             return res.status(500).json({ error: error.message });
         }
+
     }
     async RoomDetails(req, res) {
         const { apartment_id } = req.params;

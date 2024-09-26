@@ -26,6 +26,9 @@ const customFields = {
 };
 
 const VerifyUser = (username, password, done) => {
+    if (!username || !password) {
+        return done(null, false, { message: 'Username and password are required.' });
+    }
     User.findOne({
         $or: [{ username: username }, { email: username }]
     }).then((user) => {
