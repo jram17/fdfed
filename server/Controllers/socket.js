@@ -3,6 +3,7 @@ const SelectedUsers = require('../Models/userSelected');
 const Announcement = require("../Models/ApartmentAnnouncementsModel");
 const Apartment = require("../Models/ApartmentUserModel");
 const { encrypt, decrypt } = require("../utils/encryptionutils");
+const userSocket=require('../Models/userSockets');
 let users = {}
 class Iointialize {
     constructor() {
@@ -15,10 +16,31 @@ class Iointialize {
             console.log(`${socket.id} is connected`);
 
             socket.on('identify', async ({ username, aptId }) => {
-                users[username] = socket.id;
-                console.log(`${username} was from apt :${aptId} identified with socket: ${socket.id}`);
-                socket.username = username;
-                socket.aptId = aptId;
+                console.log(`${username} was identified with socket:${socket.id}`);
+                const user = await userSocket.findOne({
+                    username: username
+                });
+                // console.log('this is user:',user)
+                if (user) {
+                    console.log('hit')
+                    await userSocket.findOneAndUpdate({ username: username }, {
+                        socketId: socket.id,
+                        isLogged: true,
+                    })
+                    console.log(`${username} was updated to db1`)
+                } else {
+                    const newUser = new userSocket({
+                        username: username,
+                        socketId: socket.id,
+                        isLogged: true
+                    })
+                    try {
+                        await newUser.save();
+                        console.log(`${username} was added to db1`)
+                    } catch (error) {
+                        console.error('could not add a user to userSocket')
+                    }
+                }
 
                 const uniqueUsers = await Apartment.distinct('username', { apartment_id: aptId });
                 io.emit('user-list', uniqueUsers);
@@ -75,8 +97,9 @@ class Iointialize {
                 try {
                     const msg1 = await newMessage.save();
                     msg1.msg = msg.msg;
-                    // socket.emit('priv-chat-msgs',msg);
-                    // socket.to(users[msg.to]).emit('priv-chat-msgs', msg1);
+                    socket.emit('priv-chat-msgs', msg1);
+                    const sendSocketTo = await userSocket.findOne({ username: msg1.to });
+                    socket.to(sendSocketTo.socketId).emit('priv-chat-msgs', msg1);
                 }
                 catch (error) {
                     console.error(error)
@@ -135,14 +158,6 @@ class Iointialize {
                 }); try {
                     const msg1 = await newMessage.save()
                     msg1.msg = msg.msg;
-                    // const msg1 = {
-                    //     userId: msg.userId,
-                    //     to:'groupchat',
-                    //     msg:msg.msg,
-                    //     aptId: msg.aptId,
-                    //     time: msg.time,
-                    //     deleteForAll:false
-                    // }
                     io.emit('chat-msgs', msg1)
                 } catch (error) {
                     console.error(error)
@@ -169,39 +184,42 @@ class Iointialize {
                 }
             });
 
-                // socket.on('get-announcement-messages-history', async ({ aptId }) => {
-                //     try {
-                //         const announcement_messages = await Announcement.find({
-                //             apartment_id: aptId
-                //         }).sort({ timestamp: -1 });
-                //         socket.emit('announcement-messages-history', announcement_messages);
-                //     } catch (error) {
-                //         console.error('Error fetching announcement messages:', error);
-                //     }
-                // });
-                // socket.on('announcement-messages', async (msg) => {
-                //     const newMessage = new Announcement({
-                //         apartment_username: msg.username,
-                //         apartment_id: msg.aptId,
-                //         user_designation: msg.role,
-                //         announcement_msg: msg.msg,
-                //     });
-                //     try {
-                //         const msg1 = await newMessage.save();
+            // socket.on('get-announcement-messages-history', async ({ aptId }) => {
+            //     try {
+            //         const announcement_messages = await Announcement.find({
+            //             apartment_id: aptId
+            //         }).sort({ timestamp: -1 });
+            //         socket.emit('announcement-messages-history', announcement_messages);
+            //     } catch (error) {
+            //         console.error('Error fetching announcement messages:', error);
+            //     }
+            // });
+            // socket.on('announcement-messages', async (msg) => {
+            //     const newMessage = new Announcement({
+            //         apartment_username: msg.username,
+            //         apartment_id: msg.aptId,
+            //         user_designation: msg.role,
+            //         announcement_msg: msg.msg,
+            //     });
+            //     try {
+            //         const msg1 = await newMessage.save();
 
 
-                //         io.emit('announcement-messages', msg1)
-                //     } catch (error) {
-                //         console.error('could not save message!!')
-                //     }
+            //         io.emit('announcement-messages', msg1)
+            //     } catch (error) {
+            //         console.error('could not save message!!')
+            //     }
 
-                // })
+            // })
 
 
 
-            socket.on('disconnect', () => {
-                console.log(`${socket.id} disconnected`)
-            });
+            socket.on('disconnect', async () => {
+                console.log(`${socket.id} disconnected`);
+                await userSocket.findOneAndUpdate({ socketId: socket.id }, {
+                    isLogged: false
+                })
+            })
 
 
         });

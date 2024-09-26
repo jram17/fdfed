@@ -1,36 +1,36 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Contentbox from '../components/ContentBox';
-import { io } from 'socket.io-client';
-const socket = io('http://localhost:5000');
-function Content( {onChatSelect, user ,aptId}) {
+function Content({ setCurrentChat, socket, user, aptId }) {
 
   const [availableUsers, setAvailableUsers] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState(['groupchat']);
   const [showDropdown, setShowDropdown] = useState(false);
 
-  useEffect(() => {
-    console.log("Current user:", user);
-    console.log(aptId)
-    socket.emit('identify', {username:user,aptId:aptId});
-  }, [user])
+  // useEffect(() => {
+  //   console.log("Current user:", user);
+  //   console.log(aptId)
+  //   socket.emit('identify', { username: user, aptId: aptId });
+  // }, [user])
 
   useEffect(() => {
+    if (socket) {
+      socket.emit('get-selected-users', { username: user, aptId: aptId });
+      socket.on('load-selected-users', (users) => {
+        console.log("Selected users loaded:", users);
+        setSelectedUsers(users);
+      });
 
-    socket.emit('get-selected-users', { username: user,aptId:aptId });
-    socket.on('load-selected-users', (users) => {
-      console.log("Selected users loaded:", users);
-      setSelectedUsers(users);
-    });
+      socket.on('user-list', (users) => {
+        setAvailableUsers(users);
+      });
 
-    socket.on('user-list', (users) => {
-      setAvailableUsers(users);
-    });
+      return () => {
+        socket.off('load-selected-users');
+        socket.off('user-list');
+      };
+    }
 
-    return () => {
-      socket.off('load-selected-users');
-      socket.off('user-list');
-    };
-  }, [user]);
+  }, [user,socket]);
 
   const handleUserSelect = (selectedUser) => {
     if (!selectedUsers.includes(selectedUser)) {
@@ -39,14 +39,14 @@ function Content( {onChatSelect, user ,aptId}) {
       socket.emit('save-selected-users', {
         username: user,
         selectedUsers: updatedUsers,
-        aptId:aptId
+        aptId: aptId
       });
     }
     setShowDropdown(false);
   };
 
   const handleChatSelect = (user) => {
-    onChatSelect(user);
+    setCurrentChat(user)
   }
 
   return (

@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { io } from 'socket.io-client';
-const socket = io('http://localhost:5000');
+
 import EmojiPicker from 'emoji-picker-react';
 import ScrollToBottom from 'react-scroll-to-bottom';
-function PrivateChat({ username, currentUser, aptId }) {
+function PrivateChat({ username, currentUser, aptId, socket }) {
 
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
@@ -16,31 +15,33 @@ function PrivateChat({ username, currentUser, aptId }) {
   // }, [currentUser])
 
   useEffect(() => {
-    if (username) {
+    if (socket) {
+      if (username) {
+        socket.on('message-deleted', ({ msgId, replacementMsg }) => {
+          setMessages((prev) =>
+            prev.map((msg) =>
+              msg._id === msgId ? { ...msg, msg: replacementMsg, deleteForAll: true } : msg
+            )
+          );
+        });
 
-      socket.on('message-deleted', ({ msgId, replacementMsg }) => {
-        setMessages((prev) =>
-          prev.map((msg) =>
-            msg._id === msgId ? { ...msg, msg: replacementMsg,deleteForAll:true } : msg
-          )
-        );
-      });
+        socket.emit('get-priv-chat-history', { from: currentUser, to: username, aptId: aptId });
 
-      socket.emit('get-priv-chat-history', { from: currentUser, to: username, aptId: aptId });
+        socket.on('priv-chat-history', (msg) => {
+          setMessages(msg);
+        });
 
-      socket.on('priv-chat-history', (msg) => {
-        setMessages(msg);
-      });
-
-      socket.on('priv-chat-msgs', (msg) => {
-        setMessages((prev) => [...prev, msg]);
-      });
-      return () => {
-        socket.off('priv-chat-history');
-        socket.off('priv-chat-msgs');
-      };
+        socket.on('priv-chat-msgs', (msg) => {
+          setMessages((prev) => [...prev, msg]);
+        });
+        return () => {
+          socket.off('priv-chat-history');
+          socket.off('priv-chat-msgs');
+        };
+      }
     }
-  }, [username, currentUser,messages ])
+
+  }, [username, currentUser, socket])
 
   const currTime = new Date();
   const formatTime = `${currTime.getHours().toString().padStart(2, '0')}:${currTime.getMinutes().toString().padStart(2, '0')}`

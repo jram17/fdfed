@@ -1,54 +1,49 @@
 import React, { useState, useEffect } from 'react';
-import { io } from 'socket.io-client';
-const socket = io('http://localhost:5000');
+
 import EmojiPicker from 'emoji-picker-react';
 import ScrollToBottom from 'react-scroll-to-bottom';
 
-function GroupChat({ user, aptId }) {
+function GroupChat({ user, aptId, socket }) {
 
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const to = 'groupchat';
 
-  // useEffect(() => {
-  //   console.log("Current user:", user);
-  //   socket.emit('identify', {username:user,aptId:aptId});
-  // }, [user])
+
 
   useEffect(() => {
-    // socket.on('to', to)
 
 
-    // socket.on('chat-history', (msgs) => {
-    //     setMessages(msgs);
-    // });
+    if (socket) {
+      if (user) {
+        socket.on('message-deleted', ({ msgId, replacementMsg }) => {
+          setMessages((prev) =>
+            prev.map((msg) =>
+              msg._id === msgId ? { ...msg, msg: replacementMsg, deleteForAll: true } : msg
+            )
+          );
+        });
+      }
 
 
-    socket.on('message-deleted', ({ msgId, replacementMsg }) => {
-      setMessages((prev) =>
-        prev.map((msg) =>
-          msg._id === msgId ? { ...msg, msg: replacementMsg ,deleteForAll:true} : msg
-        )
-      );
-    });
+      socket.emit('get-grp-chat-history', { to: to, aptId: aptId });
+      socket.on('grp-chat-history', (msg) => {
+        setMessages(msg);
+      });
 
 
-    socket.emit('get-grp-chat-history', { to: to, aptId: aptId });
-    socket.on('grp-chat-history', (msg) => {
-      setMessages(msg);
-    });
+      socket.on('chat-msgs', (msg) => {
+        setMessages((prev) => [...prev, msg]);
+      });
 
+      return () => {
+        socket.off('chat-history');
+        socket.off('chat-msgs');
+      };
+    }
 
-    socket.on('chat-msgs', (msg) => {
-      setMessages((prev) => [...prev, msg]);
-    });
-
-    return () => {
-      socket.off('chat-history');
-      socket.off('chat-msgs');
-    };
-  }, [user]);
+  }, [user, socket]);
 
   const currTime = new Date();
   const formatTime = `${currTime.getHours().toString().padStart(2, '0')}:${currTime.getMinutes().toString().padStart(2, '0')}`
