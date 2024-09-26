@@ -34,13 +34,7 @@ function AnnouncementForm({ socket, role, apartment_id, apartment_username }) {
           setFormLoading(true); 
           setError(false); 
     
-          socket.emit('announcement-messages', {
-            username: apartment_username,
-            aptId: apartment_id,
-            role: role,
-            msg: formdata.announcement,
-          });
-    
+          console.log(formdata);
    
           reset(); 
           setIsForm(false); 

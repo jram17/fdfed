@@ -16,7 +16,7 @@ function AnnoucementDetails({ apartment_id }) {
     queryKey: ['room', apartment_id], // Use the apartment_id directly without `${}` unless needed
     queryFn: () => fetchData(apartment_id),
   });
-
+  console.log(roomData);
   // Store the room data in Redux when it's successfully fetched
   useEffect(() => {
     if (roomData) {

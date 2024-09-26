@@ -6,6 +6,7 @@ const AnnouncementSchema = new mongoose.Schema({
     apartment_id: { type: String, required: true },
     user_designation: { type: String, required: true },
     announcement_msg: { type: String, required: true },
+    fileUrl:{type:String},
     timestamp: { type: Date, default: Date.now }
 }, { timestamps: true });
 
