@@ -2,6 +2,7 @@ import { fetchisRole } from '../utils/Roomutils';
 import React, { useState, useEffect } from 'react';
 import { EventForm } from './EditResidentDetails';
 import OwnerTable from './OwnerTable';
+import ApartmentDetails from './ApartmentDetails';
 function OwnerVerify() {
   const [apartmentNames, setApartmentNames] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -43,7 +44,7 @@ function OwnerVerify() {
             <div className="form-item">
               <label
                 htmlFor="apartment_name"
-                className="block text-sm font-medium text-gray-700"
+                className="block label !text-lg font-medium text-gray-700"
               >
                 Select Apartment:
               </label>
@@ -67,6 +68,7 @@ function OwnerVerify() {
           <div className="w-full items-center justify-center">
             {' '}
             <EventForm apartment_name={apartment_name} />
+            <ApartmentDetails apartment_id={apartment_name} />
           </div>
         </div>
       ) : (

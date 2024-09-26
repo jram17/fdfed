@@ -406,7 +406,7 @@ function RaiseTicketOnResident({ apartment_id, roomdetailsData }) {
     try {
       const formData = {
         apartment_id: apartment_id,
-        username: formdata.username,
+        user_id: formdata.username,
         complaint: formdata.complaint,
         severity: formdata.severity,
       };

@@ -9,7 +9,7 @@ class Iointialize {
         this.io = null;
     }
     initSocket(io) {
-        console.log("hit");
+        console.log("socket initialized");
         this.io = io;
         io.on('connection', async (socket) => {
             console.log(`${socket.id} is connected`);

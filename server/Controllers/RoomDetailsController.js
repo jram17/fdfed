@@ -10,7 +10,7 @@ class RoomDetails {
 
         const { apartment_id } = req.params;
         try {
-            const roomDetails = await dbModel.findOne({ apartment_id });
+            const roomDetails = await dbModel.findOne({ $or: [{ apartment_id: apartment_id }, { apartment_name: apartment_id }] });
             if (!roomDetails) {
                 return res.status(404).json({ message: 'Room not found' });
             }
@@ -19,6 +19,7 @@ class RoomDetails {
                 return res.status(401).json({ message: 'Unauthorized access' });
             }
             return res.status(200).json({
+                room: roomDetails,
                 details: {
                     apartment_id: roomDetails.apartment_id,
                     apartment_name: roomDetails.apartment_name,
@@ -41,7 +42,7 @@ class RoomDetails {
         try {
             const { apartment_id, user_id, complaint, severity } = req.body;
             const Usercomplaint = new userComplaints({
-                user: req.id,
+                user: user_id,
                 complaint: complaint,
                 severity: severity,
                 apartment_id: apartment_id
