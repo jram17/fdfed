@@ -16,9 +16,9 @@ function DashBoard() {
 
   return (
     <div className="w-full flex flex-col items-center justify-start relative mt-5 gap-8">
-      <div className="form-item flex w-[20vw] flex-col items-center justify-center gap-3">
+      <div className="form-item flex w-[20vw] mt-5 items-center justify-center gap-3">
         <label className="form-label !text-2xl w-full text-center">
-          Select Your Role
+          View as
         </label>
         <select
           id="role"

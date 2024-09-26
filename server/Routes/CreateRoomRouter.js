@@ -10,7 +10,7 @@ class CreateRoomRouter extends CreateRoom {
         this.route.use(jwt_authenticate);
 
         this.route.post('/', this.createRoomReq.bind(this));
-
+        this.route.put('/edit-email', this.editemail.bind(this));
 
     }
 }

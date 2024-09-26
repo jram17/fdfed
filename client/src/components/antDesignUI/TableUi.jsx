@@ -269,4 +269,103 @@ const Owners_table = ({ data }) => {
   );
 };
 
-export { DataTable, UserApartments_table, Owners_table };
+const ApartmentComplaints = ({ data }) => {
+  const [filteredInfo, setFilteredInfo] = useState({});
+  const [sortedInfo, setSortedInfo] = useState({});
+  const [columns, setColumns] = useState([]);
+
+  useEffect(() => {
+    setColumns([
+      {
+        title: 'Name',
+        dataIndex: 'username',
+        key: 'username',
+        filters: data.map((ele) => ({
+          text: ele.username,
+          value: ele.username,
+        })),
+        filteredValue: filteredInfo.username || null,
+        onFilter: (value, record) => record.username.includes(value),
+        sorter: (a, b) => a.username.length - b.username.length,
+        sortOrder:
+          sortedInfo.columnKey === 'username' ? sortedInfo.order : null,
+        ellipsis: true,
+      },
+      {
+        title: 'Title',
+        dataIndex: 'complaintTitle',
+        key: 'complaintTitle',
+        filters: data.map((ele) => ({
+          text: ele.complaintTitle,
+          value: ele.complaintTitle,
+        })),
+        filteredValue: filteredInfo.complaintTitle || null,
+        onFilter: (value, record) => record.complaintTitle.includes(value),
+        sorter: (a, b) => a.complaintTitle.length - b.complaintTitle.length,
+        sortOrder:
+          sortedInfo.columnKey === 'complaintTitle' ? sortedInfo.order : null,
+        ellipsis: true,
+      },
+
+      {
+        title: 'Detail',
+        dataIndex: 'complaintDetail',
+        key: 'complaintDetail',
+        filters: data.map((ele) => ({
+          text: ele.complaintDetail,
+          value: ele.complaintDetail,
+        })),
+        filteredValue: filteredInfo.complaintDetail || null,
+        onFilter: (value, record) => record.complaintDetail.includes(value),
+        sorter: (a, b) => a.complaintDetail.localeCompare(b.complaintDetail), // Corrected sorting for strings
+        sortOrder:
+          sortedInfo.columnKey === 'complaintDetail' ? sortedInfo.order : null,
+        ellipsis: true,
+      },
+
+      {
+        title: 'Solved',
+        dataIndex: 'isSolved',
+        key: 'isSolved',
+        sorter: (a, b) => a.isSolved.length - b.isSolved.length,
+        filters: [
+          {
+            text: 'Yes',
+            value: 'Yes',
+          },
+          {
+            text: 'No',
+            value: 'No',
+          },
+        ],
+        filteredValue: filteredInfo.isSolved || null,
+        onFilter: (value, record) => record.isSolved.includes(value),
+        sortOrder:
+          sortedInfo.columnKey === 'isSolved' ? sortedInfo.order : null,
+        ellipsis: true,
+      },
+    ]);
+  }, [data, filteredInfo, sortedInfo]);
+
+  const handleChange = (pagination, filters, sorter) => {
+    setFilteredInfo(filters);
+    setSortedInfo(sorter);
+  };
+
+  const clearFilters = () => setFilteredInfo({});
+  const clearAll = () => {
+    setFilteredInfo({});
+    setSortedInfo({});
+  };
+
+  return (
+    <>
+      <Space style={{ marginBottom: 16 }}>
+        <Button onClick={clearFilters}>Clear filters</Button>
+        <Button onClick={clearAll}>Clear filters and sorters</Button>
+      </Space>
+      <Table columns={columns} dataSource={data} onChange={handleChange} />
+    </>
+  );
+};
+export { DataTable, UserApartments_table, Owners_table, ApartmentComplaints };

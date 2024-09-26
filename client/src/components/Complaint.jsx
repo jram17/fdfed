@@ -7,8 +7,11 @@ function Complaint({ apartment_id }) {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/complaints/${apartment_id}`, { withCredentials: true });
-        setComplaints(response.data)
+        const response = await axios.get(
+          `http://localhost:5000/complaints/${apartment_id}`,
+          { withCredentials: true }
+        );
+        setComplaints(response.data);
       } catch (error) {
         console.log(error);
       }
@@ -46,10 +49,12 @@ function Complaint({ apartment_id }) {
               <th className="py-2 px-4 border-b w-1/7">Username</th>
               <th className="py-2 px-4 border-b w-1/7">Flat ID</th>
               <th className="py-2 px-4 border-b w-1/7">Title</th>
-              <th className="py-2 pl-8 pr-4 border-b w-1/7">Type</th> 
+              <th className="py-2 pl-8 pr-4 border-b w-1/7">Type</th>
               <th className="py-2 px-4 border-b w-2/7">Details</th>
               <th className="py-2 pl-8 pr-4 border-b w-1/7">Created At</th>
-              <th className="py-2 px-4 border-b w-1/7 text-center">Is Solved</th>
+              <th className="py-2 px-4 border-b w-1/7 text-center">
+                Is Solved
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -57,15 +62,25 @@ function Complaint({ apartment_id }) {
               <tr key={complaint._id} className="hover:bg-gray-100">
                 <td className="py-2 px-4 border-b">{complaint.username}</td>
                 <td className="py-2 px-4 border-b">{complaint.flat_id}</td>
-                <td className="py-2 px-4 border-b">{complaint.complaintTitle}</td>
-                <td className="py-2 pl-8 pr-4 border-b">{complaint.complaintType}</td> 
-                <td className="py-2 px-4 border-b">{complaint.complaintDetail}</td>
-                <td className="py-2 pl-8 pr-4 border-b">{new Date(complaint.createdAt).toLocaleString()}</td>
+                <td className="py-2 px-4 border-b">
+                  {complaint.complaintTitle}
+                </td>
+                <td className="py-2 pl-8 pr-4 border-b">
+                  {complaint.complaintType}
+                </td>
+                <td className="py-2 px-4 border-b">
+                  {complaint.complaintDetail}
+                </td>
+                <td className="py-2 pl-8 pr-4 border-b">
+                  {new Date(complaint.createdAt).toLocaleString()}
+                </td>
                 <td className="py-2 px-4 border-b text-center flex justify-center items-center">
-                  <input 
-                    type="checkbox" 
-                    checked={complaint.isSolved} 
-                    onChange={() => handleCheckboxChange(complaint._id, !complaint.isSolved)} 
+                  <input
+                    type="checkbox"
+                    checked={complaint.isSolved}
+                    onChange={() =>
+                      handleCheckboxChange(complaint._id, !complaint.isSolved)
+                    }
                     className="form-checkbox h-5 w-5 text-gray-600 border-gray-300 rounded"
                   />
                 </td>

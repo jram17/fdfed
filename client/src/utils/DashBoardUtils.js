@@ -73,4 +73,6 @@ const UserDetailsforApartment = async () => {
     }
 }
 
+
+
 export { DashBoardSideDashutils, getApartmentDetails, UserDetailsforApartment };

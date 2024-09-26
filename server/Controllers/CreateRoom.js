@@ -53,6 +53,29 @@ class RoomModel {
         }
     }
 
+    async editemail(req, res) {
+        const { email, apartment_id } = req.body;
+        console.log(req.body);
+        if (!email || !apartment_id) {
+            return res.status(400).json({ message: "Email and apartment_id are required." });
+        }
+
+        try {
+            const updatedRoom = await dbModel.updateOne(
+                { apartment_id },
+                { $set: { emergency_email: email } }
+            );
+
+            if (updatedRoom.nModified === 0) {
+                return res.status(404).json({ message: "Apartment not found or no changes made" });
+            }
+
+            return res.status(200).json({ message: "Emergency email updated successfully" });
+        } catch (error) {
+            return res.status(500).json({ error: error.message });
+        }
+    }
+
 }
 
 module.exports = RoomModel;
