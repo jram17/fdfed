@@ -6,7 +6,9 @@ import {
   RaiseTicketOnResident,
 } from '../EditResidentDetails';
 import 'rsuite/Tabs/styles/index.css';
-const TabsSection = ({ apartment_id, roomdetailsData }) => (
+import AddLog from '../Addlog';
+import AddParcel from '../AddParcel';
+const UserDetailsTabs = ({ apartment_id, roomdetailsData }) => (
   <Tabs defaultActiveKey="1" appearance="pills">
     <Tabs.Tab eventKey="1" title="Edit Roles">
       <EditUserRoles
@@ -29,4 +31,17 @@ const TabsSection = ({ apartment_id, roomdetailsData }) => (
   </Tabs>
 );
 
-export default TabsSection;
+const SecurityTabs = () => {
+  return (
+    <Tabs defaultActiveKey="1" appearance="pills">
+      <Tabs.Tab eventKey="1" title="Add Log">
+        <AddLog />
+      </Tabs.Tab>
+      <Tabs.Tab eventKey="2" title="Add Parcel">
+        <AddParcel />
+      </Tabs.Tab>
+    </Tabs>
+  );
+};
+
+export { UserDetailsTabs, SecurityTabs };

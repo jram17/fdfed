@@ -40,6 +40,9 @@ const getCreatedData = (date) => {
     return dateObj.toLocaleDateString('en-GB', options);
 };
 const toTitleCase = (str) => {
+    if (!str) {
+        return '';
+    }
     return str
         .trim()
         .replace(/\s+/g, ' ')
@@ -82,7 +85,8 @@ const fetchData = async (apartment_id) => {
         );
         const { data } = response;
         if (response.status === 200) {
-            return data.details;
+            console.log(data);
+            return data;
 
         }
     } catch (error) {

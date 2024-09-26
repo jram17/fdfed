@@ -99,6 +99,14 @@ function App() {
           }
         />
         <Route
+          path="dashboard/owner/createevents"
+          element={
+            <AuthLayout authentication={true}>
+              <DashBoard />
+            </AuthLayout>
+          }
+        />
+        <Route
           path="dashboard/myapartments"
           element={
             <AuthLayout authentication={true}>

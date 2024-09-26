@@ -1,6 +1,6 @@
 const Message = require('../Models/userChatMessage');
 const SelectedUsers = require('../Models/userSelected');
-const AnnouncementModel = require("../Models/ApartmentAnnouncementsModel");
+const Announcement = require("../Models/ApartmentAnnouncementsModel");
 const Apartment = require("../Models/ApartmentUserModel");
 const { encrypt, decrypt } = require("../utils/encryptionutils");
 let users = {}
@@ -9,7 +9,7 @@ class Iointialize {
         this.io = null;
     }
     initSocket(io) {
-        console.log("hit");
+        console.log("socket initialized");
         this.io = io;
         io.on('connection', async (socket) => {
             console.log(`${socket.id} is connected`);
@@ -73,7 +73,10 @@ class Iointialize {
                     time: msg.time
                 });
                 try {
-                    await newMessage.save();
+                    const msg1 = await newMessage.save();
+                    msg1.msg = msg.msg;
+                    // socket.emit('priv-chat-msgs',msg);
+                    // socket.to(users[msg.to]).emit('priv-chat-msgs', msg1);
                 }
                 catch (error) {
                     console.error(error)
@@ -130,11 +133,22 @@ class Iointialize {
                     time: msg.time,
 
                 }); try {
-                    await newMessage.save()
+                    const msg1 = await newMessage.save()
+                    msg1.msg = msg.msg;
+                    // const msg1 = {
+                    //     userId: msg.userId,
+                    //     to:'groupchat',
+                    //     msg:msg.msg,
+                    //     aptId: msg.aptId,
+                    //     time: msg.time,
+                    //     deleteForAll:false
+                    // }
+                    io.emit('chat-msgs', msg1)
                 } catch (error) {
                     console.error(error)
                 }
             });
+
             socket.on('handle-delete-msgs', async ({ msgId }) => {
                 try {
                     const message = await Message.findById(msgId);
@@ -148,11 +162,40 @@ class Iointialize {
                     socket.emit('message-deleted', {
                         msgId,
                         replacementMsg: decrypt(encryptedText),
+                        // deleteForAll:true
                     });
                 } catch (error) {
                     console.error('Error deleting message:', error);
                 }
             });
+
+            socket.on('get-announcement-messages-history', async ({ aptId }) => {
+                try {
+                    const announcement_messages = await Announcement.find({
+                        apartment_id: aptId
+                    }).sort({ timestamp: -1 });
+                    socket.emit('announcement-messages-history', announcement_messages);
+                } catch (error) {
+                    console.error('Error fetching announcement messages:', error);
+                }
+            });
+            socket.on('announcement-messages', async (msg) => {
+                const newMessage = new Announcement({
+                    apartment_username: msg.username,
+                    apartment_id: msg.aptId,
+                    user_designation: msg.role,
+                    announcement_msg: msg.msg,
+                });
+                try {
+                    const msg1 = await newMessage.save();
+
+
+                    io.emit('announcement-messages', msg1)
+                } catch (error) {
+                    console.error('could not save message!!')
+                }
+
+            })
 
 
 

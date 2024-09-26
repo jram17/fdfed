@@ -31,7 +31,6 @@ class DashBoardController {
 
     async UserDashDetails(req, res) {
         try {
-            console.log("hit");
             const user = await User.findById(req.id);
             const userComplaints = await userComplaintsModel.find({ user: req.id });
             const apartment = await UserApartment.find({ user: req.id });

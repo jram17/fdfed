@@ -13,6 +13,7 @@ class RoomDetailsRouter extends RoomDetails {
         this.route.post('/deleteuser', this.DeleteUsers.bind(this));
         this.route.post('/raise-ticket', this.ComplaintFilebyOwner.bind(this));
         this.route.put('/role-assign', this.RoleModification.bind(this));
+        this.route.post('/schedule-event', this.ScheduleEvent.bind(this));
 
 
     }

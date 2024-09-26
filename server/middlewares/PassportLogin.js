@@ -5,9 +5,11 @@ const LOGIN_URL = "http://localhost:5173/sign-in";
 const login = async (req, res, next) => {
     passport.authenticate('local', { session: false }, (err, user, info) => {
         if (err) {
+            console.log("error", error);
             return res.status(400).json({ message: info });
         }
         if (!user) {
+            console.log("User not found");
             return res.status(400).json({ message: info });
         } if (user) {
             if (user.isGoogleId) {

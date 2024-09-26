@@ -1,18 +1,14 @@
 const mongoose = require('mongoose');
 
 const CalendarEventSchema = new mongoose.Schema({
-    apartment_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Apartment',
-        required: true
-    },
+    apartment_id: String,
     events: [{
         event: {
             type: String,
             required: true
         },
         date: {
-            type: Date,
+            type: String,
             required: true
         }
     }],

@@ -6,14 +6,21 @@ import { useDispatch } from 'react-redux';
 import { toggleIconVisibility } from '../redux/slice/SideDashSlice';
 import { useEffect } from 'react';
 import { setDataReset } from '../redux/slice/userSlice';
+
+// Define the footer routes as regular expressions
 const footerRoutes = [/^\/my-rooms(\/.*)?$/, /^\/room\/[^/]+$/];
+
 const Layout = () => {
   const dispatch = useDispatch();
   const location = useLocation();
+
+  // Check if the current path matches any of the footer routes
   const shouldHideFooter = footerRoutes.some((pattern) =>
     pattern.test(location.pathname)
   );
-  const dash_regex = /^\/dashboard(\/[^/]+)?$/;
+
+  // Fix the dashboard regex
+
   useEffect(() => {
     const isChatPage = location.pathname.endsWith('/chat');
     if (!isChatPage) {
@@ -22,21 +29,21 @@ const Layout = () => {
     dispatch(toggleIconVisibility(shouldHideFooter));
   }, [shouldHideFooter, dispatch, location.pathname]);
 
+  // Determine if the current path is an auth route or dashboard
   const isAuth =
     location.pathname === '/sign-in' || location.pathname === '/sign-up';
-  const isDashBoard = dash_regex.test(location.pathname);
 
   return (
     <div className="flex flex-col min-h-screen font-content">
-      {!isAuth && !isDashBoard && <Header />}
+      {/* Show Header unless it's an Auth or Dashboard page */}
+      {!isAuth && <Header />}
 
-      <div
-        className={`flex-grow ${!isAuth && !isDashBoard ? 'mt-[70px]' : ''}  `}
-      >
+      <div className={`flex-grow ${!isAuth ? 'mt-[70px]' : ''}`}>
         <Outlet />
       </div>
 
-      {!isAuth && !shouldHideFooter && !isDashBoard && <Footer />}
+      {/* Show Footer unless it's an Auth page, a Dashboard page, or a route that should hide the footer */}
+      {!isAuth && !shouldHideFooter && <Footer />}
     </div>
   );
 };

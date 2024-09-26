@@ -202,5 +202,71 @@ const UserApartments_table = ({ data }) => {
     />
   );
 };
+const Owners_table = ({ data }) => {
+  const [expandedRowKeys, setExpandedRowKeys] = useState([]);
 
-export { DataTable, UserApartments_table };
+  const columns = [
+    {
+      title: 'Apartment',
+      dataIndex: 'apt_name',
+      key: 'apt_name',
+    },
+    {
+      title: 'Created At',
+      dataIndex: 'created_at',
+      key: 'created_at',
+    },
+    {
+      title: 'Registration Number',
+      dataIndex: 'registration_num',
+      key: 'registration_num',
+    },
+    {
+      title: 'Emergency Email',
+      dataIndex: 'emergency_email',
+      key: 'emergency_email',
+    },
+    {
+      title: 'No of Residents',
+      dataIndex: 'no_of_residents',
+      key: 'no_of_residents',
+    },
+    {
+      title: 'Address',
+      dataIndex: 'address',
+      key: 'address',
+    },
+    {
+      title: 'Pincode',
+      dataIndex: 'pincode',
+      key: 'pincode',
+    },
+  ];
+
+  // Function to handle expand/collapse state
+  const handleExpand = (expanded, record) => {
+    const key = record.flat_id; // Use flat_id as it is more likely to be unique
+    setExpandedRowKeys(expanded ? [key] : []); // Allow only one row to be expanded at a time
+  };
+
+  return (
+    <Table
+      columns={columns}
+      expandable={{
+        expandedRowRender: (record) => (
+          <p style={{ margin: 0 }}>
+            {record.address || 'No address available'}
+          </p>
+        ),
+        rowExpandable: (record) =>
+          record.address && record.address !== 'Not Expandable',
+        expandedRowKeys: expandedRowKeys, // Control expanded row state
+        onExpand: handleExpand, // Handle expand/collapse action
+      }}
+      dataSource={data}
+      rowKey="flat_id" // Ensure a unique identifier for each row
+    />
+  );
+};
+
+export { DataTable, UserApartments_table, Owners_table };

@@ -5,12 +5,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
 import { RiLoader5Line } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
+import { DatePicker } from 'antd';
 const RemoveUserSchema = z.object({
   username: z.string().min(1, 'Please enter a username to remove'),
   terms_check: z.boolean().refine((val) => val === true, {
     message: 'You must check the conditions below',
   }),
 });
+
 const ComplaintUserSchema = z.object({
   complaint: z
     .string()
@@ -123,7 +125,10 @@ function RemoveUserDetails({ apartment_id, roomdetailsData }) {
                 </option>
                 {roomdetailsData.apartment_users.map((residents) => {
                   return (
-                    <option key={residents.user_id} value={residents.user_id}>
+                    <option
+                      key={residents.apartment_name}
+                      value={residents.apartment_name}
+                    >
                       {residents.apartment_name}
                     </option>
                   );
@@ -401,7 +406,7 @@ function RaiseTicketOnResident({ apartment_id, roomdetailsData }) {
     try {
       const formData = {
         apartment_id: apartment_id,
-        username: formdata.username,
+        user_id: formdata.username,
         complaint: formdata.complaint,
         severity: formdata.severity,
       };
@@ -527,7 +532,7 @@ function RaiseTicketOnResident({ apartment_id, roomdetailsData }) {
               >
                 Describe The Complaint
               </label>
-              <input
+              <textarea
                 autoFocus
                 disabled={isLoading}
                 placeholder="complaint"
@@ -586,4 +591,156 @@ function RaiseTicketOnResident({ apartment_id, roomdetailsData }) {
   );
 }
 
-export { RemoveUserDetails, EditUserRoles, RaiseTicketOnResident };
+const AnnouncementDetailsSchema = z.object({
+  announcement: z
+    .string()
+    .min(10, 'Announcement should be at least 10 characters long'),
+  terms_check: z.boolean().refine((val) => val === true, {
+    message: 'You must check the conditions below',
+  }),
+});
+
+function EventForm({ apartment_name }) {
+  const [isLoading, setLoading] = useState(false);
+  const [isError, setError] = useState(false);
+  const [error, setErrorMsg] = useState('');
+  const [date, setDate] = useState('');
+  const navigate = useNavigate();
+
+  const {
+    reset,
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    getValues,
+  } = useForm({
+    resolver: zodResolver(AnnouncementDetailsSchema),
+  });
+
+  const onChange = (date, dateString) => {
+    setDate(dateString);
+  };
+
+  const onSubmit = async (formdata) => {
+    setLoading(true);
+    setError(false);
+    setErrorMsg('');
+
+    const formData = {
+      date: date,
+      apartment_id: apartment_name,
+      event: formdata.announcement,
+    };
+    console.log(formData);
+    try {
+      const response = await axios.post(
+        'http://localhost:5000/room-details/schedule-event',
+        formData
+      );
+
+      if (response.status === 200) {
+        alert('Success in creating the event');
+        reset();
+      }
+    } catch (error) {
+      if (error.response?.status === 500) {
+        setError(true);
+        setErrorMsg('Failed to schedule the event. Please try again.');
+      } else if (error.response?.status === 404) {
+        setError(true);
+        setErrorMsg('Apartment not found.');
+      } else {
+        setError(true);
+        setErrorMsg('Failed to schedule. Please try again.');
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="grid w-full min-h-[40vh] items-center px-4 sm:justify-center border-none shadow-none font-content justify-center">
+      <div className="card min-w-[40vw] w-full max-sm:w-96 p-6 border-none shadow-none max-h-inherit max-lg:px-0 flex flex-col items-center h-full justify-center gap-6">
+        <div className="card-header flex items-center justify-center gap-2 flex-col"></div>
+        <div className="card-content grid gap-y-1 w-full">
+          <div className="text-red-600 card-title flex items-center justify-center text-nowrap max-sm:text-lg font-content !text-2xl">
+            Annouce The Event
+          </div>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+            <div className="form-item">
+              <label
+                className={`${
+                  errors.announcement && 'text-destructive'
+                } form-label`}
+              >
+                Event title
+              </label>
+              <input
+                placeholder="Event"
+                type="text"
+                {...register('announcement', { required: true })}
+                className="input"
+              />
+              {errors.announcement && (
+                <p className="form-message">{errors.announcement.message}</p>
+              )}
+            </div>
+
+            <div className="form-item">
+              <label
+                className={`${
+                  errors.event_date && 'text-destructive'
+                } form-label`}
+              >
+                Event Date
+              </label>
+              <DatePicker onChange={onChange} />
+            </div>
+
+            <div className="items-top flex space-x-2">
+              <div className="grid gap-1.5 leading-none">
+                <div className="flex gap-2 items-center justify-left">
+                  <input
+                    type="checkbox"
+                    {...register('terms_check', { required: true })}
+                    className={`checkbox ${
+                      errors.terms_check ? 'border-destructive' : ''
+                    }`}
+                  />
+                  <label
+                    htmlFor="terms_check"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    Please Confirm, this action is not reversible
+                  </label>
+                </div>
+
+                {errors.terms_check && (
+                  <p className="form-message">{errors.terms_check.message}</p>
+                )}
+              </div>
+            </div>
+
+            {isError && <p className="form-message">{error}</p>}
+
+            <div className="w-full grid place-items-center ">
+              <button
+                className="btn !text-lg max-sm:text-xs max-sm:px-2 max-sm:py-1 bg-slate-900 hover:bg-slate-800 text-white"
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <RiLoader5Line className="size-4 animate-spin" />
+                ) : (
+                  <>
+                    <span>Schedule The Event</span>
+                  </>
+                )}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+}
+export { RemoveUserDetails, EditUserRoles, RaiseTicketOnResident, EventForm };

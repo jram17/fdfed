@@ -21,7 +21,7 @@ function PrivateChat({ username, currentUser, aptId }) {
       socket.on('message-deleted', ({ msgId, replacementMsg }) => {
         setMessages((prev) =>
           prev.map((msg) =>
-            msg._id === msgId ? { ...msg, msg: replacementMsg } : msg
+            msg._id === msgId ? { ...msg, msg: replacementMsg,deleteForAll:true } : msg
           )
         );
       });
@@ -40,7 +40,7 @@ function PrivateChat({ username, currentUser, aptId }) {
         socket.off('priv-chat-msgs');
       };
     }
-  }, [username, currentUser, messages])
+  }, [username, currentUser,messages ])
 
   const currTime = new Date();
   const formatTime = `${currTime.getHours().toString().padStart(2, '0')}:${currTime.getMinutes().toString().padStart(2, '0')}`
