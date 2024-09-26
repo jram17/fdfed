@@ -3,10 +3,12 @@ import React, { useState, useEffect } from 'react';
 import { EventForm } from './EditResidentDetails';
 import OwnerTable from './OwnerTable';
 import ApartmentDetails from './ApartmentDetails';
+import { ComplaintDashboardDisplay } from './ComplaintDashboardDisplay';
 function OwnerVerify() {
   const [apartmentNames, setApartmentNames] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [apartment_name, setApartmentName] = useState(null);
+
   console.log(apartmentNames);
 
   useEffect(() => {
@@ -65,10 +67,11 @@ function OwnerVerify() {
           </form>
 
           {/* Pass prop to children */}
-          <div className="w-full items-center justify-center">
+          <div className="w-full  flex flex-col items-center justify-center gap-6">
             {' '}
             <EventForm apartment_name={apartment_name} />
             <ApartmentDetails apartment_id={apartment_name} />
+            <ComplaintDashboardDisplay apartment_id={apartment_name} />
           </div>
         </div>
       ) : (

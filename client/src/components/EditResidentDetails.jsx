@@ -659,7 +659,7 @@ function EventForm({ apartment_name }) {
   };
 
   return (
-    <div className="grid w-full min-h-[40vh] items-center px-4 sm:justify-center border-none shadow-none font-content justify-center">
+    <div className="grid w-full min-h-[40vh]   items-start px-4 sm:justify-center border-none shadow-none font-content justify-start">
       <div className="card min-w-[40vw] w-full max-sm:w-96 p-6 border-none shadow-none max-h-inherit max-lg:px-0 flex flex-col items-center h-full justify-center gap-6">
         <div className="card-header flex items-center justify-center gap-2 flex-col"></div>
         <div className="card-content grid gap-y-1 w-full">

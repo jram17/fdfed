@@ -1,41 +1,71 @@
-import React, { useState, useEffect } from 'react';
+/* eslint-disable no-useless-escape */
+import React, { useState, useEffect, useRef } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { fetchData } from '../utils/Roomutils';
 import { IoMan, IoPeopleCircleSharp } from 'react-icons/io5';
 import { CiMail } from 'react-icons/ci';
 import { MdOutlineAttachMoney } from 'react-icons/md';
 import { HiHomeModern } from 'react-icons/hi2';
+import axios from 'axios';
+import { toTitleCase, getCreatedData } from '../utils/Roomutils';
 
-import { toTitleCase } from '../utils/Roomutils';
-import { getCreatedData } from '../utils/Roomutils';
 function ApartmentDetails({ apartment_id }) {
-  const [editData, setEditData] = useState(null);
+  const [isEdit, setEdit] = useState(false); // Changed variable for clarity
   const [room, setRoom] = useState(null);
+  const [email, setEmail] = useState('');
+
+  // Fetch data using the useQuery hook
   const {
     data: roomData,
-    isError: Roomerr,
+    isError: roomError,
     isLoading,
   } = useQuery({
     queryKey: ['room', `${apartment_id}`],
     queryFn: () => fetchData(apartment_id),
   });
 
-  if (isLoading) return <p>Loading...</p>;
-  if (Roomerr) return <p>Error loading room data</p>;
-
-  // Add a fallback check for roomData
   useEffect(() => {
-    setRoom(roomData?.room || {});
-    if (room) {
-      setEditData({
-        ...room,
-      });
+    if (roomData) {
+      setRoom(roomData.room || {});
+      setEmail(roomData.room?.emergency_email || '');
     }
   }, [roomData]);
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const SaveChanges = async () => {
+    const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+
+    if (!emailRegex.test(email)) {
+      alert('Please enter a valid email address');
+      setEdit(false);
+      return;
+    }
+    axios.defaults.withCredentials = true;
+    try {
+      const response = await axios.put(
+        'http://localhost:5000/createRoom/edit-email',
+        {
+          apartment_id,
+          email,
+        }
+      );
+      setRoom((prev) => ({ ...prev, emergency_email: email }));
+      setEdit(false);
+    } catch (error) {
+      console.error('Error saving changes:', error);
+    }
+  };
+
+  if (isLoading) return <p>Loading apartment details...</p>;
+  if (roomError) return <p>Error loading room data: {roomError.message}</p>;
+
   return (
     <div className="p-6 flex flex-col gap-6 min-w-[55vw] max-w-[80vw] bg-gray-50 text-gray-800">
       {/* Common container to align labels and inputs */}
-      <div className="w-full space-y-4">
+      <div className="w-full space-y-2">
         {/* Owner */}
         <div className="flex items-center gap-3">
           <span className="label !text-lg flex gap-1 items-center min-w-64 text-gray-700">
@@ -85,10 +115,34 @@ function ApartmentDetails({ apartment_id }) {
           </span>
           <input
             type="text"
-            disabled
+            disabled={!isEdit}
             className="text-base w-full bg-gray-200 p-2 rounded-md text-gray-900"
-            value={room?.emergency_email || 'N/A'}
+            value={email}
+            onChange={handleEmailChange}
           />
+          {!isEdit ? (
+            <a
+              href="#"
+              className="text-blue-500 hover:underline"
+              onClick={(e) => {
+                e.preventDefault();
+                setEdit(true);
+              }}
+            >
+              Edit
+            </a>
+          ) : (
+            <a
+              href="#"
+              className="text-blue-500 hover:underline"
+              onClick={(e) => {
+                e.preventDefault();
+                SaveChanges();
+              }}
+            >
+              Save
+            </a>
+          )}
         </div>
 
         {/* Subscription */}
@@ -127,7 +181,7 @@ function ApartmentDetails({ apartment_id }) {
             type="text"
             disabled
             className="text-base w-full bg-gray-200 p-2 rounded-md text-gray-900"
-            value={room?.state || 'No Address Available'}
+            value={room?.state || 'No State Available'}
           />
         </div>
 
@@ -140,7 +194,7 @@ function ApartmentDetails({ apartment_id }) {
             type="text"
             disabled
             className="text-base w-full bg-gray-200 p-2 rounded-md text-gray-900"
-            value={room?.pincode || 'No Address Available'}
+            value={room?.pincode || 'No PinCode Available'}
           />
         </div>
 

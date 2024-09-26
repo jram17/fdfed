@@ -1,5 +1,5 @@
 const Complaint = require('../Models/UserComplaintModel');
-
+const ApartmentUser = require("../Models/ApartmentUserModel");
 
 const createComplaint = async (req, res) => {
   const { complaintTitle, complaintType, complaintDetail, anonymous, apartment_id } = req.body;
@@ -26,6 +26,7 @@ const createComplaint = async (req, res) => {
 
 
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ error: "Server Error" })
   }
 
@@ -33,9 +34,11 @@ const createComplaint = async (req, res) => {
 
 
 const getApartmentDetails = async (req, res) => {
+  console.log("hit");
   try {
     const { apartment_id } = req.params;
     const Complaints = await Complaint.find({ apartment_id });
+    console.log(Complaints);
     return res.status(200).json(Complaints);
   } catch (error) {
     console.log(error);

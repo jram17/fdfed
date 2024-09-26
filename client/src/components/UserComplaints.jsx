@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setApartmentDetails } from '../redux/slice/userSlice';
 import { NavLink } from 'react-router-dom';
 import { FaClipboardList } from 'react-icons/fa';
-
 function ComplaintForm({ apartment_id }) {
   const [complaintTitle, setComplaintTitle] = useState('');
   const [complaintType, setComplaintType] = useState('');
@@ -31,11 +30,12 @@ function ComplaintForm({ apartment_id }) {
 
   useEffect(() => {
     if (roomData) {
-      dispatch(setApartmentDetails(roomData));
+      dispatch(setApartmentDetails(roomData.details));
     }
   }, [roomData]);
 
   const handleSubmit = (e) => {
+    console.log('hit');
     e.preventDefault();
 
     // Clear previous error
@@ -72,6 +72,7 @@ function ComplaintForm({ apartment_id }) {
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
+        alert('Complaint files successfully');
         return response.json();
       })
       .then((data) => {
