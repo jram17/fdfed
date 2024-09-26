@@ -29,15 +29,29 @@ function AnnouncementForm({ socket, role, apartment_id, apartment_username }) {
 
 
 
-    const AnnouncementSubmit = (formdata) => {
-
-        socket.emit('announcement-messages', {
+    const AnnouncementSubmit = async (formdata) => {
+        try {
+          setFormLoading(true); // Set loading state
+          setError(false); // Clear error
+    
+          // Emit the announcement message through socket.io
+          socket.emit('announcement-messages', {
             username: apartment_username,
             aptId: apartment_id,
             role: role,
             msg: formdata.announcement,
-        });
-    };
+          });
+    
+          // Reset the form and close it after submission
+          reset(); // Reset form fields
+          setIsForm(false); // Close the form
+        } catch (error) {
+          setError(true); // Set error state if something goes wrong
+          setErrorMsg('Failed to submit announcement'); // Set error message
+        } finally {
+          setFormLoading(false); // Stop loading after submission
+        }
+      };
 
     const {
         reset,
