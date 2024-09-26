@@ -125,7 +125,10 @@ function RemoveUserDetails({ apartment_id, roomdetailsData }) {
                 </option>
                 {roomdetailsData.apartment_users.map((residents) => {
                   return (
-                    <option key={residents.user_id} value={residents.user_id}>
+                    <option
+                      key={residents.apartment_name}
+                      value={residents.apartment_name}
+                    >
                       {residents.apartment_name}
                     </option>
                   );
@@ -403,7 +406,7 @@ function RaiseTicketOnResident({ apartment_id, roomdetailsData }) {
     try {
       const formData = {
         apartment_id: apartment_id,
-        username: formdata.username,
+        user_id: formdata.username,
         complaint: formdata.complaint,
         severity: formdata.severity,
       };
@@ -529,7 +532,7 @@ function RaiseTicketOnResident({ apartment_id, roomdetailsData }) {
               >
                 Describe The Complaint
               </label>
-              <input
+              <textarea
                 autoFocus
                 disabled={isLoading}
                 placeholder="complaint"
@@ -637,6 +640,7 @@ function EventForm({ apartment_name }) {
 
       if (response.status === 200) {
         alert('Success in creating the event');
+        reset();
       }
     } catch (error) {
       if (error.response?.status === 500) {
@@ -655,10 +659,13 @@ function EventForm({ apartment_name }) {
   };
 
   return (
-    <div className="grid w-full min-h-[40vh] items-center px-4 sm:justify-center border-none shadow-none font-form justify-center">
-      <div className="card w-full max-sm:w-96 p-6 border-none shadow-none max-h-inherit max-lg:px-0 flex flex-col items-center h-full justify-center gap-6">
+    <div className="grid w-full min-h-[40vh] items-center px-4 sm:justify-center border-none shadow-none font-content justify-center">
+      <div className="card min-w-[40vw] w-full max-sm:w-96 p-6 border-none shadow-none max-h-inherit max-lg:px-0 flex flex-col items-center h-full justify-center gap-6">
         <div className="card-header flex items-center justify-center gap-2 flex-col"></div>
         <div className="card-content grid gap-y-1 w-full">
+          <div className="text-red-600 card-title flex items-center justify-center text-nowrap max-sm:text-lg font-content !text-2xl">
+            Annouce The Event
+          </div>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             <div className="form-item">
               <label

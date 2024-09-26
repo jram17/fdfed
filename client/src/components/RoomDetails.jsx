@@ -47,7 +47,7 @@ function RoomDetails({ apartment_id }) {
   }, []);
   useEffect(() => {
     if (roomData) {
-      dispatch(setApartmentDetails(roomData));
+      dispatch(setApartmentDetails(roomData.details));
     }
   }, [roomData, dispatch]);
 

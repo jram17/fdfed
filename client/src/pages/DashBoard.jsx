@@ -16,32 +16,27 @@ function DashBoard() {
 
   return (
     <div className="w-full flex flex-col items-center justify-start relative mt-5 gap-8">
-      <div className="form-item flex-col w-[20vw] flex items-center justify-center">
-        <label className={` form-label !text-3xl`}>Select Your Role</label>
+      <div className="form-item flex w-[20vw] flex-col items-center justify-center gap-3">
+        <label className="form-label !text-2xl w-full text-center">
+          Select Your Role
+        </label>
         <select
           id="role"
           defaultValue={'Resident'}
-          onChange={(e) => {
-            setRole(e.target.value);
-          }}
+          className="w-full p-2 rounded-md text-center bg-background text-muted-foreground"
+          onChange={(e) => setRole(e.target.value)}
         >
           <option
             value="Resident"
-            selected
             className="bg-background text-muted-foreground"
           >
             Resident
           </option>
-          <option
-            value="Owner"
-            selected
-            className="bg-background text-muted-foreground"
-          >
+          <option value="Owner" className="bg-background text-muted-foreground">
             Owner
           </option>
           <option
             value="Security"
-            selected
             className="bg-background text-muted-foreground"
           >
             Security
@@ -62,35 +57,23 @@ function DashBoard() {
           </Tooltip>
         </span>
       </Link>
-      {/* Main Content Area */}
-      {/* <div className="h-full max-h-[100vh] w-[85vw] max-w-[85vw] flex items-top flex-col justify-center">
-        {location.pathname === '/dashboard/myapartments' && (
-          <DataTableDisplay />
+      <div className=" w-full max-w-[100vw] flex items-center flex-col justify-center">
+        {Role === 'Resident' && (
+          <div className="flex items-center justify-center">
+            <DataTableDisplay />
+          </div>
         )}
-        {location.pathname === '/dashboard/owner/createevents' && (
-          <OwnerVerify>
-            <EventForm />
-          </OwnerVerify>
+        {Role === 'Security' && (
+          <div className="w-full max-w-[100vw] flex items-center justify-center card !border-none p-5">
+            <SecurityTabs />
+          </div>
         )}
-        {location.pathname === '/dashboard'}
-        {location.pathname === '/dashboard/security-log' && <AddLog />}
-        {location.pathname === '/dashboard/parcel-log' && <AddParcel />}
-      </div> */}{' '}
-      {Role === 'Resident' && (
-        <div className="flex items-center justify-center">
-          <DataTableDisplay />
-        </div>
-      )}
-      {Role === 'Security' && (
-        <div className="flex items-center justify-center card !border-none p-5">
-          <SecurityTabs />
-        </div>
-      )}
-      {Role === 'Owner' && (
-        <div className="flex items-center justify-center card !border-none p-5">
-          <OwnerVerify />
-        </div>
-      )}
+        {Role === 'Owner' && (
+          <div className=" w-full max-w-[100vw] flex items-center justify-center card !border-none p-5">
+            <OwnerVerify />
+          </div>
+        )}
+      </div>
     </div>
   );
 }
