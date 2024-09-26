@@ -154,42 +154,6 @@ function CreateRoomForm() {
             <div className="form-item">
               <label
                 className={`${
-                  errors.state ? 'text-destructive' : ''
-                } form-label`}
-              >
-                Select Your State
-              </label>
-              <select
-                {...register('state', { required: true })}
-                className={`select !w-full ${
-                  errors.state ? 'border-destructive' : ''
-                }`}
-                id="country"
-                defaultValue={' '}
-              >
-                <option
-                  value=""
-                  disabled
-                  selected
-                  className="bg-background text-muted-foreground"
-                >
-                  Select Your State
-                </option>
-                {Country_data.map((country) => {
-                  return (
-                    <option key={country.name} value={country.name}>
-                      {country.name}
-                    </option>
-                  );
-                })}
-              </select>
-              {errors.state && (
-                <p className="form-message">{errors.state.message}</p>
-              )}
-            </div>
-            <div className="form-item">
-              <label
-                className={`${
                   errors.address ? 'text-destructive' : ''
                 } form-label`}
               >

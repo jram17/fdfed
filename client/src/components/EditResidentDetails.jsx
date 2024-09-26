@@ -532,7 +532,7 @@ function RaiseTicketOnResident({ apartment_id, roomdetailsData }) {
               >
                 Describe The Complaint
               </label>
-              <input
+              <textarea
                 autoFocus
                 disabled={isLoading}
                 placeholder="complaint"
