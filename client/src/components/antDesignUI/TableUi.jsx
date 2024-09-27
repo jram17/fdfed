@@ -368,4 +368,107 @@ const ApartmentComplaints = ({ data }) => {
     </>
   );
 };
-export { DataTable, UserApartments_table, Owners_table, ApartmentComplaints };
+
+const UserComplaints = ({ data }) => {
+  const [filteredInfo, setFilteredInfo] = useState({});
+  const [sortedInfo, setSortedInfo] = useState({});
+  const [columns, setColumns] = useState([]);
+
+  useEffect(() => {
+    setColumns([
+      {
+        title: 'Complaint',
+        dataIndex: 'complaints',
+        key: 'complaints',
+        filters: data.map((ele) => ({
+          text: ele.complaints,
+          value: ele.complaints,
+        })),
+        filteredValue: filteredInfo.complaints || null,
+        onFilter: (value, record) => record.complaints.includes(value),
+        sorter: (a, b) => a.complaints.length - b.complaints.length,
+        sortOrder:
+          sortedInfo.columnKey === 'complaints' ? sortedInfo.order : null,
+        ellipsis: true,
+      },
+      {
+        title: 'Apartment Name',
+        dataIndex: 'apartment_name',
+        key: 'apartment_name',
+        filters: data.map((ele) => ({
+          text: ele.apartment_name,
+          value: ele.apartment_name,
+        })),
+        filteredValue: filteredInfo.apartment_name || null,
+        onFilter: (value, record) => record.apartment_name.includes(value),
+        sorter: (a, b) => a.apartment_name.length - b.apartment_name.length,
+        sortOrder:
+          sortedInfo.columnKey === 'apartment_name' ? sortedInfo.order : null,
+        ellipsis: true,
+      },
+
+      {
+        title: 'Severity',
+        dataIndex: 'severity',
+        key: 'severity',
+        filters: data.map((ele) => ({
+          text: ele.severity,
+          value: ele.severity,
+        })),
+        render: (_, { severity }) => {
+          let color = severity === 'severe' ? 'red' : 'green';
+          return (
+            <Tag color={color} key={severity}>
+              {severity.toUpperCase()}
+            </Tag>
+          );
+        },
+        filteredValue: filteredInfo.severity || null,
+        onFilter: (value, record) => record.severity.includes(value),
+        sorter: (a, b) => a.severity.localeCompare(b.severity), // Corrected sorting for strings
+        sortOrder:
+          sortedInfo.columnKey === 'severity' ? sortedInfo.order : null,
+        ellipsis: true,
+      },
+
+      {
+        title: 'Issued At',
+        dataIndex: 'createdAt',
+        key: 'createdAt',
+        onFilter: (value, record) => record.createdAt.includes(value),
+        sorter: (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
+        sortOrder:
+          sortedInfo.columnKey === 'createdAt' ? sortedInfo.order : null,
+        ellipsis: true,
+      },
+    ]);
+  }, [data, filteredInfo, sortedInfo]);
+
+  const handleChange = (pagination, filters, sorter) => {
+    setFilteredInfo(filters);
+    setSortedInfo(sorter);
+  };
+
+  const clearFilters = () => setFilteredInfo({});
+  const clearAll = () => {
+    setFilteredInfo({});
+    setSortedInfo({});
+  };
+
+  return (
+    <>
+      <Space style={{ marginBottom: 16 }}>
+        <Button onClick={clearFilters}>Clear filters</Button>
+        <Button onClick={clearAll}>Clear filters and sorters</Button>
+      </Space>
+      <Table columns={columns} dataSource={data} onChange={handleChange} />
+    </>
+  );
+};
+export {
+  DataTable,
+  UserApartments_table,
+  Owners_table,
+  ApartmentComplaints,
+  UserComplaints,
+};

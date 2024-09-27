@@ -31,17 +31,36 @@ class DashBoardController {
 
     async UserDashDetails(req, res) {
         try {
+            // Fetch user, user complaints, and apartments data in parallel
             const user = await User.findById(req.id);
             const userComplaints = await userComplaintsModel.find({ user: req.id });
-            const apartment = await UserApartment.find({ user: req.id });
-            console.log(user, userComplaints, apartment);
+            const apartments = await UserApartment.find({ user: req.id });
 
+            // Map over userComplaints to fetch apartment details and complaints
+            const apartment_complaints_for_users = await Promise.all(
+                userComplaints.map(async (ele) => {
+                    // Fetch apartment details for each complaint
+                    const room = await dbModel.findOne({ apartment_id: ele.apartment_id });
 
+                    // Return a new object with complaints and apartment information
+                    return {
+                        complaints: ele.complaint,
+                        severity: ele.severity,
+                        createdAt: ele.createdAt,
+                        apartment_name: room ? room.apartment_name : 'Unknown' // Fallback if apartment not found
+                    };
+                })
+            );
 
-            return res.status(200).json({ user: user, complaints: userComplaints, apartment: apartment });
+            // Return the user details, complaints, and mapped apartment complaints
+            return res.status(200).json({
+                user: user,
+                complaints: apartment_complaints_for_users,
+                apartments: apartments
+            });
 
         } catch (error) {
-            console.log(error);
+            console.error(error);
             return res.status(500).json({ error: error.message });
         }
     }

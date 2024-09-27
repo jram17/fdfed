@@ -1,18 +1,15 @@
 import React, { useState } from 'react';
-import { Button, ConfigProvider, Flex, Tooltip } from 'antd';
+import { Button, Tooltip } from 'antd';
 import { TbHomeShare } from 'react-icons/tb';
 import { Link } from 'react-router-dom';
-import { DataTableDisplay } from '../components/ApartmentsTable';
+import { UserDash, UserDetails } from '../components/UserDash';
 import { useLocation } from 'react-router-dom';
-import AddLog from '../components/Addlog';
-import AddParcel from '../components/AddParcel';
+
 import OwnerVerify from '../components/OwnerVerify';
-import { EventForm } from '../components/EditResidentDetails';
 import { SecurityTabs } from '../components/rsuiteUI/UserDetailsTabs';
 function DashBoard() {
   const location = useLocation();
   const [Role, setRole] = useState('Resident');
-  console.log(Role);
 
   return (
     <div className="w-full flex flex-col items-center justify-start relative mt-5 gap-8">
@@ -47,7 +44,7 @@ function DashBoard() {
       {/* <DashBoardSideDash /> */}
       {/* Floating Go Back Button */}
       <Link to={'/'}>
-        <span className="fixed bottom-8 right-5">
+        <span className="fixed  z-50 bottom-8 right-5">
           <Tooltip title="Go back to Homepage">
             <Button
               type="primary"
@@ -59,8 +56,9 @@ function DashBoard() {
       </Link>
       <div className=" w-full max-w-[100vw] flex items-center flex-col justify-center">
         {Role === 'Resident' && (
-          <div className="flex items-center justify-center">
-            <DataTableDisplay />
+          <div className="flex flex-col items-center justify-center">
+            <UserDash />
+            <UserDetails />
           </div>
         )}
         {Role === 'Security' && (

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { ApartmentComplaints } from './antDesignUI/TableUi';
-import { MyResponsivePie } from './nivocharts/PieChart';
+import { ApartmentComplaintsPie } from './nivocharts/PieChart';
 function ComplaintDashboardDisplay({ apartment_id }) {
   const [isLoading, setIsLoading] = useState(true);
   const [roomData, setComplaints] = useState(null);
@@ -86,7 +86,7 @@ function ComplaintDashboardDisplay({ apartment_id }) {
       <div className="text-4xl text-red-600"> Apartment Complaints</div>
       <ApartmentComplaints data={data} />
       <div className="w-full flex items-center justify-center gap-4 h-[40vh]">
-        <MyResponsivePie data={piedata} />
+        <ApartmentComplaintsPie data={piedata} />
       </div>
     </div>
   );
