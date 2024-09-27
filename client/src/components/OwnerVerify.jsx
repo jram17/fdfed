@@ -69,7 +69,6 @@ function OwnerVerify() {
           {/* Pass prop to children */}
           <div className="w-full  flex flex-col items-center justify-center gap-6">
             {' '}
-            <EventForm apartment_name={apartment_name} />
             <ApartmentDetails apartment_id={apartment_name} />
             <ComplaintDashboardDisplay apartment_id={apartment_name} />
           </div>
