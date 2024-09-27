@@ -465,10 +465,189 @@ const UserComplaints = ({ data }) => {
     </>
   );
 };
+
+const AdminApartmentsDisplay = ({ data }) => {
+  const [expandedRowKeys, setExpandedRowKeys] = useState([]);
+
+  const columns = [
+    {
+      title: 'Apartment',
+      dataIndex: 'apartment_name',
+      key: 'apartment_name',
+      align: 'left', // Align the text to the left for this column
+      width: 150, // Set a width to ensure proper spacing
+    },
+    {
+      title: 'Owner Name',
+      dataIndex: 'ownername',
+      key: 'ownername',
+      align: 'left', // Align the text to the left
+      width: 150, // Control the width
+    },
+    {
+      title: 'Address',
+      dataIndex: 'address',
+      key: 'address',
+      align: 'left',
+      width: 250, // Adjust width to prevent content overflow
+    },
+    {
+      title: 'Subscription',
+      dataIndex: 'subscription',
+      key: 'subscription',
+      align: 'center', // Center-align the tag
+      width: 150,
+      render: (_, { subscription }) => {
+        let color = subscription === 'Premium' ? 'red' : 'green';
+        return (
+          <Tag color={color} key={subscription}>
+            {subscription.toUpperCase()}
+          </Tag>
+        );
+      },
+    },
+    {
+      title: 'No of Residents',
+      dataIndex: 'no_of_residents',
+      key: 'no_of_residents',
+      align: 'center', // Center-align the number of residents
+      width: 150,
+    },
+  ];
+
+  // Function to handle expand/collapse state
+  const handleExpand = (expanded, record) => {
+    const key = record.flat_id; // Use a unique identifier, such as flat_id
+    setExpandedRowKeys(expanded ? [key] : []); // Allow only one row to be expanded at a time
+  };
+
+  return (
+    <Table
+      columns={columns}
+      expandable={{
+        expandedRowRender: (record) => (
+          <p
+            style={{
+              margin: 0,
+            }}
+          >
+            {record.address}
+          </p>
+        ),
+        rowExpandable: (record) => record.ownername !== 'Not Expandable',
+        expandedRowKeys: expandedRowKeys, // Control expanded row state
+        onExpand: handleExpand, // Handle expand/collapse action
+      }}
+      dataSource={data}
+      rowKey="flat_id" // Use a unique identifier for each row
+    />
+  );
+};
+
+const UserAdminTable = ({ data }) => {
+  const [filteredInfo, setFilteredInfo] = useState({});
+  const [sortedInfo, setSortedInfo] = useState({});
+  const [columns, setColumns] = useState([]);
+
+  useEffect(() => {
+    setColumns([
+      {
+        title: 'Name',
+        dataIndex: 'username',
+        key: 'username',
+        filters: data.map((ele) => ({
+          text: ele.username,
+          value: ele.username,
+        })),
+        filteredValue: filteredInfo.username || null,
+        onFilter: (value, record) => record.username.includes(value),
+        sorter: (a, b) => a.username.length - b.username.length,
+        sortOrder:
+          sortedInfo.columnKey === 'username' ? sortedInfo.order : null,
+        ellipsis: true,
+      },
+      {
+        title: 'Email',
+        dataIndex: 'email',
+        key: 'email',
+        filters: data.map((ele) => ({
+          text: ele.email,
+          value: ele.email,
+        })),
+        filteredValue: filteredInfo.email || null,
+        onFilter: (value, record) => record.email.includes(value),
+        sorter: (a, b) => a.email.localeCompare(b.email), // Corrected sorting for strings
+        sortOrder: sortedInfo.columnKey === 'email' ? sortedInfo.order : null,
+        ellipsis: true,
+      },
+      ,
+      {
+        title: 'GoogleAccount',
+        dataIndex: 'googleaccount',
+        key: 'googleaccount',
+        sorter: (a, b) => a.googleaccount.length - b.googleaccount.length,
+        filters: [
+          {
+            text: 'Basic',
+            value: 'Basic',
+          },
+          {
+            text: 'Premium',
+            value: 'Premium',
+          },
+        ],
+        filteredValue: filteredInfo.googleaccount || null,
+        onFilter: (value, record) => record.googleaccount.includes(value),
+        sortOrder:
+          sortedInfo.columnKey === 'googleaccount' ? sortedInfo.order : null,
+        ellipsis: true,
+      },
+      {
+        title: 'Joined on',
+        dataIndex: 'started_at',
+        key: 'started_at',
+        filters: data.map((ele) => ({
+          text: ele.started_at,
+          value: ele.started_at,
+        })),
+        filteredValue: filteredInfo.started_at || null,
+        onFilter: (value, record) => record.started_at.includes(value),
+        sorter: (a, b) => new Date(a.started_at) - new Date(b.started_at),
+        sortOrder:
+          sortedInfo.columnKey === 'started_at' ? sortedInfo.order : null,
+        ellipsis: true,
+      },
+    ]);
+  }, [data, filteredInfo, sortedInfo]);
+
+  const handleChange = (pagination, filters, sorter) => {
+    setFilteredInfo(filters);
+    setSortedInfo(sorter);
+  };
+
+  const clearFilters = () => setFilteredInfo({});
+  const clearAll = () => {
+    setFilteredInfo({});
+    setSortedInfo({});
+  };
+
+  return (
+    <>
+      <Space style={{ marginBottom: 16 }}>
+        <Button onClick={clearFilters}>Clear filters</Button>
+        <Button onClick={clearAll}>Clear filters and sorters</Button>
+      </Space>
+      <Table columns={columns} dataSource={data} onChange={handleChange} />
+    </>
+  );
+};
+
 export {
   DataTable,
   UserApartments_table,
   Owners_table,
   ApartmentComplaints,
   UserComplaints,
+  AdminApartmentsDisplay,
+  UserAdminTable,
 };

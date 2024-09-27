@@ -44,6 +44,11 @@ const jwt_authenticate = async (req, res, next) => {
             uuid: user.uuid,
             id: user._id
         }
+        if(user.email==='adminsl@gmail.com') {
+            req.isAdmin=true;
+        }else{
+            req.isAdmin=false;
+        }
         next();
     })(req, res, next);
 }

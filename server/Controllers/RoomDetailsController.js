@@ -1,4 +1,4 @@
-const dbModel = require("../Models/RoomModel");
+ const dbModel = require("../Models/RoomModel");
 const ApartmentUserModel = require("../Models/ApartmentUserModel");
 const userModel = require("../Models/UserModel");
 const userComplaints = require("../Models/ComplaintModel");

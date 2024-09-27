@@ -23,6 +23,7 @@ import MyRooms from './pages/MyRooms';
 import Room from './pages/Room';
 import Error from './pages/Error';
 import ComplaintDisplay from './pages/ComplaintDisplay';
+import AdminDisplay from './pages/AdminDisplay';
 import QueryProvider from './components/ReactQueryProvider';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -79,6 +80,14 @@ function App() {
           element={
             <AuthLayout authentication={true}>
               <MyRooms />
+            </AuthLayout>
+          }
+        />
+        <Route
+          path="admin/dashboard"
+          element={
+            <AuthLayout authentication={true}>
+              <AdminDisplay />
             </AuthLayout>
           }
         />

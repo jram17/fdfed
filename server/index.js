@@ -18,6 +18,7 @@ const SecurityLog = require("./Routes/LogRouter");
 const Dashboard = require("./Routes/DashBoardRouter");
 const isRoleVerify = require('./Routes/RoleVerification');
 const Annoucement =require("./Routes/AnnouncementRoute");
+const Admin =require("./Routes/AdminRouter");
 const path = require('path');
 class App extends Iointialize {
     constructor() {
@@ -77,6 +78,7 @@ class App extends Iointialize {
         this.app.use('/api/residents', SecurityLog);
         this.app.use('/isSuperRole', isRoleVerify);
         this.app.use('/announcement',Annoucement);
+        this.app.use('/admin', Admin);
     }
 
     initializeSocket() {

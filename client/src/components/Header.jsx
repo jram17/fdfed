@@ -20,7 +20,7 @@ function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isHamburger = useSelector((state) => state.sideDash.iconvisibility);
-  
+  const admin_icon = useSelector((state) => state.user.userDetails?.email);
   const Logout = async () => {
     try {
       const response = await axios.get(`http://localhost:5000/user/logout`);
@@ -33,7 +33,7 @@ function Header() {
       console.log(error);
     }
   };
-  
+
   const isLoggedIn = useSelector((state) => state.auth.status);
 
   return (
@@ -56,8 +56,8 @@ function Header() {
               src={src}
               alt="logo"
               className="object-cover"
-              width={150} 
-              height={70}  
+              width={150}
+              height={70}
             />
           </span>
         </NavLink>
@@ -95,6 +95,16 @@ function Header() {
             <p>Pricing</p>
           </div>
         </NavLink>
+        {admin_icon === 'adminsl@gmail.com' && (
+          <NavLink to={'/admin/dashboard'}>
+            <div className="header-link">
+              <span>
+                <MdDashboard size={20} />
+              </span>
+              <p>Admin</p>
+            </div>
+          </NavLink>
+        )}
         {isLoggedIn ? (
           <div className="btn text-sm bg-slate-900 hover:bg-slate-800 text-white hover:cursor-pointer">
             <NavLink

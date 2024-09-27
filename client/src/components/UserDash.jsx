@@ -118,7 +118,7 @@ function UserDetails() {
     queryKey: ['apartment_details', username],
     queryFn: UserDetailsforApartment,
   });
-
+  console.log(user_details);
   useEffect(() => {
     if (user_details) {
       setUserData(user_details);
@@ -178,7 +178,7 @@ function UserDetails() {
             type="text"
             disabled
             className="text-base w-full bg-gray-200 p-2 rounded-md text-gray-900"
-            value={user_details?.apartment?.length || 0}
+            value={user_details?.apartments?.length || 0}
           />
         </div>
 
@@ -250,19 +250,18 @@ function UserComplaintsComp({ data }) {
       setComplaints([]); // Default to an empty array if data is null or empty
     }
 
-    // Set pieData after calculating severe and warning counts
     setPieData([
       {
         id: 'severe',
         label: 'Severe',
         value: severe,
-        color: 'hsl(210, 70%, 50%)', // A shade of blue
+        color: 'hsl(210, 70%, 50%)',
       },
       {
         id: 'warning',
         label: 'Warning',
         value: warning,
-        color: 'hsl(350, 70%, 50%)', // A shade of red
+        color: 'hsl(350, 70%, 50%)',
       },
     ]);
   }, [data]);
@@ -275,7 +274,7 @@ function UserComplaintsComp({ data }) {
         <div>No complaints available</div>
       )}
       {/* You can render your pie chart here using pieData */}
-      <div className="min-h-[50vh] h-[50vh] flex items-center justify-start">
+      <div className=" w-full flex items-center justify-center gap-4 h-[40vh]">
         <UserComplaintsPie data={pieData} />
       </div>
     </div>
