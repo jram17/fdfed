@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 
 import EmojiPicker from 'emoji-picker-react';
 import ScrollToBottom from 'react-scroll-to-bottom';
 function PrivateChat({ username, currentUser, aptId, socket }) {
-
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-
 
   // useEffect(() => {
   //   socket.emit('identify', {username:currentUser,aptId:aptId});
@@ -20,12 +18,18 @@ function PrivateChat({ username, currentUser, aptId, socket }) {
         socket.on('message-deleted', ({ msgId, replacementMsg }) => {
           setMessages((prev) =>
             prev.map((msg) =>
-              msg._id === msgId ? { ...msg, msg: replacementMsg, deleteForAll: true } : msg
+              msg._id === msgId
+                ? { ...msg, msg: replacementMsg, deleteForAll: true }
+                : msg
             )
           );
         });
 
-        socket.emit('get-priv-chat-history', { from: currentUser, to: username, aptId: aptId });
+        socket.emit('get-priv-chat-history', {
+          from: currentUser,
+          to: username,
+          aptId: aptId,
+        });
 
         socket.on('priv-chat-history', (msg) => {
           setMessages(msg);
@@ -40,70 +44,101 @@ function PrivateChat({ username, currentUser, aptId, socket }) {
         };
       }
     }
-
-  }, [username, currentUser, socket])
+  }, [username, currentUser, socket, messages]);
 
   const currTime = new Date();
-  const formatTime = `${currTime.getHours().toString().padStart(2, '0')}:${currTime.getMinutes().toString().padStart(2, '0')}`
-
+  const formatTime = `${currTime
+    .getHours()
+    .toString()
+    .padStart(2, '0')}:${currTime.getMinutes().toString().padStart(2, '0')}`;
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
     if (input.trim()) {
-      socket.emit('priv-chat-msgs', { userId: currentUser, to: username, msg: input, aptId: aptId, time: formatTime });
+      socket.emit('priv-chat-msgs', {
+        userId: currentUser,
+        to: username,
+        msg: input,
+        aptId: aptId,
+        time: formatTime,
+      });
       setInput('');
     }
   };
   const onEmojiClick = (emojiObject) => {
-    setInput((prev) => prev + emojiObject.emoji)
-    console.log(emojiObject.emoji)
-  }
+    setInput((prev) => prev + emojiObject.emoji);
+    console.log(emojiObject.emoji);
+  };
 
   const handleDelete = (msgId) => {
-    console.log('hit')
+    console.log('hit');
     socket.emit('handle-delete-msgs', { msgId });
-  }
+  };
 
   return (
-    <div className='groupchat'>
+    <div className="groupchat">
       <div className="chatname">{username}</div>
       <ScrollToBottom className="msgsdiv">
-        <ul id='msgs'>
+        <ul id="msgs">
           {messages.map((msg, index) => (
-            <div className={msg.userId === currentUser ? 'my-msg' : ''} style={{ display: 'flex', width: '100%' }} key={index}>
-              <li className={msg.userId === currentUser ? 'my-message' : 'other-message'}>
-                <strong>{msg.userId}</strong><br />{msg.msg}<br />
+            <div
+              className={msg.userId === currentUser ? 'my-msg' : ''}
+              style={{ display: 'flex', width: '100%' }}
+              key={index}
+            >
+              <li
+                className={
+                  msg.userId === currentUser ? 'my-message' : 'other-message'
+                }
+              >
+                <strong>{msg.userId}</strong>
+                <br />
+                {msg.msg}
+                <br />
                 {msg.deleteForAll === false && <div>{msg.time}</div>}
-                {(msg.userId === currentUser) && (msg.deleteForAll === false) && <button onClick={() => handleDelete(msg._id)}>D</button>}
-
+                {msg.userId === currentUser && msg.deleteForAll === false && (
+                  <button onClick={() => handleDelete(msg._id)}>D</button>
+                )}
               </li>
             </div>
           ))}
         </ul>
       </ScrollToBottom>
 
-      <form id='chat-form' onSubmit={handleFormSubmit}>
-        <button type="button" id='emojipicker-btn' onClick={() => setShowEmojiPicker(!showEmojiPicker)}>
+      <form id="chat-form" onSubmit={handleFormSubmit}>
+        <button
+          type="button"
+          id="emojipicker-btn"
+          onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+        >
           {showEmojiPicker ? '🫣' : '😊'}
         </button>
 
         {showEmojiPicker && (
-          <div id='emojishow-div'>
-            <div id='emojiclose-div'>
-              <button id='emojiclose-btn' onClick={() => setShowEmojiPicker(!showEmojiPicker)}>x</button>
+          <div id="emojishow-div">
+            <div id="emojiclose-div">
+              <button
+                id="emojiclose-btn"
+                onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+              >
+                x
+              </button>
             </div>
-            <EmojiPicker width={'500px'} onEmojiClick={(emojiObject) => onEmojiClick(emojiObject)} />
+            <EmojiPicker
+              width={'500px'}
+              onEmojiClick={(emojiObject) => onEmojiClick(emojiObject)}
+            />
           </div>
         )}
 
         <input
           type="text"
-          id='chat-input'
-          autoComplete='off'
+          id="chat-input"
+          autoComplete="off"
           value={input}
           onChange={(e) => setInput(e.target.value)}
         />
-        <button className='send-button'>send</button>
+        <button className="send-button">send</button>
       </form>
     </div>
   );

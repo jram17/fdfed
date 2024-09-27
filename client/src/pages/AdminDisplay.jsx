@@ -128,9 +128,6 @@ function AdminDisplay() {
         </p>
         <UserAdminTable data={users} />
       </div>
-      <div className="w-full h-[40vh] flex items-center justify-center">
-        <MyResponsiveLine data={lineChartData} />
-      </div>
     </div>
   );
 }

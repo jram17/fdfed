@@ -26,8 +26,9 @@ function CreateRoomForm() {
     name: z.string().min(1, 'Provide a valid name'),
     registeration_num: z
       .string()
-      .length(8, 'Registeration num should be of length 6'),
-    state: z.string(),
+      .min(8, 'Registeration num should be of length 6')
+      .max(12, 'Registeration num should be of length of 12'),
+    state: z.string().min(1, 'State'),
     address: z.string(),
     flat_id: z.string().min(3, 'Flat_id should be  of minimum length of 3'),
     pincode: z

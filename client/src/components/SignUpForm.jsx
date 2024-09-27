@@ -20,7 +20,10 @@ const SignUpSchema = z
   .object({
     username: z.string().min(8, 'Username must be at least 8 characters long'),
     email: z.string().email('Email is required'),
-    password: z.string().min(8, 'Password must be at least 8 characters long'),
+    password: z
+      .string()
+      .min(8, 'Password must be at least 8 characters long')
+      .max(20, 'max it can be 20 characters long'),
     confirmPassword: z.string().min(8, 'Confirm Password is required'),
   })
   .refine((formdata) => formdata.password === formdata.confirmPassword, {
