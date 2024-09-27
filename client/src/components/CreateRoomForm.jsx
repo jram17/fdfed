@@ -10,7 +10,7 @@ import { RiLoader5Line } from 'react-icons/ri';
 import Country_data from '../utils/CountryList.json';
 import ReCaptcha from './ReCaptcha';
 import { FaArrowRightLong } from 'react-icons/fa6';
-
+const regex = /^\d+$/;
 function CreateRoomForm() {
   const reCAPTCHARef = useRef(null);
   const [token, setToken] = useState(null);
@@ -24,14 +24,17 @@ function CreateRoomForm() {
   };
   const CreateRoomFormSchema = z.object({
     name: z.string().min(1, 'Provide a valid name'),
-    registeration_num: z.string(),
+    registeration_num: z
+      .string()
+      .length(8, 'Registeration num should be of length 6'),
     state: z.string(),
     address: z.string(),
-    flat_id: z.string().min(3, 'Flat_id should be minimum length of 3'),
+    flat_id: z.string().min(3, 'Flat_id should be  of minimum length of 3'),
     pincode: z
       .string()
       .min(6, 'Provide a valid pincode')
-      .max(6, 'Pincode must be 6 digits'),
+      .max(6, 'Pincode must be 6 digits')
+      .regex(regex, 'it can only contain numeric characters'),
     email: z.string().email('Provide a valid email'),
     subscription: z.string(),
     terms_check: z.boolean().refine((val) => val === true, {
@@ -218,7 +221,7 @@ function CreateRoomForm() {
                 Pincode
               </label>
               <input
-                type="number"
+                type="text"
                 disabled={isLoading}
                 placeholder="PINCODE"
                 {...register('pincode', { required: true })}

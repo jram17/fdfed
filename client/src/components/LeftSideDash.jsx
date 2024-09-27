@@ -50,15 +50,6 @@ function LeftSideDash() {
             {!sideDashstatus && <span>Home</span>}
           </div>
         </Link>
-
-        <Link to={`/profile/${username}`} className="w-full">
-          <div className="flex w-[90%] rounded-b-lg rounded-r-md hover:bg-slate-100 py-2 pl-2">
-            <span className="pr-5">
-              <AiFillProfile size={23} />
-            </span>
-            {!sideDashstatus && <span>Profile</span>}
-          </div>
-        </Link>
       </div>
 
       {isLoading && !sideDashstatus ? (

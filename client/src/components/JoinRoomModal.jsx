@@ -11,9 +11,19 @@ import '@fontsource-variable/faustina';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
+const uuidV4Regex =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+// Define the schema
 const JoinRoomSchema = z.object({
-  apartment_id: z.string().length(36, 'Enter a valid apartment id'),
-  flat_id: z.string().min(3, 'Flat id must be atleast 3 characters long'),
+  apartment_id: z
+    .string()
+    .length(36, 'Enter a valid apartment id') // Length of a UUID is 36 characters including hyphens
+    .regex(
+      uuidV4Regex,
+      'Invalid apartment ID format. Must be a valid UUID v4.'
+    ), // Add regex for validation
+  flat_id: z.string().min(3, 'Flat ID must be at least 3 characters long'),
   terms_check: z.boolean().refine((val) => val === true, {
     message: 'You must accept the terms and conditions',
   }),

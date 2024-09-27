@@ -580,7 +580,7 @@ const UserAdminTable = ({ data }) => {
         sortOrder: sortedInfo.columnKey === 'email' ? sortedInfo.order : null,
         ellipsis: true,
       },
-      ,
+
       {
         title: 'GoogleAccount',
         dataIndex: 'googleaccount',
