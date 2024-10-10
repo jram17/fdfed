@@ -5,7 +5,6 @@ const { v4: uuidv4 } = require('uuid');
 const CLIENT_URL = "http://localhost:5173/";
 const FALLBACK_URL = "http://localhost:5173/sign-in";
 require("../config/passport_config");
-const useUserHook = require("../utils/userAvatarutils");
 const ApartmentData = require("../Models/UserApartmentModel");
 
 class UserAuthentication {

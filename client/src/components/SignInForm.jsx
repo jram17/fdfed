@@ -32,7 +32,7 @@ function SignInForm() {
     password: z
       .string()
       .min(8, 'Password must be at least 8 characters long')
-      .max(20, 'Password must be at least 20 characters long'),
+      .max(20, 'Password must not be more than  20 characters long'),
   });
 
   const {

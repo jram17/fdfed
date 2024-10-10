@@ -9,16 +9,21 @@ import { useDispatch } from 'react-redux';
 import { RiLoader5Line } from 'react-icons/ri';
 import Country_data from '../utils/CountryList.json';
 import { FaArrowRightLong } from 'react-icons/fa6';
-const regex = /^\d+$/;
 function CreateRoomForm() {
   const [isLoading, setLoading] = useState(false);
   const [isError, setError] = useState(false);
   const [error, setErrorMsg] = useState('');
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const apartment_name_regex = /^(?=.*[a-zA-Z])[a-zA-Z0-9]+$/i;
+  const pincode_regex = /^\d+$/;
 
   const CreateRoomFormSchema = z.object({
-    name: z.string().min(1, 'Provide a valid name'),
+    name: z
+      .string()
+      .min(1, 'Provide a valid name')
+      .max(40, 'Apartment should not exceeed 40 characters')
+      .regex(apartment_name_regex, 'This is not a valid apartment name'),
     registeration_num: z
       .string()
       .min(8, 'Registeration num should be of length 6')
@@ -30,7 +35,7 @@ function CreateRoomForm() {
       .string()
       .min(6, 'Provide a valid pincode')
       .max(6, 'Pincode must be 6 digits')
-      .regex(regex, 'it can only contain numeric characters'),
+      .regex(pincode_regex, 'it can only contain numeric characters'),
     email: z.string().email('Provide a valid email'),
     subscription: z.string(),
     terms_check: z.boolean().refine((val) => val === true, {
@@ -46,11 +51,6 @@ function CreateRoomForm() {
   } = useForm({ resolver: zodResolver(CreateRoomFormSchema) });
 
   const onSubmit = async (formData) => {
-    if (!token) {
-      setError(true);
-      setErrorMsg('Please complete the reCAPTCHA');
-      return;
-    }
     axios.defaults.withCredentials = true;
 
     setLoading(true);

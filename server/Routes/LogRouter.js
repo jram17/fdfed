@@ -1,6 +1,6 @@
 const LogController = require("../Controllers/SecurityController");
 const express = require('express');
-const { jwt_authenticate } = require("../middlewares/PassportLogin");
+const { jwt_authenticate } = require("../middlewares/PassportLoginMiddleware");
 require("../config/passport_config");
 
 class LogRouter extends LogController {

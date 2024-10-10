@@ -1,5 +1,5 @@
 const express = require('express');
-const { jwt_authenticate } = require("../middlewares/PassportLogin");
+const { jwt_authenticate } = require("../middlewares/PassportLoginMiddleware");
 require("../config/passport_config");
 const Room = require("../Controllers/Room");
 class RoomRouter extends Room {

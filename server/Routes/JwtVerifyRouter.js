@@ -1,5 +1,5 @@
 const express = require('express');
-const { jwt_authenticate } = require("../middlewares/PassportLogin");
+const { jwt_authenticate } = require("../middlewares/PassportLoginMiddleware");
 const checkJwt = require("../Controllers/jwtVerify");
 require("../config/passport_config");
 

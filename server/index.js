@@ -6,7 +6,6 @@ const passport = require('passport');
 const cookieParser = require('cookie-parser');
 const Iointialize = require('./Controllers/socket');
 const Auth = require('./Routes/UserAuthRouter');
-const Account = require('./Controllers/account');
 const GoogleStrategy = require('./Routes/GoogleAuthRouter');
 const JwtVerifyRouter = require("./Routes/JwtVerifyRouter");
 const CreateRoom = require("./Routes/CreateRoomRouter");
@@ -17,8 +16,8 @@ const CreateRoomComplaint = require("./Routes/UserComplaintRouter");
 const SecurityLog = require("./Routes/LogRouter");
 const Dashboard = require("./Routes/DashBoardRouter");
 const isRoleVerify = require('./Routes/RoleVerification');
-const Annoucement =require("./Routes/AnnouncementRoute");
-const Admin =require("./Routes/AdminRouter");
+const Annoucement = require("./Routes/AnnouncementRoute");
+const Admin = require("./Routes/AdminRouter");
 const path = require('path');
 class App extends Iointialize {
     constructor() {
@@ -66,7 +65,6 @@ class App extends Iointialize {
     setRoutes() {
 
         this.app.use('/user', Auth);
-        this.app.use('/account', Account);
         this.app.use('/auth/google', GoogleStrategy);
         this.app.use('/jwtVerify', JwtVerifyRouter);
         this.app.use('/createRoom', CreateRoom);
@@ -77,7 +75,7 @@ class App extends Iointialize {
         this.app.use('/dashboard', Dashboard);
         this.app.use('/api/residents', SecurityLog);
         this.app.use('/isSuperRole', isRoleVerify);
-        this.app.use('/announcement',Annoucement);
+        this.app.use('/announcement', Annoucement);
         this.app.use('/admin', Admin);
     }
 

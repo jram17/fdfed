@@ -8,7 +8,6 @@ import { RiLoader5Line } from 'react-icons/ri';
 import '@fontsource-variable/fira-code';
 import '@fontsource-variable/nunito';
 import '@fontsource-variable/faustina';
-import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -16,14 +15,18 @@ import { login, setGoogleID } from '../redux/slice/authSlice.js';
 import { setUserDetails } from '../redux/slice/userSlice.js';
 import { useNavigate } from 'react-router-dom';
 import ReCaptcha from './ReCaptcha.jsx';
+const username_regex = /^(?=.*[a-zA-Z])[a-zA-Z0-9]+$/i;
 const SignUpSchema = z
   .object({
-    username: z.string().min(8, 'Username must be at least 8 characters long'),
+    username: z
+      .string()
+      .min(8, 'Username must be at least 8 characters long')
+      .regex(username_regex, 'Username can contain only letters and numbers'),
     email: z.string().email('Email is required'),
     password: z
       .string()
       .min(8, 'Password must be at least 8 characters long')
-      .max(20, 'max it can be 20 characters long'),
+      .max(20, 'Password can be at most 20 characters long'),
     confirmPassword: z.string().min(8, 'Confirm Password is required'),
   })
   .refine((formdata) => formdata.password === formdata.confirmPassword, {
@@ -57,6 +60,11 @@ function SignUpForm() {
     window.location.href = 'http://localhost:5000/auth/google';
   };
   const onSubmit = async (formdata) => {
+    if (!token) {
+      setError(true);
+      setErrorMsg('Please complete the reCAPTCHA');
+      return;
+    }
     axios.defaults.withCredentials = true;
 
     setLoading(true);
@@ -69,16 +77,6 @@ function SignUpForm() {
         password: formdata.password,
       });
       if (response.status === 200) {
-        toast.success('🦄 Account Created Successfully', {
-          position: 'bottom-right',
-          autoClose: 1000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'light',
-        });
         dispatch(login());
         dispatch(setUserDetails(response.data));
         navigate('/');
@@ -134,7 +132,15 @@ function SignUpForm() {
           </p>
         </div>
         <div className="card-content grid gap-y-1 w-full">
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="space-y-3"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleSubmit(onSubmit)();
+              }
+            }}
+          >
             <div className="form-item">
               <label
                 className={`form-item ${

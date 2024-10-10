@@ -1,5 +1,5 @@
 const express = require('express');
-const { login } = require("../middlewares/PassportLogin");
+const { login } = require("../middlewares/PassportLoginMiddleware");
 const UserAuth = require("../Controllers/UserAuth");
 require("../config/passport_config");
 

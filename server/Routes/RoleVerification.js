@@ -1,6 +1,6 @@
 const express = require('express');
 const route = express.Router();
-const { jwt_authenticate } = require('../middlewares/PassportLogin'); // Ensure this middleware sets req.id
+const { jwt_authenticate } = require("../middlewares/PassportLoginMiddleware");
 const ApartmentUser = require("../Models/ApartmentUserModel");
 const Room = require("../Models/RoomModel.js");
 
