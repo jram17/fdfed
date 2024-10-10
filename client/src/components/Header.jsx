@@ -37,7 +37,7 @@ function Header() {
   const isLoggedIn = useSelector((state) => state.auth.status);
 
   return (
-    <div className="fixed top-0 header z-10 border-style font-header font-normal bg-white shadow">
+    <div className="fixed top-0 header z-50 border-style font-header font-normal bg-white shadow">
       <div className="left-header ml-6 flex items-center justify-center gap-3">
         <span
           className={`hover:bg-slate-300 rounded-[50%] cursor-pointer p-2 ${

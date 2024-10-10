@@ -14,13 +14,19 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { login, setGoogleID } from '../redux/slice/authSlice.js';
 import { setUserDetails } from '../redux/slice/userSlice.js';
+import ReCaptcha from './ReCaptcha';
+
 function SignInForm() {
   const [isLoading, setLoading] = useState(false);
   const [isError, setError] = useState(false);
   const [error, setErrorMsg] = useState('');
+  const [token, setToken] = useState(null);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const handleToken = (token) => {
+    setToken(token);
+  };
   const SignUpSchema = z.object({
     identifier: z.union([z.string().email(), z.string()]),
     password: z
@@ -40,6 +46,11 @@ function SignInForm() {
     window.location.href = 'http://localhost:5000/auth/google';
   };
   const onSubmit = async (formData) => {
+    if (!token) {
+      setError(true);
+      setErrorMsg('Please complete the reCAPTCHA');
+      return;
+    }
     axios.defaults.withCredentials = true;
 
     setLoading(true);
@@ -148,8 +159,11 @@ function SignInForm() {
               {errors.password && (
                 <p className="form-message">{errors.password.message}</p>
               )}
-              {isError && <p className="form-message">{error}</p>}
             </div>
+            <div className="form-item w-full flex items-center justify-center">
+              <ReCaptcha callback={handleToken} />
+            </div>
+            {isError && <p className="form-message">{error}</p>}
 
             <div className="w-full grid place-items-center">
               <button

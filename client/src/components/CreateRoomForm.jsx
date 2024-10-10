@@ -8,20 +8,15 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { RiLoader5Line } from 'react-icons/ri';
 import Country_data from '../utils/CountryList.json';
-import ReCaptcha from './ReCaptcha';
 import { FaArrowRightLong } from 'react-icons/fa6';
 const regex = /^\d+$/;
 function CreateRoomForm() {
-  const reCAPTCHARef = useRef(null);
-  const [token, setToken] = useState(null);
   const [isLoading, setLoading] = useState(false);
   const [isError, setError] = useState(false);
   const [error, setErrorMsg] = useState('');
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const handleToken = (token) => {
-    setToken(token);
-  };
+
   const CreateRoomFormSchema = z.object({
     name: z.string().min(1, 'Provide a valid name'),
     registeration_num: z
@@ -340,9 +335,7 @@ function CreateRoomForm() {
                 )}
               </div>
             </div>
-            <div className="form-item">
-              <ReCaptcha callback={handleToken} />
-            </div>
+
             <div className="w-full grid place-items-start ">
               <button
                 className="btn outline-btn rounded-md  group sm-btn !text-lg max-sm:text-xs max-sm:px-2 max-sm:py-1 !bg-slate-700 text-white hover:text-white flex items-center justify-center gap-2"

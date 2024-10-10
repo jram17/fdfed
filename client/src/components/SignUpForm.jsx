@@ -15,7 +15,7 @@ import { useDispatch } from 'react-redux';
 import { login, setGoogleID } from '../redux/slice/authSlice.js';
 import { setUserDetails } from '../redux/slice/userSlice.js';
 import { useNavigate } from 'react-router-dom';
-
+import ReCaptcha from './ReCaptcha.jsx';
 const SignUpSchema = z
   .object({
     username: z.string().min(8, 'Username must be at least 8 characters long'),
@@ -35,8 +35,13 @@ function SignUpForm() {
   const [isLoading, setLoading] = useState(false);
   const [isError, setError] = useState(false);
   const [error, setErrorMsg] = useState('');
+  const [token, setToken] = useState(null);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const handleToken = (token) => {
+    setToken(token);
+  };
   const {
     reset,
     register,
@@ -95,8 +100,8 @@ function SignUpForm() {
   };
 
   return (
-    <div className="grid w-full items-center px-4 sm:justify-center border-none shadow-none font-form min-h-[60vh] justify-center">
-      <div className="card w-full max-sm:w-96 p-6 border-none shadow-none max-h-inherit max-lg:px-0 flex flex-col items-center h-full justify-center gap-6">
+    <div className="grid w-full items-center px-2 sm:justify-center border-none shadow-none font-form min-h-[60vh] justify-center">
+      <div className="card w-full max-sm:w-96 p-4 border-none shadow-none max-h-inherit max-lg:px-0 flex flex-col items-center h-full justify-center gap-6">
         <div className="card-header flex items-center justify-center gap-2  flex-col">
           <div className="card-title flex items-center justify-center text-nowrap max-sm:text-lg font-title !text-2xl">
             Start With Society Log
@@ -105,8 +110,8 @@ function SignUpForm() {
             Welcome! Please fill in the details to get started.
           </div>
         </div>
-        <div className="card-content grid gap-y-4 max-sm:gap-y-1 w-full">
-          <div className="grid grid-cols-1 gap-y-3 gap-x-1 w-full place-items-center">
+        <div className="card-content grid gap-y-3 max-sm:gap-y-1 w-full">
+          <div className="grid grid-cols-1 gap-y-2 gap-x-1 w-full place-items-center">
             <div className="max-sm:text-xs max-sm:px-2 max-sm:py-1">
               <button
                 className="btn sm-btn !text-base  outline-btn max-sm:text-xs max-sm:px-2 max-sm:py-1"
@@ -129,7 +134,7 @@ function SignUpForm() {
           </p>
         </div>
         <div className="card-content grid gap-y-1 w-full">
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
             <div className="form-item">
               <label
                 className={`form-item ${
@@ -209,8 +214,12 @@ function SignUpForm() {
                   {errors.confirmPassword.message}
                 </p>
               )}
-              {isError && <p className=" form-message">{error}</p>}
             </div>
+            <div className="form-item w-full flex items-center justify-center">
+              <ReCaptcha callback={handleToken} />
+            </div>
+            {isError && <p className=" form-message">{error}</p>}
+
             <div className="w-full grid place-items-center">
               <button
                 className="btn  !text-lg outline-btn sm-btn  max-sm:text-xs max-sm:px-2 max-sm:py-1"
