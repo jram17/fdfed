@@ -10,11 +10,13 @@ const { v4: uuidv4 } = require('uuid');
 const ApartmentData = require("../Models/UserApartmentModel");
 const { generateHash } = require("../utils/passwordUtils");
 const env_variables = require("../utils/envutils.js");
+const { getDecryptedToken } = require("../utils/jwtUtils.js");
 var cookieExtractor = function (req) {
-    var token = null;
+    var encryptedtoken = null;
     if (req && req.cookies && req.cookies['jwt']) {
-        token = req.cookies['jwt'].token || req.cookies['jwt'];
+        encryptedtoken = req.cookies['jwt'].token || req.cookies['jwt'];
     }
+    const token = getDecryptedToken(encryptedtoken);
     return token;
 };
 

@@ -1,6 +1,6 @@
 const User = require("../Models/UserModel");
 const { generateHash } = require("../utils/passwordUtils");
-const issueJWT = require("../utils/jwtUtils");
+const { issueJWT } = require("../utils/jwtUtils");
 const { v4: uuidv4 } = require('uuid');
 const CLIENT_URL = "http://localhost:5173/";
 const FALLBACK_URL = "http://localhost:5173/sign-in";
@@ -41,7 +41,7 @@ class UserAuthentication {
                 user: this.user._id
             })
             await ApartmentModel.save();
-            const token = issueJWT(this.user);
+            const { token } = issueJWT(this.user);
 
             res.cookie('jwt', token, {
                 httpOnly: true,
@@ -63,7 +63,7 @@ class UserAuthentication {
     async GoogleCallBack(req, res) {
         try {
             if (req.user) {
-                const token = issueJWT(req.user);
+                const { token } = issueJWT(req.user);
                 res.clearCookie('jwt');
                 res.cookie('jwt', token, {
                     httpOnly: true,

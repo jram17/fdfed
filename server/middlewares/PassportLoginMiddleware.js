@@ -1,11 +1,11 @@
 const passport = require('passport');
-const issueJWT = require("../utils/jwtUtils");
+const { issueJWT } = require("../utils/jwtUtils");
 require("dotenv").config();
 const LOGIN_URL = "http://localhost:5173/sign-in";
 const login = async (req, res, next) => {
     passport.authenticate('local', { session: false }, (err, user, info) => {
         if (err) {
-            console.log("error", error);
+            console.log("error", err);
             return res.status(400).json({ message: info });
         }
         if (!user) {
@@ -44,10 +44,10 @@ const jwt_authenticate = async (req, res, next) => {
             uuid: user.uuid,
             id: user._id
         }
-        if(user.email==='adminsl@gmail.com') {
-            req.isAdmin=true;
-        }else{
-            req.isAdmin=false;
+        if (user.email === 'adminsl@gmail.com') {
+            req.isAdmin = true;
+        } else {
+            req.isAdmin = false;
         }
         next();
     })(req, res, next);

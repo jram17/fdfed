@@ -3,13 +3,11 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
-import { useQuery } from '@tanstack/react-query';
 import { RiLoader5Line } from 'react-icons/ri';
 import '@fontsource-variable/fira-code';
 import '@fontsource-variable/nunito';
 import '@fontsource-variable/faustina';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+
 import { useNavigate } from 'react-router-dom';
 const uuidV4Regex =
   /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
