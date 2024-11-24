@@ -31,15 +31,6 @@ class RazorpayPayment {
                 quantity: 1,
                 total_count: 1,
                 start_at: this.CurrentTime(),
-                addons: [
-                    {
-                        item: {
-                            name: "Delivery charges",
-                            amount: 30000,
-                            currency: "INR"
-                        }
-                    }
-                ],
                 notes: {
                     key1: "value3",
                     key2: "value2"

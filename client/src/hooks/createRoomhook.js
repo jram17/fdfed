@@ -14,6 +14,7 @@ const useCreateRoom = () => {
 
             });
             const subscription = response.data;
+            console.log(subscription.subscription.id);
             if (response.status === 200) {
                 const options = {
                     key: env_variables.RAZORPAY_KEY_ID,
@@ -21,10 +22,11 @@ const useCreateRoom = () => {
                     name: 'Society Log',
                     amount: roomData.subscription === 'Basic' ? '1000' : '2000',
                     description: 'create your room',
-                    order_id: subscription.id,
+                    subscription_id: subscription.subscription.id,
                     prefill: {
                         name: roomData.name,
                         email: roomData.email,
+                        contact: "+919500040431"
                     },
                     theme: {
                         color: '#F37254'
@@ -46,6 +48,7 @@ const useCreateRoom = () => {
                 };
                 if (error) throw Error(error.message);
                 const razorpayInstance = new Razorpay(options);
+                console.log(razorpayInstance);
                 razorpayInstance.open();
 
             }
