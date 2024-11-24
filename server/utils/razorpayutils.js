@@ -1,12 +1,12 @@
 const Razorpay = require('razorpay')
-
+const env_variables = require("../utils/envutils")
 
 class RazorpayPayment {
     razorpay_instance = null;
     constructor() {
         this.razorpay_instance = new Razorpay({
-            key_id: 'YOUR_KEY_ID',
-            key_secret: 'YOUR_KEY_SECRET',
+            key_id: env_variables.RAZORPAY_KEY_ID,
+            key_secret: env_variables.RAZORPAY_SECRET_KEY,
             currency: 'INR',
 
         })
