@@ -19,6 +19,7 @@ const useCreateRoom = () => {
                     key: env_variables.RAZORPAY_KEY_ID,
                     currency: 'INR',
                     name: 'Society Log',
+                    amount: roomData.subscription === 'Basic' ? '1000' : '2000',
                     description: 'create your room',
                     order_id: subscription.id,
                     prefill: {

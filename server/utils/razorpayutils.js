@@ -22,7 +22,7 @@ class RazorpayPayment {
     }
     async createRazorpaySubscription(subdetails) {
         try {
-            const plan_id = subdetails.sub_type === 'basic' ? plans.basic.plan_id : plans.premium.plan_id;
+            const plan_id = subdetails.sub_type === 'Basic' ? plans.basic.plan_id : plans.premium.plan_id;
 
             return this.razorpay_instance.subscriptions.create({
                 plan_id: plan_id,
