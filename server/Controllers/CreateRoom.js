@@ -6,7 +6,16 @@ class RoomModel {
     constructor() {
 
     }
+    async registrationNumberCheck(req, res) {
+        const { registration_num } = req.body;
+        const isAlreadyRegistered = await dbModel.findOne({ registration_num: registration_num });
+        if (isAlreadyRegistered) {
+            return res.status(400).json({ message: "Registration number already in use" });
+        } else {
+            return res.status(200).json({ message: "Registration number is available" });
+        }
 
+    }
     async createRoomReq(req, res) {
         try {
             const { name, registration_num, state, address, flat_id, pincode, email, subscription } = req.body;
@@ -55,7 +64,6 @@ class RoomModel {
 
     async editemail(req, res) {
         const { email, apartment_id } = req.body;
-        console.log(req.body);
         if (!email || !apartment_id) {
             return res.status(400).json({ message: "Email and apartment_id are required." });
         }

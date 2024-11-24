@@ -3,31 +3,25 @@ const SelectedUsers = require('../Models/userSelected');
 const Announcement = require("../Models/ApartmentAnnouncementsModel");
 const Apartment = require("../Models/ApartmentUserModel");
 const { encrypt, decrypt } = require("../utils/encryptionutils");
-const userSocket=require('../Models/userSockets');
+const userSocket = require('../Models/userSockets');
 let users = {}
 class Iointialize {
     constructor() {
         this.io = null;
     }
     initSocket(io) {
-        console.log("socket initialized");
         this.io = io;
         io.on('connection', async (socket) => {
-            console.log(`${socket.id} is connected`);
 
             socket.on('identify', async ({ username, aptId }) => {
-                console.log(`${username} was identified with socket:${socket.id}`);
                 const user = await userSocket.findOne({
                     username: username
                 });
-                // console.log('this is user:',user)
                 if (user) {
-                    console.log('hit')
                     await userSocket.findOneAndUpdate({ username: username }, {
                         socketId: socket.id,
                         isLogged: true,
                     })
-                    console.log(`${username} was updated to db1`)
                 } else {
                     const newUser = new userSocket({
                         username: username,
@@ -36,7 +30,6 @@ class Iointialize {
                     })
                     try {
                         await newUser.save();
-                        console.log(`${username} was added to db1`)
                     } catch (error) {
                         console.error('could not add a user to userSocket')
                     }
@@ -56,7 +49,6 @@ class Iointialize {
                     }
                     const user = await SelectedUsers.findOne({ username, aptId });
                     if (user) {
-                        console.log(user);
                         socket.emit('load-selected-users', user.selectedUsers);
                     } else {
                         socket.emit('load-selected-users', ['groupchat']);
@@ -77,14 +69,12 @@ class Iointialize {
                         const newUser = new SelectedUsers({ username, selectedUsers, aptId });
                         await newUser.save();
                     }
-                    console.log(`Selected users for ${username} in aptId:${aptId} saved successfully`);
                 } catch (error) {
                     console.error('Error saving selected users:', error);
                 }
             });
 
             socket.on('priv-chat-msgs', async (msg) => {
-                console.log(`${socket.id} sent a private message to ${msg.to}:`, msg);
                 const encryptedText = encrypt(msg.msg)
                 const newMessage = new Message({
                     userId: msg.userId,
@@ -145,7 +135,6 @@ class Iointialize {
 
 
             socket.on('chat-msgs', async (msg) => {
-                console.log(`${socket.id} said: `, msg);
                 const encryptedText = encrypt(msg.msg);
                 const newMessage = new Message({
                     userId: msg.userId,
@@ -215,7 +204,6 @@ class Iointialize {
 
 
             socket.on('disconnect', async () => {
-                console.log(`${socket.id} disconnected`);
                 await userSocket.findOneAndUpdate({ socketId: socket.id }, {
                     isLogged: false
                 })

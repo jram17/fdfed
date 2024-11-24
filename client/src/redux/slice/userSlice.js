@@ -16,7 +16,6 @@ const userSlice = createSlice({
             state.userDetails = action.payload;
         },
         setApartmentDetails: (state, action) => {
-            console.log(action.payload);
             state.role = action.payload['isAuthority'];
             state.apartment_username = action.payload['username']
             state.Role = action.payload['role'];

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Contentbox from '../components/ContentBox';
 function Content({ setCurrentChat, socket, user, aptId }) {
-
   const [availableUsers, setAvailableUsers] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState(['groupchat']);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -16,7 +15,7 @@ function Content({ setCurrentChat, socket, user, aptId }) {
     if (socket) {
       socket.emit('get-selected-users', { username: user, aptId: aptId });
       socket.on('load-selected-users', (users) => {
-        console.log("Selected users loaded:", users);
+        console.log('Selected users loaded:', users);
         setSelectedUsers(users);
       });
 
@@ -29,8 +28,7 @@ function Content({ setCurrentChat, socket, user, aptId }) {
         socket.off('user-list');
       };
     }
-
-  }, [user,socket]);
+  }, [user, socket]);
 
   const handleUserSelect = (selectedUser) => {
     if (!selectedUsers.includes(selectedUser)) {
@@ -39,27 +37,35 @@ function Content({ setCurrentChat, socket, user, aptId }) {
       socket.emit('save-selected-users', {
         username: user,
         selectedUsers: updatedUsers,
-        aptId: aptId
+        aptId: aptId,
       });
     }
     setShowDropdown(false);
   };
 
   const handleChatSelect = (user) => {
-    setCurrentChat(user)
-  }
+    setCurrentChat(user);
+  };
 
   return (
-
-    <div className='content'>
+    <div className="content">
       <div className="contentdiv">
         <div className="contentbox-container">
           {selectedUsers.map((user, index) => (
-            <Contentbox key={index} name={user} onClick={() => handleChatSelect(user)} />
+            <Contentbox
+              key={index}
+              name={user}
+              onClick={() => handleChatSelect(user)}
+            />
           ))}
         </div>
         <div className="add-button-div">
-          <button className="add-button" onClick={() => setShowDropdown(!showDropdown)}>+</button>
+          <button
+            className="add-button"
+            onClick={() => setShowDropdown(!showDropdown)}
+          >
+            +
+          </button>
         </div>
 
         {showDropdown && (
@@ -79,8 +85,7 @@ function Content({ setCurrentChat, socket, user, aptId }) {
 
       <div className="userprofiledisplay">{user}</div>
     </div>
-
-  )
+  );
 }
 
-export default Content
+export default Content;

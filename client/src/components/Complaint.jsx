@@ -26,7 +26,6 @@ function Complaint({ apartment_id }) {
         { isSolved },
         { withCredentials: true }
       );
-      console.log(response.data.message);
 
       // Update the local state to reflect the change
       setComplaints((prevComplaints) =>

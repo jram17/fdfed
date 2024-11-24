@@ -85,7 +85,6 @@ const fetchData = async (apartment_id) => {
         );
         const { data } = response;
         if (response.status === 200) {
-            console.log(data);
             return data;
 
         }

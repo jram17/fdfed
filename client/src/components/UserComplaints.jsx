@@ -15,7 +15,6 @@ function ComplaintForm({ apartment_id }) {
   const dispatch = useDispatch();
 
   const { Role } = useSelector((state) => state.user);
-  console.log(Role);
 
   const {
     data: roomData,
@@ -35,7 +34,6 @@ function ComplaintForm({ apartment_id }) {
   }, [roomData]);
 
   const handleSubmit = (e) => {
-    console.log('hit');
     e.preventDefault();
 
     // Clear previous error

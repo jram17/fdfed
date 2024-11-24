@@ -1,7 +1,6 @@
 import { ResponsivePie } from '@nivo/pie';
 
 const ApartmentComplaintsPie = ({ data }) => {
-  console.log(data);
   return (
     <ResponsivePie
       data={data} // The data containing 'Yes' and 'No' counts
@@ -80,7 +79,6 @@ const ApartmentComplaintsPie = ({ data }) => {
 };
 
 const UserComplaintsPie = ({ data }) => {
-  console.log(data);
   return (
     <ResponsivePie
       data={data} // The data containing 'Yes' and 'No' counts
@@ -159,7 +157,6 @@ const UserComplaintsPie = ({ data }) => {
 };
 
 const AdminSubcheckpie = ({ data }) => {
-  console.log(data);
   return (
     <ResponsivePie
       data={data} // The data containing 'Yes' and 'No' counts

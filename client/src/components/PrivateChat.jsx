@@ -67,11 +67,9 @@ function PrivateChat({ username, currentUser, aptId, socket }) {
   };
   const onEmojiClick = (emojiObject) => {
     setInput((prev) => prev + emojiObject.emoji);
-    console.log(emojiObject.emoji);
   };
 
   const handleDelete = (msgId) => {
-    console.log('hit');
     socket.emit('handle-delete-msgs', { msgId });
   };
 

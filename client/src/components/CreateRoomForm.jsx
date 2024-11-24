@@ -9,12 +9,15 @@ import { useDispatch } from 'react-redux';
 import { RiLoader5Line } from 'react-icons/ri';
 import Country_data from '../utils/CountryList.json';
 import { FaArrowRightLong } from 'react-icons/fa6';
+import { useCreateRoom } from '../hooks/createRoomhook';
+
 function CreateRoomForm() {
   const [isLoading, setLoading] = useState(false);
   const [isError, setError] = useState(false);
   const [error, setErrorMsg] = useState('');
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const CreateRoomHandler = useCreateRoom();
   const apartment_name_regex = /^(?=.*[a-zA-Z])[a-zA-Z0-9]+$/i;
   const pincode_regex = /^\d+$/;
 
@@ -37,7 +40,11 @@ function CreateRoomForm() {
       .max(6, 'Pincode must be 6 digits')
       .regex(pincode_regex, 'it can only contain numeric characters'),
     email: z.string().email('Provide a valid email'),
-    subscription: z.string(),
+    subscription: z
+      .string()
+      .refine((val) => val === 'Basic' || val === 'Premium', {
+        message: 'Subscription type should be either Basic or Premium',
+      }),
     terms_check: z.boolean().refine((val) => val === true, {
       message: 'You must accept the terms and conditions',
     }),
@@ -67,14 +74,7 @@ function CreateRoomForm() {
         email: formData.email,
         subscription: formData.subscription,
       };
-      const response = await axios.post(
-        'http://localhost:5000/createRoom',
-        formdata
-      );
-      if (response.status === 200) {
-        reset();
-        navigate('/dashboard');
-      }
+      const res = CreateRoomHandler(formdata);
     } catch (error) {
       if (error.response.status === 400) {
         setError(true);

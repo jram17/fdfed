@@ -10,7 +10,6 @@ import axios from 'axios';
 import { toTitleCase, getCreatedData } from '../utils/Roomutils';
 
 function ApartmentDetails({ apartment_id }) {
-  console.log(apartment_id);
   const [isEdit, setEdit] = useState(false); // Changed variable for clarity
   const [room, setRoom] = useState(null);
   const [email, setEmail] = useState('');
@@ -24,7 +23,6 @@ function ApartmentDetails({ apartment_id }) {
     queryKey: ['room', `${apartment_id}`],
     queryFn: () => fetchData(apartment_id),
   });
-  console.log(roomData);
   useEffect(() => {
     if (roomData) {
       setRoom(roomData.room || {});

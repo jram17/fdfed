@@ -631,7 +631,6 @@ function EventForm({ apartment_name }) {
       apartment_id: apartment_name,
       event: formdata.announcement,
     };
-    console.log(formData);
     try {
       const response = await axios.post(
         'http://localhost:5000/room-details/schedule-event',

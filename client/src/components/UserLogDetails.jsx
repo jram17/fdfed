@@ -30,7 +30,6 @@ const UserLogDetails = ({ apartment_id }) => {
   // Fetch log details when the component mounts
   useEffect(() => {
     const fetchLogs = async () => {
-      console.log('Fetching logs');
       try {
         const response = await fetch(
           `http://localhost:5000/api/residents/${apartment_id}`,
