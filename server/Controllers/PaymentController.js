@@ -1,4 +1,4 @@
-const RazorpayPayment = require('../utils/rayzorpayutils.js')
+const RazorpayPayment = require('../utils/razorpayutils')
 
 
 class PaymentController extends RazorpayPayment {
@@ -8,8 +8,7 @@ class PaymentController extends RazorpayPayment {
 
     async createSubscription(req, res) {
         try {
-            const { sub_type, total_count } = req.body;
-            const subscription = await this.createSubscription({ sub_type, total_count });
+            const subscription = await this.createRazorpaySubscription(req.body);
             res.status(200).json({ subscription });
         } catch (error) {
             console.error(error);

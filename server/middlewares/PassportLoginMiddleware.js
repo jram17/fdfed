@@ -9,7 +9,6 @@ const login = async (req, res, next) => {
             return res.status(400).json({ message: info });
         }
         if (!user) {
-            console.log("User not found");
             return res.status(400).json({ message: info });
         } if (user) {
             if (user.isGoogleId) {

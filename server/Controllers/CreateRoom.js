@@ -64,7 +64,6 @@ class RoomModel {
 
     async editemail(req, res) {
         const { email, apartment_id } = req.body;
-        console.log(req.body);
         if (!email || !apartment_id) {
             return res.status(400).json({ message: "Email and apartment_id are required." });
         }

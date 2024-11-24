@@ -18,8 +18,7 @@ const Dashboard = require("./Routes/DashBoardRouter");
 const isRoleVerify = require('./Routes/RoleVerification');
 const Annoucement = require("./Routes/AnnouncementRoute");
 const Admin = require("./Routes/AdminRouter");
-const Payment = require("./Routes/PaymentRoute");
-const path = require('path');
+const Payment = require("./Routes/PaymentRouter");
 class App extends Iointialize {
     constructor() {
         super();
@@ -52,11 +51,7 @@ class App extends Iointialize {
         this.app.use(bodyParser.json());
         this.app.use(express.json());
         this.app.use(cookieParser());
-        // this.app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
         this.app.use(passport.initialize());
-
-
-
         this.app.use(cors(corsOptions));
         this.app.options('*', cors(corsOptions));
 

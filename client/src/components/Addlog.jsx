@@ -77,7 +77,6 @@ const ResidentTable = () => {
 
       // If the request was successful
       const responseData = await response.json();
-      console.log('Log added successfully:', responseData);
 
       // Clear the input fields after successful submission
       setName('');

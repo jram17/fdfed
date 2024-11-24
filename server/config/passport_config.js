@@ -16,7 +16,7 @@ var cookieExtractor = function (req) {
     if (req && req.cookies && req.cookies['jwt']) {
         encryptedtoken = req.cookies['jwt'].token || req.cookies['jwt'];
     }
-    const token = getDecryptedToken(encryptedtoken);
+    const token = encryptedtoken ? getDecryptedToken(encryptedtoken) : null;
     return token;
 };
 

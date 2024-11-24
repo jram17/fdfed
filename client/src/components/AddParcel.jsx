@@ -88,7 +88,6 @@ const Watchman = () => {
       apartment_id: apartmentId,
     };
 
-    console.log(updatedFormData);
     if (validateForm()) {
       try {
         const response = await fetch(

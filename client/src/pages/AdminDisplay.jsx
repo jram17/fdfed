@@ -22,7 +22,6 @@ function AdminDisplay() {
       let premium = 0;
       try {
         const response = await axios.get('http://localhost:5000/admin/details');
-        console.log(response.data);
         if (response.status === 200) {
           // Process apartments data
           const apartments_table = response.data.apartments?.map((ele) => {

@@ -1,19 +1,22 @@
 import { useNavigate } from 'react-router-dom';
-import { useRazorpay, RazorpayOrderOptions } from "react-razorpay";
+import { useRazorpay } from "react-razorpay";
 import axios from 'axios';
+import env_variables from '../config/envconfig';
 const useCreateRoom = () => {
     const { error, isLoading, Razorpay } = useRazorpay();
     const navigate = useNavigate();
-    const roomHandler = async (paymentBody, roomData) => {
+    const roomHandler = async (roomData) => {
         try {
-            const response = await axios.post('http://localhost:5000/payment/create-subscription', paymentBody, {
+            const response = await axios.post('http://localhost:5000/payment/create-subscription', {
+                sub_type: roomData.subscription
+            }, {
                 withCredentials: true,
 
             });
             const subscription = response.data;
             if (response.status === 200) {
                 const options = {
-                    key: 'rzp_test_Y2wy8t1wD1AFaA',
+                    key: env_variables.RAZORPAY_KEY_ID,
                     currency: 'INR',
                     name: 'Society Log',
                     description: 'create your room',

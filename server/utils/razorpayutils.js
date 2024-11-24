@@ -1,6 +1,6 @@
 const Razorpay = require('razorpay')
 const env_variables = require("../utils/envutils")
-
+const plans = require("../constants/razorpayconstants")
 class RazorpayPayment {
     razorpay_instance = null;
     constructor() {
@@ -11,15 +11,25 @@ class RazorpayPayment {
 
         })
     }
-
-    async createSubscription() {
+    async CurrentTime() {
         try {
+            const currentTime = Math.floor(Date.now() / 1000);
+            return currentTime;
+        } catch (error) {
+            console.error('Failed to get current time:', error);
+            throw new Error('Unable to fetch current time.');
+        }
+    }
+    async createRazorpaySubscription(subdetails) {
+        try {
+            const plan_id = subdetails.sub_type === 'basic' ? plans.basic.plan_id : plans.premium.plan_id;
+
             return this.razorpay_instance.subscriptions.create({
-                plan_id: "plan_7wAosPWtrkhqZw",
+                plan_id: plan_id,
                 customer_notify: 1,
-                quantity: 5,
-                total_count: 6,
-                start_at: 1495995837,
+                quantity: 1,
+                total_count: 1,
+                start_at: this.CurrentTime(),
                 addons: [
                     {
                         item: {
@@ -45,9 +55,9 @@ class RazorpayPayment {
 
     }
 
-    async cancelSubscription(subscriptionId, options) {
+    async cancelRazorpaySubscription(subscriptionId, options) {
         try {
-            return this.razorpay_instance.subscriptions.cancel(subscriptionId, options)
+            return this.razorpay_instance.subscriptions.cancel(subscriptionId, options);
 
         } catch (error) {
             console.error(error);

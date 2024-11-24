@@ -34,11 +34,9 @@ const createComplaint = async (req, res) => {
 
 
 const getApartmentDetails = async (req, res) => {
-  console.log("hit");
   try {
     const { apartment_id } = req.params;
     const Complaints = await Complaint.find({ apartment_id });
-    console.log(Complaints);
     return res.status(200).json(Complaints);
   } catch (error) {
     console.log(error);

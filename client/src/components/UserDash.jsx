@@ -118,7 +118,6 @@ function UserDetails() {
     queryKey: ['apartment_details', username],
     queryFn: UserDetailsforApartment,
   });
-  console.log(user_details);
   useEffect(() => {
     if (user_details) {
       setUserData(user_details);

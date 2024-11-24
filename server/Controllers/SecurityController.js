@@ -7,14 +7,11 @@ class LogController {
     // Method to get all residents of a specific apartment
     async getResidents(req, res) {
         const { apartment_id } = req.params; // Extract apartment_id from the URL
-        console.log(apartment_id);
         try {
-            console.log('Apartment ID:', apartment_id); // Log the apartment ID here
 
             // Retrieve the apartment and populate the resident_id
             const apartment = await Apartment.findOne({ apartment_id }).populate('resident_id', 'username flat_id');
 
-            console.log('Apartment found:', apartment); // Log the apartment details
 
             // Check if apartment exists
             if (!apartment) {
@@ -53,7 +50,6 @@ class LogController {
 
             // Save the log in the database
             await newLog.save();
-            console.log("successfully added");
             // Return success response
             return res.status(201).json({ message: 'Log added successfully', log: newLog });
 
