@@ -29,25 +29,19 @@ const useCreateRoom = () => {
                     theme: {
                         color: '#F37254'
                     },
-                    handler: async function (response) {
-                        const verify_response = await axios.post('http://localhost:5000/payment/verify-response', {
-                            razorpay_order_id: response.razorpay_order_id,
-                            razorpay_payment_id: response.razorpay_payment_id,
-                            razorpay_signature: response.razorpay_signature
-                        }, {
-                            withCredentials: true,
-                        });
-                        if (verify_response.status === 200) {
-                            const addRoomData = await axios.post(
-                                'http://localhost:5000/createRoom',
-                                roomData, {
-                                withCredentials: true
-                            }
-                            );
-                            if (addRoomData.status === 200) {
-                                navigate('/dashboard');
-                            }
+                    handler: async function () {
+                        console.log("hit");
+
+                        const addRoomData = await axios.post(
+                            'http://localhost:5000/createRoom',
+                            roomData, {
+                            withCredentials: true
                         }
+                        );
+                        if (addRoomData.status === 200) {
+                            navigate('/dashboard');
+                        }
+
                     }
                 };
                 if (error) throw Error(error.message);

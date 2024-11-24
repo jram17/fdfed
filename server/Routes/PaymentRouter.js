@@ -7,7 +7,6 @@ class PaymentRouter extends PaymentController {
         this.route = express.Router();
 
         this.route.post('/create-subscription', this.createSubscription.bind(this));
-        this.route.post('/verify-subscription', this.verifyPayment.bind(this));
 
     }
 }
