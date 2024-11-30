@@ -28,7 +28,7 @@ function SignInForm() {
     setToken(token);
   };
   const SignUpSchema = z.object({
-    identifier: z.union(z.string().email(), z.string()),
+    identifier: z.union([z.string().email(), z.string()]),
     password: z
       .string()
       .min(8, 'Password must be at least 8 characters long')

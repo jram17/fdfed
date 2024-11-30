@@ -14,7 +14,7 @@ const useCreateRoom = () => {
 
             });
             const subscription = response.data;
-            console.log(subscription.subscription.id);
+            console.log(subscription.subscription);
             if (response.status === 200) {
                 const options = {
                     key: env_variables.RAZORPAY_KEY_ID,

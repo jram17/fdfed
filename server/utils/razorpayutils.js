@@ -23,6 +23,9 @@ class RazorpayPayment {
     }
     async createRazorpaySubscription(subdetails) {
         try {
+            const current_time = Math.floor(Date.now() / 1000) + 15 * 60;
+            console.log(current_time);
+
             const plan_id = subdetails.sub_type === 'Basic' ? plans.basic.plan_id : plans.premium.plan_id;
 
             return this.razorpay_instance.subscriptions.create({
@@ -30,22 +33,18 @@ class RazorpayPayment {
                 customer_notify: 1,
                 quantity: 1,
                 total_count: 1,
-                start_at: this.CurrentTime(),
+                start_at: current_time,
                 notes: {
                     key1: "value3",
                     key2: "value2"
                 }
-            })
+            });
         } catch (error) {
             console.error(error);
             throw new Error('Failed to create subscription: ');
-
         }
-
-
-
-
     }
+
 
     async cancelRazorpaySubscription(subscriptionId, options) {
         try {
