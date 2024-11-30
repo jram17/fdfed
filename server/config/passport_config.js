@@ -14,8 +14,10 @@ const { getDecryptedToken } = require("../utils/jwtUtils.js");
 var cookieExtractor = function (req) {
     var encryptedtoken = null;
     if (req && req.cookies && req.cookies['jwt']) {
+        
         encryptedtoken = req.cookies['jwt'].token || req.cookies['jwt'];
     }
+    console.log(encryptedtoken)
     const token = encryptedtoken ? getDecryptedToken(encryptedtoken) : null;
     return token;
 };
