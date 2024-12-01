@@ -31,7 +31,8 @@ import DashBoardLayout from './components/DashBoardLayout';
 gsap.registerPlugin(ScrollTrigger);
 
 function App() {
-  usegetJwtVerify();
+  const jwtVerify = usegetJwtVerify();
+  jwtVerify();
   axios.defaults.withCredentials = true;
 
   const router = createBrowserRouter(
