@@ -36,8 +36,11 @@ class RazorpayPayment {
 
 
 
-    async cancelRazorpaySubscription(subscriptionId, options) {
+    async cancelRazorpaySubscription(subscriptionId) {
         try {
+            const options = {
+                cancel_at_cycle_end: 0
+            }
             return this.razorpay_instance.subscriptions.cancel(subscriptionId, options);
 
         } catch (error) {
@@ -50,7 +53,7 @@ class RazorpayPayment {
 
 
     }
-    async updateSubscription(subscriptionId, options) {
+    async updateRazorPaySubscription(subscriptionId, options) {
         try {
             return this.razorpay_instance.subscriptions.update(subscriptionId, options);
         } catch (error) {
