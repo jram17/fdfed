@@ -25,6 +25,8 @@ import Error from './pages/Error';
 import ComplaintDisplay from './pages/ComplaintDisplay';
 import AdminDisplay from './pages/AdminDisplay';
 import QueryProvider from './components/ReactQueryProvider';
+import UpdatedDashBoard from './pages/UpdatedDashBoard';
+import DashBoardLayout from './components/DashBoardLayout';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -96,6 +98,16 @@ function App() {
           element={
             <AuthLayout authentication={true}>
               <DashBoard />
+            </AuthLayout>
+          }
+        />
+        <Route
+          path="dash"
+          element={
+            <AuthLayout authentication={true}>
+              <DashBoardLayout>
+                <UpdatedDashBoard />
+              </DashBoardLayout>
             </AuthLayout>
           }
         />

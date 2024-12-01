@@ -14,13 +14,16 @@ import axios from 'axios';
 import { RxHamburgerMenu } from 'react-icons/rx';
 import { toggleSideBar } from '../redux/slice/SideDashSlice';
 import src from '/logo.svg';
-
+import { getRandomAnonymousName } from '../utils/AnonymousUtils';
+import { Avatar, Tooltip } from '@mui/material';
+import { toTitleCase } from '../utils/Roomutils';
 function Header() {
   axios.defaults.withCredentials = true;
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const randomName = getRandomAnonymousName();
   const isHamburger = useSelector((state) => state.sideDash.iconvisibility);
-  const admin_icon = useSelector((state) => state.user.userDetails?.email);
+  const userdetails = useSelector((state) => state.user.userDetails);
   const Logout = async () => {
     try {
       const response = await axios.get(`http://localhost:5000/user/logout`);
@@ -95,7 +98,7 @@ function Header() {
             <p>Pricing</p>
           </div>
         </NavLink>
-        {admin_icon === 'adminsl@gmail.com' && (
+        {userdetails.email === 'adminsl@gmail.com' && (
           <NavLink to={'/admin/dashboard'}>
             <div className="header-link">
               <span>
@@ -105,6 +108,40 @@ function Header() {
             </div>
           </NavLink>
         )}
+        {isLoggedIn ? (
+          <Tooltip
+            title={toTitleCase(userdetails.username)}
+            sx={{
+              '&:hover': {
+                cursor: 'pointer',
+              },
+            }}
+          >
+            <div className="user-avatar">
+              <Avatar
+                src={`https://api.dicebear.com/9.x/initials/svg?seed=${userdetails.username}&radius=50`}
+                alt="User Avatar"
+              />
+            </div>
+          </Tooltip>
+        ) : (
+          <Tooltip
+            title={toTitleCase(randomName)}
+            sx={{
+              '&:hover': {
+                cursor: 'pointer',
+              },
+            }}
+          >
+            <div className="user-avatar">
+              <Avatar
+                src={`https://api.dicebear.com/9.x/initials/svg?seed=${randomName}&radius=50`}
+                alt="User Avatar"
+              />
+            </div>
+          </Tooltip>
+        )}
+
         {isLoggedIn ? (
           <div className="btn text-sm bg-slate-900 hover:bg-slate-800 text-white hover:cursor-pointer">
             <NavLink
