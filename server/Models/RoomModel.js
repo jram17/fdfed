@@ -16,6 +16,8 @@ const ApartmentSchema = new mongoose.Schema({
     registration_num: String,
     emergency_email: String,
     subscription: String,
+    subscriptionStatus: String,
+    subscriptionId: String,
     is_active: { type: Boolean, default: true },
     is_deleted: { type: Boolean, default: false },
     is_archived: { type: Boolean, default: false },

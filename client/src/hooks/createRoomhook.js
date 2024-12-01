@@ -30,11 +30,14 @@ const useCreateRoom = () => {
                         color: '#F37254'
                     },
                     handler: async function () {
-                        console.log("hit");
-
+                        const formData = {
+                            ...roomData,
+                            subscriptionStatus: 'active',
+                            subscriptionId: subscription.subscription.id
+                        }
                         const addRoomData = await axios.post(
                             'http://localhost:5000/createRoom',
-                            roomData, {
+                            formData, {
                             withCredentials: true
                         }
                         );

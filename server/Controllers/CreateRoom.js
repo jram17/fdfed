@@ -18,7 +18,7 @@ class RoomModel {
     }
     async createRoomReq(req, res) {
         try {
-            const { name, registration_num, state, address, flat_id, pincode, email, subscription } = req.body;
+            const { name, registration_num, state, address, flat_id, pincode, email, subscription, subscriptionStatus, subscriptionId } = req.body;
             const isAlreadyRegistered = await dbModel.findOne({ registration_num: registration_num });
             if (isAlreadyRegistered) {
 
@@ -44,6 +44,8 @@ class RoomModel {
                 registration_num: registration_num,
                 emergency_email: email,
                 subscription: subscription,
+                subscriptionStatus: subscriptionStatus,
+                subscriptionId: subscriptionId,
                 resident_id: [newuserApartment._id]
             })
             await newRoom.save();
