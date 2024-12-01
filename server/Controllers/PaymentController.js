@@ -1,6 +1,6 @@
 const RazorpayPayment = require('../utils/razorpayutils')
-
-
+const RoomModel = require("../Models/RoomModel")
+const plans = require('../constants/razorpayconstants');
 class PaymentController extends RazorpayPayment {
     constructor() {
         super();
@@ -17,11 +17,24 @@ class PaymentController extends RazorpayPayment {
     }
 
     async updateSubscription(req, res) {
+        const { apartment_id } = req.body;
+        const room = await RoomModel.findOne({ apartment_id });
+        if (!room) {
+            return res.status(404).json({ message: 'Room not found' });
+        }
+        if (room.subscriptionStatus != 'active') {
+            return res.status(400).json({ message: 'Subscription is not active' });
+        }
+        if (owner != req.id) {
+            return res.status(403).json({ message: 'Unauthorized access' });
+        }
         try {
             const options = {
                 plan_id: req.body.plan_id,
             }
             await this.updateRazorPaySubscription(req.body.subscription_id, options);
+            room.subscription = options.plan_id === plans.basic.plan_id ? 'Basic' : 'Premium';
+            await room.save();
             res.status(200).json({ message: 'Subscription updated successfully' });
 
         } catch (error) {
@@ -33,8 +46,21 @@ class PaymentController extends RazorpayPayment {
 
     async deleteSubscription(req, res) {
         try {
-            const { subscription_id } = req.body;
+            const { apartment_id, subscription_id } = req.body;
+            const room = await RoomModel.findOne({ apartment_id });
+            if (!room) {
+                return res.status(404).json({ message: 'Room not found' });
+            }
+            if (room.subscriptionStatus != 'active') {
+                return res.status(400).json({ message: 'Subscription is not active' });
+            }
+            if (owner != req.id) {
+                return res.status(403).json({ message: 'Unauthorized access' });
+            }
+
             await this.cancelRazorpaySubscription(subscription_id);
+            room.subscriptionStatus = 'cancelled';
+            await room.save();
             res.status(200).json({ message: 'Subscription cancelled successfully' });
         } catch (error) {
             console.error(error);
