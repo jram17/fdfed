@@ -12,19 +12,9 @@ class RazorpayPayment {
 
         })
     }
-    async CurrentTime() {
-        try {
-            const currentTime = Math.floor(Date.now() / 1000);
-            return currentTime;
-        } catch (error) {
-            console.error('Failed to get current time:', error);
-            throw new Error('Unable to fetch current time.');
-        }
-    }
     async createRazorpaySubscription(subdetails) {
         try {
-            const current_time = Math.floor(Date.now() / 1000) + 15 * 60;
-            console.log(current_time);
+
 
             const plan_id = subdetails.sub_type === 'Basic' ? plans.basic.plan_id : plans.premium.plan_id;
 
@@ -32,8 +22,7 @@ class RazorpayPayment {
                 plan_id: plan_id,
                 customer_notify: 1,
                 quantity: 1,
-                total_count: 1,
-                start_at: current_time,
+                total_count: 5,
                 notes: {
                     key1: "value3",
                     key2: "value2"
@@ -41,9 +30,10 @@ class RazorpayPayment {
             });
         } catch (error) {
             console.error(error);
-            throw new Error('Failed to create subscription: ');
+            throw new Error('Failed to create subscription: ' + error.message);
         }
     }
+
 
 
     async cancelRazorpaySubscription(subscriptionId, options) {
