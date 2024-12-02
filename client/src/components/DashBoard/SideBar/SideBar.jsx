@@ -44,9 +44,9 @@ const navItems = [
     icon: null,
   },
   {
-    text: 'Owning Projects',
+    text: 'Own Apartments',
     icon: <MdLeaderboard />,
-    path: '/dash/owning-apartments',
+    path: '/dash/owningapartments',
   },
   {
     text: 'Subsciptions',
@@ -156,7 +156,12 @@ const SideBar = ({ drawerWidth }) => {
                   >
                     {icon}
                   </ListItemIcon>
-                  <ListItemText primary={text} />
+                  <ListItemText
+                    primary={text}
+                    sx={{
+                      textWrap: 'nowrap',
+                    }}
+                  />
                   {active === lcText && <MdChevronLeft sx={{ ml: 'auto' }} />}
                 </ListItemButton>
               </ListItem>

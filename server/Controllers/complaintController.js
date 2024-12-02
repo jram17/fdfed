@@ -1,12 +1,12 @@
 const Complaint = require('../Models/UserComplaintModel');
 const ApartmentUser = require("../Models/ApartmentUserModel");
-
+const Room = require("../Models/RoomModel");
 const createComplaint = async (req, res) => {
   const { complaintTitle, complaintType, complaintDetail, anonymous, apartment_id } = req.body;
   const userId = req.id;
 
   try {
-    let UserDetails
+    let UserDetails;
     if (!anonymous) {
       UserDetails = await ApartmentUser.findOne({ user: req.id, apartment_id: apartment_id });
     }
@@ -35,7 +35,15 @@ const createComplaint = async (req, res) => {
 
 const getApartmentDetails = async (req, res) => {
   try {
+
     const { apartment_id } = req.params;
+    const room = await Room.findOne({ apartment_id: apartment_id });
+    if (!room) {
+      return res.status(404).json({ message: 'Room not found' });
+    }
+    if (room.owner != req.id) {
+      return res.status(403).json({ message: 'Unauthorized access' });
+    }
     const Complaints = await Complaint.find({ apartment_id });
     return res.status(200).json(Complaints);
   } catch (error) {
@@ -47,7 +55,7 @@ const getApartmentDetails = async (req, res) => {
 
 const updateIsSolved = async (req, res) => {
   const { id } = req.params;
-  const { isSolved } = req.body; // Get the new status from the request body
+  const { isSolved } = req.body;
 
   try {
     const complaint = await Complaint.findById(id);

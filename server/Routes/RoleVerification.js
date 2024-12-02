@@ -4,13 +4,11 @@ const { jwt_authenticate } = require("../middlewares/PassportLoginMiddleware");
 const ApartmentUser = require("../Models/ApartmentUserModel");
 const Room = require("../Models/RoomModel.js");
 
-// Use JWT authentication middleware
 route.use('/', jwt_authenticate);
 
-// Define the route with a role parameter
 route.get('/:role', async function (req, res) {
-    const role = req.params.role;  // Extract role as a string
-    const userId = req.id;  // Assuming req.id is set by jwt_auth middleware
+    const role = req.params.role;
+    const userId = req.id;
 
     try {
         if (role === 'Security') {

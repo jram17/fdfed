@@ -1,6 +1,7 @@
 import { FaPlus } from 'react-icons/fa';
 
 import axios from 'axios';
+import { AiOutlineConsoleSql } from 'react-icons/ai';
 
 const backgroundColors = [
     {
@@ -94,13 +95,16 @@ const fetchData = async (apartment_id) => {
 };
 
 const fetchisRole = async (role) => {
+    console.log(role);
     try {
         const response = await axios.get(`http://localhost:5000/isSuperRole/${role}`, {
             withCredentials: true
         });
         const { data } = response;
+
         return data;
     } catch (error) {
+        console.log(error);
         return null;
 
     }
