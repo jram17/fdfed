@@ -85,11 +85,14 @@ const SideBar = ({ drawerWidth }) => {
     <Box
       sx={{
         width: drawerWidth,
+        height: '100%',
         flexShrink: 0,
         borderRight: '0.8px solid gray',
         position: 'fixed',
         zIndex: 1000,
         overflowY: 'auto',
+        boxShadow:
+          '0 4px 8px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.06)', // Neat shadow
       }}
     >
       <Box

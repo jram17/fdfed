@@ -28,9 +28,11 @@ import QueryProvider from './components/providers/ReactQueryProvider';
 import DashBoardLayout from './components/DashBoardLayout';
 import { CssBaseline } from '@mui/material';
 import ResidentApartments from './components/DashBoard/Resident/ResidentApartments';
+import UserComplaints from './components/DashBoard/Resident/UserDashBoardComplaints';
 gsap.registerPlugin(ScrollTrigger);
 
 function App() {
+  axios.defaults.withCredentials = true;
   const jwtVerify = usegetJwtVerify();
   jwtVerify();
   axios.defaults.withCredentials = true;
@@ -102,6 +104,17 @@ function App() {
             </AuthLayout>
           }
         />
+
+        <Route
+          path="dash/complaints"
+          element={
+            <AuthLayout authentication={true}>
+              <DashBoardLayout>
+                <UserComplaints />
+              </DashBoardLayout>
+            </AuthLayout>
+          }
+        />
         <Route
           path="dash"
           element={
@@ -112,6 +125,7 @@ function App() {
             </AuthLayout>
           }
         />
+
         <Route
           path="dashboard/myprofile"
           element={

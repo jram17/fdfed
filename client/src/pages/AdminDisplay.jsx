@@ -7,8 +7,6 @@ import {
 } from '../components/antDesignUI/TableUi';
 import { getCreatedData } from '../utils/Roomutils';
 import { AdminSubcheckpie } from '../components/nivocharts/PieChart';
-import MyResponsiveLine from '../components/nivocharts/LineChart';
-
 function AdminDisplay() {
   axios.defaults.withCredentials = true;
   const [apartments, setApartments] = useState([]);
