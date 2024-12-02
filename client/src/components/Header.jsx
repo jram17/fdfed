@@ -98,16 +98,6 @@ function Header() {
             <p>Pricing</p>
           </div>
         </NavLink>
-        {userdetails.email === 'adminsl@gmail.com' && (
-          <NavLink to={'/admin/dashboard'}>
-            <div className="header-link">
-              <span>
-                <MdDashboard size={20} />
-              </span>
-              <p>Admin</p>
-            </div>
-          </NavLink>
-        )}
         {isLoggedIn ? (
           <Tooltip
             title={toTitleCase(userdetails.username)}

@@ -24,10 +24,10 @@ import Room from './pages/Room';
 import Error from './pages/Error';
 import ComplaintDisplay from './pages/ComplaintDisplay';
 import AdminDisplay from './pages/AdminDisplay';
-import QueryProvider from './components/ReactQueryProvider';
-import UpdatedDashBoard from './pages/UpdatedDashBoard';
+import QueryProvider from './components/providers/ReactQueryProvider';
 import DashBoardLayout from './components/DashBoardLayout';
-
+import { CssBaseline } from '@mui/material';
+import ResidentApartments from './components/DashBoard/Resident/ResidentApartments';
 gsap.registerPlugin(ScrollTrigger);
 
 function App() {
@@ -107,7 +107,7 @@ function App() {
           element={
             <AuthLayout authentication={true}>
               <DashBoardLayout>
-                <UpdatedDashBoard />
+                <ResidentApartments />
               </DashBoardLayout>
             </AuthLayout>
           }
@@ -231,6 +231,8 @@ function App() {
 
   return (
     <QueryProvider>
+      <CssBaseline />
+
       <RouterProvider router={router} />
     </QueryProvider>
   );
