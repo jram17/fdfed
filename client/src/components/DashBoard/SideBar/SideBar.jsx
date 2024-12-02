@@ -12,8 +12,17 @@ import {
   Typography,
 } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { MdChevronLeft, MdChevronRight } from 'react-icons/md';
+import {
+  MdChevronLeft,
+  MdApartment,
+  MdWrongLocation,
+  MdLeaderboard,
+  MdAdminPanelSettings,
+  MdSubscriptions,
+} from 'react-icons/md';
 import { useTheme } from '@mui/material/styles';
+import { CiLogin } from 'react-icons/ci';
+import { FaBox } from 'react-icons/fa';
 
 const navItems = [
   {
@@ -21,52 +30,51 @@ const navItems = [
     icon: null,
   },
   {
-    text: 'Products',
-    icon: <MdChevronLeft />,
+    text: 'My Apartments',
+    icon: <MdApartment />,
+    path: '/dash',
   },
   {
-    text: 'Customers',
-    icon: <MdChevronLeft />,
-  },
-  {
-    text: 'Transactions',
-    icon: <MdChevronLeft />,
-  },
-  {
-    text: 'Geography',
-    icon: <MdChevronLeft />,
+    text: 'Complaints',
+    icon: <MdWrongLocation />,
+    path: '/dash/complaints',
   },
   {
     text: 'Owner',
     icon: null,
   },
   {
-    text: 'Overview',
-    icon: <MdChevronLeft />,
+    text: 'Owning Projects',
+    icon: <MdLeaderboard />,
+    path: '/dashboard/owning-apartments',
   },
   {
-    text: 'Daily',
-    icon: <MdChevronLeft />,
-  },
-  {
-    text: 'Monthly',
-    icon: <MdChevronLeft />,
-  },
-  {
-    text: 'Breakdown',
-    icon: <MdChevronLeft />,
+    text: 'Subsciptions',
+    icon: <MdSubscriptions />,
+    path: '/dashboard/subscription',
   },
   {
     text: 'Security',
     icon: null,
   },
   {
-    text: 'Admin',
-    icon: <MdChevronLeft />,
+    text: 'Add Log',
+    icon: <CiLogin />,
+    path: '/dashboard/security',
   },
   {
-    text: 'Performance',
-    icon: <MdChevronLeft />,
+    text: 'Add Parcel',
+    icon: <FaBox />,
+    path: '/dashboard/parcels',
+  },
+  {
+    text: 'Admin',
+    icon: null,
+  },
+  {
+    text: 'Apartments',
+    icon: <MdAdminPanelSettings />,
+    path: '/dashboard/admin/apartments',
   },
 ];
 
@@ -109,7 +117,7 @@ const SideBar = ({ drawerWidth }) => {
       >
         {/* Drawer Items */}
         <List>
-          {navItems.map(({ text, icon }) => {
+          {navItems.map(({ text, icon, path }) => {
             if (!icon) {
               return (
                 <Typography key={text} sx={{ m: '2.25rem 0 1rem 3rem' }}>
@@ -123,7 +131,7 @@ const SideBar = ({ drawerWidth }) => {
               <ListItem key={text} disablePadding>
                 <ListItemButton
                   onClick={() => {
-                    navigate(`/${lcText}`);
+                    navigate(path);
                     setActive(lcText);
                   }}
                   sx={{

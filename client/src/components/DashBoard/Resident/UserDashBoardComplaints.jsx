@@ -231,6 +231,7 @@ const PieAndLineGraphComponent = ({ data }) => {
         padding: '1rem',
         width: '100%',
         height: '900px',
+        minHeight: '400px',
         borderRadius: '0.5rem',
         display: 'flex',
         flexDirection: 'column',
