@@ -46,12 +46,12 @@ const navItems = [
   {
     text: 'Owning Projects',
     icon: <MdLeaderboard />,
-    path: '/dashboard/owning-apartments',
+    path: '/dash/owning-apartments',
   },
   {
     text: 'Subsciptions',
     icon: <MdSubscriptions />,
-    path: '/dashboard/subscription',
+    path: '/dash/subscriptions',
   },
   {
     text: 'Security',
@@ -60,12 +60,12 @@ const navItems = [
   {
     text: 'Add Log',
     icon: <CiLogin />,
-    path: '/dashboard/security',
+    path: '/dash/log',
   },
   {
     text: 'Add Parcel',
     icon: <FaBox />,
-    path: '/dashboard/parcels',
+    path: '/dash/parcels',
   },
   {
     text: 'Admin',
@@ -74,7 +74,7 @@ const navItems = [
   {
     text: 'Apartments',
     icon: <MdAdminPanelSettings />,
-    path: '/dashboard/admin/apartments',
+    path: '/dash/admin/apartments',
   },
 ];
 

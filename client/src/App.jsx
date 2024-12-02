@@ -29,6 +29,8 @@ import DashBoardLayout from './components/DashBoardLayout';
 import { CssBaseline } from '@mui/material';
 import ResidentApartments from './components/DashBoard/Resident/ResidentApartments';
 import UserComplaints from './components/DashBoard/Resident/UserDashBoardComplaints';
+import OwningApartments from './components/DashBoard/Owner/OwningApartments';
+import Subscriptions from './components/DashBoard/Owner/Subscriptions';
 gsap.registerPlugin(ScrollTrigger);
 
 function App() {
@@ -115,6 +117,27 @@ function App() {
             </AuthLayout>
           }
         />
+        <Route
+          path="dash/owningapartments"
+          element={
+            <AuthLayout authentication={true}>
+              <DashBoardLayout>
+                <OwningApartments />
+              </DashBoardLayout>
+            </AuthLayout>
+          }
+        />
+        <Route
+          path="dash/subscriptions"
+          element={
+            <AuthLayout authentication={true}>
+              <DashBoardLayout>
+                <OwningApartments />
+              </DashBoardLayout>
+            </AuthLayout>
+          }
+        />
+
         <Route
           path="dash"
           element={
