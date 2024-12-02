@@ -87,6 +87,9 @@ const SideBar = ({ drawerWidth }) => {
         width: drawerWidth,
         flexShrink: 0,
         borderRight: '0.8px solid gray',
+        position: 'fixed',
+        zIndex: 1000,
+        overflowY: 'auto',
       }}
     >
       <Box
