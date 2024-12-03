@@ -5,6 +5,7 @@ import { fetchAdminData } from '../../../utils/DashBoardUtils';
 import { DataGrid } from '@mui/x-data-grid';
 import { Tag } from 'antd';
 import { AdminSubcheckpie } from '../../nivocharts/PieChart';
+import { useSelector } from 'react-redux';
 const AdminApartmentsDetails = () => {
   const apartment_columns = [
     { field: 'apartment_name', headerName: 'Apartment Name', flex: 0.5 },
@@ -59,7 +60,13 @@ const AdminApartmentsDetails = () => {
     queryKey: ['admin_details'],
     queryFn: fetchAdminData,
   });
-  console.log(data?.statusData);
+  if (isError) {
+    return (
+      <Box>
+        <Typography>Error fetching data, please try again later.</Typography>
+      </Box>
+    );
+  }
   return (
     <Box
       m={'1.5rem 2.5rem '}

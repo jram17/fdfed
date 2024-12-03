@@ -43,7 +43,17 @@ class PaymentController extends RazorpayPayment {
 
         }
     }
+    async getSubscriptionDetails(req, res) {
+        try {
+            const { subscription_id } = req.params;
+            const subscription = await this.getRazorpaySubscriptionDetails(subscription_id);
+            res.status(200).json({ subscription: subscription });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Failed to get subscription details' });
 
+        }
+    }
     async deleteSubscription(req, res) {
         try {
             const { apartment_id, subscription_id } = req.body;

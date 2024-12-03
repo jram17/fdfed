@@ -120,7 +120,7 @@ const SideBar = ({ drawerWidth }) => {
           {navItems.map(({ text, icon, path }) => {
             if (!icon) {
               return (
-                <Typography key={text} sx={{ m: '2.25rem 0 1rem 3rem' }}>
+                <Typography key={text} sx={{ m: '2.25rem 0 0rem 3rem' }}>
                   {text}
                 </Typography>
               );

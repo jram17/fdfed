@@ -34,6 +34,16 @@ class RazorpayPayment {
         }
     }
 
+    async getRazorpaySubscriptionDetails(subscriptionId) {
+        try {
+            return this.razorpay_instance.subscriptions.fetch(subscriptionId);
+        } catch (error) {
+            console.error(error);
+            throw new Error('Failed to get subscription details: ');
+
+        }
+    }
+
 
 
     async cancelRazorpaySubscription(subscriptionId) {

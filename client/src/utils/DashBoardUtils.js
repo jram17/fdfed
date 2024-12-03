@@ -89,6 +89,18 @@ const Apartment_Complaints = async (apartment_id) => {
     }
 }
 
+const subscriptionDetails = async (subscription_id) => {
+    try {
+        const response = await axios.get(`http://localhost:5000/payment/get-subscription-details/${subscription_id}`, {
+            withCredentials: true
+        })
+        return response.data;
+    } catch (error) {
+        console.error('Could not fetch the subscription details:', error);
+        return null;
+
+    }
+}
 
 const fetchAdminData = async () => {
     let basic = 0;
@@ -147,4 +159,4 @@ const fetchAdminData = async () => {
 };
 
 
-export { DashBoardSideDashutils, getApartmentDetails, UserDetailsforApartment, Apartment_Complaints, fetchAdminData };
+export { DashBoardSideDashutils, getApartmentDetails, UserDetailsforApartment, Apartment_Complaints, fetchAdminData, subscriptionDetails };
