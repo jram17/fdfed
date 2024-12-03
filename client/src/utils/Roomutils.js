@@ -95,7 +95,6 @@ const fetchData = async (apartment_id) => {
 };
 
 const fetchisRole = async (role) => {
-    console.log(role);
     try {
         const response = await axios.get(`http://localhost:5000/isSuperRole/${role}`, {
             withCredentials: true

@@ -3,7 +3,7 @@ import { fetchisRole, fetchRoomDetails } from '../utils/Roomutils';
 import { useQuery } from '@tanstack/react-query';
 import '../css/Parcel.css';
 
-const Watchman = () => {
+const AddParcel = () => {
   const [apartmentId, setApartmentId] = useState(null);
   const [apartmentUsers, setApartmentUsers] = useState([]);
 
@@ -216,4 +216,4 @@ const Watchman = () => {
   );
 };
 
-export default Watchman;
+export default AddParcel;

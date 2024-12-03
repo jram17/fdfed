@@ -1,6 +1,6 @@
 import React from 'react';
 import SideBar from './DashBoard/SideBar/SideBar';
-import { Box, useMediaQuery, Typography } from '@mui/material';
+import { Box, useMediaQuery } from '@mui/material';
 const DashBoardLayout = ({ children }) => {
   const isNonMobile = useMediaQuery('(min-width: 600px)');
 

@@ -81,7 +81,6 @@ const Apartment_Complaints = async (apartment_id) => {
             `http://localhost:5000/complaints/${apartment_id}`,
             { withCredentials: true }
         );
-        console.log(response);
         return response.data;
     } catch (error) {
         console.error('Could not fetch the complaints:', error);

@@ -3,7 +3,7 @@ import { fetchisRole, fetchRoomDetails } from '../utils/Roomutils';
 import { useQuery } from '@tanstack/react-query';
 import ReactModal from 'react-modal';
 import axios from 'axios';
-const ResidentTable = () => {
+const AddLog = () => {
   const [apartmentId, setApartmentId] = useState(null);
   const [name, setName] = useState('');
   const [entryTime, setEntryTime] = useState('');
@@ -264,4 +264,4 @@ const ResidentTable = () => {
   );
 };
 
-export default ResidentTable;
+export default AddLog;
