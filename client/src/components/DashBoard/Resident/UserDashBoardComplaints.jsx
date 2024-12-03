@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { Box, Typography } from '@mui/material';
 import { UserComplaintsPie } from '../../nivocharts/PieChart';
 import { DataGrid } from '@mui/x-data-grid';
-import MyResponsiveBar from '../../nivocharts/BarChart';
+import { MyResponsiveBar } from '../../nivocharts/BarChart';
 import { format } from 'date-fns';
 import { Tag } from 'antd';
 const UserComplaints = () => {

@@ -81,7 +81,22 @@ const Apartment_Complaints = async (apartment_id) => {
             `http://localhost:5000/complaints/${apartment_id}`,
             { withCredentials: true }
         );
-        return response.data;
+        let severe = 0;
+        let warning = 0;
+        severe = response.data.filter((ele) => ele.severity === 'Severe').length;
+        warning = response.data.filter((ele) => ele.severity === 'Warning').length;
+        return {
+            status: [
+                {
+                    severity: 'Severe',
+                    count: severe
+                }, {
+                    severity: 'Warning',
+                    count: warning
+                }
+            ]
+            , complaints: response.data
+        };
     } catch (error) {
         console.error('Could not fetch the complaints:', error);
         return null;
@@ -158,19 +173,18 @@ const fetchAdminData = async () => {
     }
 };
 
-const SubscriptionDetails = async (apartment_details) => {
+const SubscriptionDetails = async (apartment_id) => {
     try {
-        const response = await axios.get(`http://localhost:5000/payment/get-subscription-details/${apartment_details.apartment_id}`, {
+        const response = await axios.get(`http://localhost:5000/payment/get-subscription-details/${apartment_id}`, {
             withCredentials: true
         });
-        return response.data;
+        return response.data.subscription;
 
     } catch (error) {
         console.error('Could not fetch the subscription details:', error);
         return null;
 
     }
-
 }
 
 const ApartmentUsers = async (apartment_id) => {

@@ -10,6 +10,7 @@ import { toTitleCase } from '../../../utils/Roomutils';
 import { Tag } from 'antd';
 import { DataGrid } from '@mui/x-data-grid';
 import MyResponsiveCalendar from '../../nivocharts/CalenderUi';
+import { ApartmentComplaintBar } from '../../nivocharts/BarChart';
 const ApartmentDashBoardDetails = () => {
   const columns = [
     {
@@ -155,8 +156,8 @@ const ApartmentDashBoardDetails = () => {
         </Typography>
         <DataGrid
           rowsPerPageOptions={[10, 20, 50]}
-          rows={data || []}
-          loading={isLoading || !data}
+          rows={data.complaints || []}
+          loading={isLoading || !data.complaints}
           columns={columns}
           getRowId={(row) => `${row.apartment_id}-${row._id}`}
           sx={{
@@ -165,6 +166,30 @@ const ApartmentDashBoardDetails = () => {
             bgcolor: 'background.paper',
           }}
         />
+      </Box>
+      <Box
+        display={'flex'}
+        alignItems={'center'}
+        justifyContent={'center'}
+        sx={{
+          height: '400px',
+          backgroundColor: 'background.paper',
+          padding: '0.5rem 1rem',
+          borderRadius: '0.5rem',
+          gap: '1rem',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+          cursor: 'pointer',
+          transition: 'background-color 0.2s ease-in-out',
+          '&:hover': {
+            backgroundColor: 'background.paperHover',
+          },
+        }}
+      >
+        <ApartmentComplaintBar data={data.status} />
       </Box>
     </Box>
   );
