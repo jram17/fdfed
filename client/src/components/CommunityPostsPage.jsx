@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import { Snackbar } from '@mui/material';
 const CommunityPostsPage = () => {
   const [posts, setPosts] = useState([]);
   const [newPostTitle, setNewPostTitle] = useState('');
   const [newPostDescription, setNewPostDescription] = useState('');
   const [newPostFile, setNewPostFile] = useState(null);
   const [showPostForm, setShowPostForm] = useState(false);
+  const [open, setOpen] = React.useState(false);
   const { apartment_id } = useParams();
   useEffect(() => {
     fetchPosts();
@@ -14,7 +16,9 @@ const CommunityPostsPage = () => {
 
   const fetchPosts = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/posts');
+      const response = await axios.get(
+        `http://localhost:5000/api/posts/${apartment_id}`
+      );
       setPosts(response.data);
     } catch (error) {
       console.error('Error fetching posts:', error);
@@ -23,8 +27,11 @@ const CommunityPostsPage = () => {
 
   const handleLike = async (postId) => {
     try {
-      await axios.post(`http://localhost:5000/api/posts/${postId}/like`);
-      fetchPosts(); // Refresh posts to update likes count
+      const response = await axios.post(
+        `http://localhost:5000/api/posts/${postId}/like`
+      );
+
+      fetchPosts();
     } catch (error) {
       console.error('Error liking post:', error);
     }
@@ -47,19 +54,27 @@ const CommunityPostsPage = () => {
     formData.append('title', newPostTitle);
     formData.append('description', newPostDescription);
     formData.append('file', newPostFile);
-
+    formData.append('apartment_id', apartment_id);
     try {
-      await axios.post('http://localhost:5000/api/posts', formData);
-      setNewPostTitle('');
-      setNewPostDescription('');
-      setNewPostFile(null);
-      setShowPostForm(false);
-      fetchPosts(); // Refresh posts after submitting the new post
+      const response = await axios.post(
+        'http://localhost:5000/api/posts',
+        formData
+      );
+      if (response.status === 201) {
+        setNewPostTitle('');
+        setNewPostDescription('');
+        setNewPostFile(null);
+        setShowPostForm(false);
+        fetchPosts();
+        setOpen(true);
+      }
     } catch (error) {
       console.error('Error creating post:', error);
     }
   };
-
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <div className="bg-black text-white min-h-screen p-6">
       <h1 className="text-3xl font-bold mb-6">Community Posts</h1>
@@ -122,10 +137,15 @@ const CommunityPostsPage = () => {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {posts.length === 0 && (
+          <div className="text-center">
+            <p>No posts found. Be the first to create one.</p>
+          </div>
+        )}
         {posts.map((post) => (
           <div key={post._id} className="bg-gray-800 rounded-lg p-4 shadow-md">
             <img
-              src={`http://localhost:5000${post.fileUrl}`}
+              src={`${'http://localhost:5000'}${post.fileUrl}`}
               alt={post.title}
               className="w-full h-40 object-cover rounded-md mb-4"
             />
@@ -158,6 +178,12 @@ const CommunityPostsPage = () => {
                 ))}
               </div>
             </div>
+            <Snackbar
+              open={open}
+              autoHideDuration={5000}
+              onClose={handleClose}
+              message="Post Added Successfully"
+            />
           </div>
         ))}
       </div>

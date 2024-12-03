@@ -39,10 +39,14 @@ exports.likePost = async (req, res) => {
         const { postId } = req.params;
 
         const post = await Post.findById(postId);
-        if (!post) return res.status(404).json({ message: 'Post not found' });
+        const user_id = req.id;
 
-        // Increment the like count each time the user clicks the like button
+        if (!post) return res.status(404).json({ message: 'Post not found' });
+        if (post.likedIPs.includes(user_id)) {
+            return res.status(200).json({ message: 'User has already liked this post' });
+        }
         post.likes += 1;
+        post.likedIPs.push(user_id);
 
         await post.save();
         res.status(200).json({ message: 'Post liked', likes: post.likes });

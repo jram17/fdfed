@@ -19,6 +19,7 @@ const isRoleVerify = require('./Routes/RoleVerification');
 const Annoucement = require("./Routes/AnnouncementRoute");
 const Admin = require("./Routes/AdminRouter");
 const Payment = require("./Routes/PaymentRouter");
+const PostRouter = require("./Routes/PostRouter")
 class App extends Iointialize {
     constructor() {
         super();
