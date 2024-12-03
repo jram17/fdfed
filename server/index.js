@@ -20,6 +20,7 @@ const Annoucement = require("./Routes/AnnouncementRoute");
 const Admin = require("./Routes/AdminRouter");
 const Payment = require("./Routes/PaymentRouter");
 const PostRouter = require("./Routes/PostRouter")
+const path = require('path')
 class App extends Iointialize {
     constructor() {
         super();
@@ -55,7 +56,7 @@ class App extends Iointialize {
         this.app.use(passport.initialize());
         this.app.use(cors(corsOptions));
         this.app.options('*', cors(corsOptions));
-
+        this.app.use('/communitypost', express.static(path.join(__dirname, 'communitypost')));
         require('./config/passport_config');
     }
 

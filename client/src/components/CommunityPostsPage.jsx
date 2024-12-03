@@ -19,6 +19,7 @@ const CommunityPostsPage = () => {
       const response = await axios.get(
         `http://localhost:5000/api/posts/${apartment_id}`
       );
+      console.log(response.data);
       setPosts(response.data);
     } catch (error) {
       console.error('Error fetching posts:', error);
