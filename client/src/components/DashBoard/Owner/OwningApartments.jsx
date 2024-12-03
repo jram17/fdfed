@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Typography, Link } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { fetchisRole } from '../../../utils/Roomutils';
@@ -7,7 +7,9 @@ import { useSelector } from 'react-redux';
 import { Tag } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { toTitleCase } from '../../../utils/Roomutils';
+import MyResponsiveCalendar from '../../nivocharts/CalenderUi';
 const OwningApartments = () => {
+  const [calenderData, setcalendarData] = useState([]);
   const navigate = useNavigate();
   const columns = [
     {
@@ -81,6 +83,23 @@ const OwningApartments = () => {
     queryFn: () => fetchisRole('Owner'),
     enabled: !!username,
   });
+  console.log(apartment_details);
+  useEffect(() => {
+    const groupedData = apartment_details?.details.reduce((acc, ele) => {
+      const day = ele.createdAt.slice(0, 10);
+
+      if (acc[day]) {
+        acc[day].value++;
+      } else {
+        acc[day] = { day, value: 1 };
+      }
+
+      return acc;
+    }, {});
+
+    const resultArray = Object.values(groupedData || {});
+    setcalendarData(resultArray);
+  }, [apartment_details]);
   return (
     <Box
       m={'1.5rem 2.5rem '}
@@ -134,6 +153,41 @@ const OwningApartments = () => {
             bgcolor: 'background.paper',
           }}
         />
+      </Box>
+
+      <Box
+        display={'flex'}
+        alignItems={'center'}
+        justifyContent={'center'}
+        sx={{
+          height: '500px',
+          backgroundColor: 'background.paper',
+          padding: '0.5rem 1rem',
+          borderRadius: '0.5rem',
+          gap: '1rem',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+          cursor: 'pointer',
+          transition: 'background-color 0.2s ease-in-out',
+          '&:hover': {
+            backgroundColor: 'background.paperHover',
+          },
+        }}
+      >
+        <Typography
+          width={'100%'}
+          textAlign={'left'}
+          component={'h1'}
+          variant="h4"
+          fontWeight={'bold'}
+          sx={{ mb: '1rem' }}
+        >
+          Over The Year Apartment Registration
+        </Typography>
+        <MyResponsiveCalendar data={calenderData} />
       </Box>
     </Box>
   );

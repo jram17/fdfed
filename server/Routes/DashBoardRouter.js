@@ -11,6 +11,7 @@ class DashBoardControllerRouter extends DashBoardController {
 
         this.route.get('/apartment_details', this.UserApartmentDetails.bind(this));
         this.route.get('/user_apartment_details', this.UserDashDetails.bind(this));
+        this.route.get('/apartment-users/:apartment_id', this.ApartmentResidents.bind(this));
     }
 }
 

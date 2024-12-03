@@ -158,5 +158,33 @@ const fetchAdminData = async () => {
     }
 };
 
+const SubscriptionDetails = async (apartment_details) => {
+    try {
+        const response = await axios.get(`http://localhost:5000/payment/get-subscription-details/${apartment_details.apartment_id}`, {
+            withCredentials: true
+        });
+        return response.data;
 
-export { DashBoardSideDashutils, getApartmentDetails, UserDetailsforApartment, Apartment_Complaints, fetchAdminData, subscriptionDetails };
+    } catch (error) {
+        console.error('Could not fetch the subscription details:', error);
+        return null;
+
+    }
+
+}
+
+const ApartmentUsers = async (apartment_id) => {
+    try {
+        const response = await axios.get(`http://localhost:5000/dashboard/apartment-users/${apartment_id}`, {
+            withCredentials: true
+        });
+        return response.data;
+
+    } catch (error) {
+        console.error('Could not fetch the users:', error);
+        return null;
+
+    }
+}
+
+export { DashBoardSideDashutils, getApartmentDetails, UserDetailsforApartment, Apartment_Complaints, fetchAdminData, SubscriptionDetails, ApartmentUsers };

@@ -64,6 +64,20 @@ class DashBoardController {
             return res.status(500).json({ error: error.message });
         }
     }
+    async ApartmentResidents(req, res) {
+        try {
+            const { apartment_id } = req.params;
+            if (!apartment_id) {
+                return res.status(400).json({ message: "apartment_id is required" });
+            }
+            const residents = await UserApartment.find({ apartment_id });
+            return res.status(200).json({ residents });
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ error: error.message });
+        }
+
+    }
 
 
 
