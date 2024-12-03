@@ -82,7 +82,7 @@ function Header() {
             <p>Join Us</p>
           </div>
         </NavLink>
-        <NavLink to={'/dashboard'}>
+        <NavLink to={'/dash'}>
           <div className="header-link">
             <span>
               <MdDashboard size={20} />
