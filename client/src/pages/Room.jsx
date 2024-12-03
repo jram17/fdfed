@@ -73,6 +73,15 @@ function Room() {
                 <span>Complaints</span>
               </NavLink>
             </div>
+
+            <div className="h-full  flex items-center">
+              <NavLink
+                to={`/room/${apartment_id}/posts`}
+                className={({ isActive }) => (isActive ? 'text-red-600' : '')}
+              >
+                <span> Posts</span>
+              </NavLink>
+            </div>
           </div>
           <Link to={`/room/${apartment_id}/chat`}>
             <div className="mr-6 btn bg-[#333] flex items-center justify-center gap-2 hover:bg-[#444] text-white cursor-pointer">

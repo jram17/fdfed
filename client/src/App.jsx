@@ -36,6 +36,7 @@ import AddLogDashBoard from './components/DashBoard/Security/AddLogDashBoard';
 import AddParcelDashBoard from './components/DashBoard/Security/AddParcelDashBoard';
 import AdminApartmentsDetails from './components/DashBoard/Admin/AdminApartmentsDetails';
 import AdminLayout from './components/DashBoard/Admin/AdminLayout';
+import CommunityPostsPage from './components/CommunityPostsPage';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -299,6 +300,15 @@ function App() {
           element={
             <AuthLayout authentication={true}>
               <Room />
+            </AuthLayout>
+          }
+        />
+
+        <Route
+          path="room/:apartment_id/posts"
+          element={
+            <AuthLayout authentication={true}>
+              <CommunityPostsPage />
             </AuthLayout>
           }
         />

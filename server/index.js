@@ -74,6 +74,7 @@ class App extends Iointialize {
         this.app.use('/announcement', Annoucement);
         this.app.use('/admin', Admin);
         this.app.use('/payment', Payment);
+        this.app.use('/api/posts', PostRouter);
     }
 
     initializeSocket() {
