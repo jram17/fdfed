@@ -31,12 +31,13 @@ import ResidentApartments from './components/DashBoard/Resident/ResidentApartmen
 import UserComplaints from './components/DashBoard/Resident/UserDashBoardComplaints';
 import OwningApartments from './components/DashBoard/Owner/OwningApartments';
 import ApartmentDashBoardDetails from './components/DashBoard/Owner/ApartmentDashBoardDetails';
-import Subscriptions from './components/DashBoard/Owner/Subscriptions';
+import Subscriptions from './components/DashBoard/Owner/AllSubscriptions';
 import AddLogDashBoard from './components/DashBoard/Security/AddLogDashBoard';
 import AddParcelDashBoard from './components/DashBoard/Security/AddParcelDashBoard';
 import AdminApartmentsDetails from './components/DashBoard/Admin/AdminApartmentsDetails';
 import AdminLayout from './components/DashBoard/Admin/AdminLayout';
 import CommunityPostsPage from './components/CommunityPostsPage';
+import ApartmentSubscription from './components/DashBoard/Owner/ApartmentSubscription';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -183,6 +184,17 @@ function App() {
             <AuthLayout authentication={true}>
               <DashBoardLayout>
                 <Subscriptions />
+              </DashBoardLayout>
+            </AuthLayout>
+          }
+        />
+
+        <Route
+          path="dash/apartment/subscription/:apartment_id"
+          element={
+            <AuthLayout authentication={true}>
+              <DashBoardLayout>
+                <ApartmentSubscription />
               </DashBoardLayout>
             </AuthLayout>
           }
