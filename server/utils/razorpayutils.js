@@ -48,10 +48,8 @@ class RazorpayPayment {
 
     async cancelRazorpaySubscription(subscriptionId) {
         try {
-            const options = {
-                cancel_at_cycle_end: 0
-            }
-            return this.razorpay_instance.subscriptions.cancel(subscriptionId, options);
+            const response = await this.razorpay_instance.subscriptions.cancel(subscriptionId);
+            return response;
 
         } catch (error) {
             console.error(error);

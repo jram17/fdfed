@@ -38,6 +38,7 @@ class PaymentController extends RazorpayPayment {
             res.status(200).json({ message: 'Subscription updated successfully' });
 
         } catch (error) {
+
             console.error(error);
             res.status(500).json({ error: 'Failed to update subscription' });
 
@@ -45,13 +46,11 @@ class PaymentController extends RazorpayPayment {
     }
     async getSubscriptionDetails(req, res) {
         try {
+            console.log(req.params);
             const { apartment_id } = req.params;
             const room = await RoomModel.findOne({ apartment_id });
             if (!room) {
                 return res.status(404).json({ message: 'Room not found' });
-            }
-            if (room.subscriptionStatus != 'active') {
-                return res.status(400).json({ message: 'Subscription is not active' });
             }
             if (room.owner != req.id) {
                 return res.status(403).json({ message: 'Unauthorized access' });
@@ -66,12 +65,14 @@ class PaymentController extends RazorpayPayment {
     }
     async deleteSubscription(req, res) {
         try {
-            const { apartment_id, subscription_id } = req.body;
+            console.log(req.params);
+            const { apartment_id, subscription_id } = req.params;
             const room = await RoomModel.findOne({ apartment_id });
+
             if (!room) {
                 return res.status(404).json({ message: 'Room not found' });
             }
-            if (owner != req.id) {
+            if (room.owner != req.id) {
                 return res.status(403).json({ message: 'Unauthorized access' });
             }
 

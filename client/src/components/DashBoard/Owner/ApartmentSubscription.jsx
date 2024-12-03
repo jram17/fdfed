@@ -48,6 +48,7 @@ const ApartmentSubscription = () => {
       }
     }
   }, [data]);
+  console.log(data);
   const switchSub = () => {
     if (isSubUpdate) return;
     setLoading(true);
@@ -55,7 +56,7 @@ const ApartmentSubscription = () => {
       conversionPlan === 'Premium'
         ? plans.premium.plan_id
         : plans.basic.plan_id;
-    switchSubscriptions(apartment_id, plan_id)
+    switchSubscriptions(apartment_id, plan_id, data.id)
       .then(() => {
         setLoading(false);
       })
@@ -74,6 +75,17 @@ const ApartmentSubscription = () => {
         setLoading(false);
       });
   };
+  if (isLoading && !data) {
+    <Box>
+      <Typography variant="h4">Error</Typography>
+      <Typography variant="body1">
+        The Subscription is No longer available
+      </Typography>
+      <Button variant="contained" onClick={() => window.location.reload()}>
+        Retry
+      </Button>
+    </Box>;
+  }
   return (
     <Box>
       {isLoading && <Typography>Loading...</Typography>}
@@ -161,7 +173,7 @@ const ApartmentSubscription = () => {
                 Current Cycle Ends On : {handleDateCOnversion(data.end_at)}
               </Typography>
               <Stack direction={'row'} spacing={2}>
-                <Button
+                {/* <Button
                   variant="contained"
                   sx={{
                     backgroundColor: '#080808',
@@ -173,7 +185,7 @@ const ApartmentSubscription = () => {
                   {conversionPlan === 'Basic'
                     ? 'Move to Basic'
                     : 'Upgrade to Premium'}
-                </Button>
+                </Button> */}
                 <Button
                   variant="contained"
                   sx={{
