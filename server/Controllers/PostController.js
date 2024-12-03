@@ -13,7 +13,7 @@ exports.createPost = async (req, res) => {
         const newPost = new Post({
             title,
             description,
-            fileUrl: `/cposts/${file.filename}`,
+            fileUrl: `/communitypost/${file.filename}`,
             apartment_id
         });
 
