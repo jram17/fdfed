@@ -71,9 +71,6 @@ class PaymentController extends RazorpayPayment {
             if (!room) {
                 return res.status(404).json({ message: 'Room not found' });
             }
-            if (room.subscriptionStatus != 'active') {
-                return res.status(400).json({ message: 'Subscription is not active' });
-            }
             if (owner != req.id) {
                 return res.status(403).json({ message: 'Unauthorized access' });
             }

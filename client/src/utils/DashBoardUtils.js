@@ -218,4 +218,35 @@ const ApartmentUsers = async (apartment_id) => {
     }
 }
 
-export { DashBoardSideDashutils, getApartmentDetails, UserDetailsforApartment, Apartment_Complaints, fetchAdminData, SubscriptionDetails, ApartmentUsers };
+const switchSubscriptions = async (apartment_id, plan_id) => {
+    try {
+        const response = await response.put('http://localhost:5000/payment/update-subscription', {
+            apartment_id: apartment_id,
+            plan_id: plan_id
+        })
+        if (response.status == 200) {
+            return true;
+        }
+    } catch (error) {
+        console.error('Could not switch subscriptions:', error);
+        return false;
+
+    }
+}
+const deleteSubscription = async (apartment_id, subscription_id) => {
+    try {
+        const response = await response.delete('http://localhost:5000/payment/cancel-subscription', {
+            apartment_id: apartment_id,
+            subscription_id: subscription_id
+        })
+        if (response.status == 200) {
+            return true;
+        }
+    } catch (error) {
+        console.error('Could not switch subscriptions:', error);
+        return false;
+
+    }
+}
+
+export { DashBoardSideDashutils, getApartmentDetails, UserDetailsforApartment, Apartment_Complaints, fetchAdminData, SubscriptionDetails, ApartmentUsers, deleteSubscription, switchSubscriptions };

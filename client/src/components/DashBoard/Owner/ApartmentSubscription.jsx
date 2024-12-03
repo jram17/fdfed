@@ -4,6 +4,12 @@ import { useQuery } from '@tanstack/react-query';
 import { SubscriptionDetails } from '../../../utils/DashBoardUtils';
 import { Box, Typography, Stack, LinearProgress, Button } from '@mui/material';
 import { Tag } from 'antd';
+import {
+  switchSubscriptions,
+  deleteSubscription,
+} from '../../../utils/DashBoardUtils';
+import { Snackbar } from '@mui/material';
+
 const plans = {
   premium: {
     plan_id: 'plan_PP2wHhUHdXIXfx',
@@ -16,6 +22,8 @@ const plans = {
 };
 const ApartmentSubscription = () => {
   const [conversionPlan, setconversionPlan] = useState(null);
+  const [isSubUpdate, setLoading] = useState(false);
+
   const { apartment_id } = useParams();
   const { data, isError, isLoading } = useQuery({
     queryKey: ['subscription_details', apartment_id],
@@ -26,7 +34,6 @@ const ApartmentSubscription = () => {
   const handleDateCOnversion = (unixTimestamp) => {
     const date = new Date(unixTimestamp * 1000);
 
-    // Format the date to a readable string
     const formattedDate = date.toLocaleString();
     return formattedDate;
   };
@@ -41,6 +48,32 @@ const ApartmentSubscription = () => {
       }
     }
   }, [data]);
+  const switchSub = () => {
+    if (isSubUpdate) return;
+    setLoading(true);
+    let plan_id =
+      conversionPlan === 'Premium'
+        ? plans.premium.plan_id
+        : plans.basic.plan_id;
+    switchSubscriptions(apartment_id, plan_id)
+      .then(() => {
+        setLoading(false);
+      })
+      .catch((error) => {
+        setLoading(false);
+      });
+  };
+  const cancelSub = () => {
+    if (isSubUpdate) return;
+    setLoading(true);
+    deleteSubscription(apartment_id, data.id)
+      .then(() => {
+        setLoading(false);
+      })
+      .catch((error) => {
+        setLoading(false);
+      });
+  };
   return (
     <Box>
       {isLoading && <Typography>Loading...</Typography>}
@@ -101,7 +134,7 @@ const ApartmentSubscription = () => {
               </Typography>
 
               <Typography variant="h6">
-                Remaining Billing Cycles : {data.remaining_count}
+                Subscription Billing Ends On : {data.remaining_count}
               </Typography>
 
               <Typography
@@ -134,6 +167,8 @@ const ApartmentSubscription = () => {
                     backgroundColor: '#080808',
                     color: 'white',
                   }}
+                  onClick={switchSub}
+                  disabled={isSubUpdate}
                 >
                   {conversionPlan === 'Basic'
                     ? 'Move to Basic'
@@ -145,6 +180,8 @@ const ApartmentSubscription = () => {
                     backgroundColor: '#080808',
                     color: 'white',
                   }}
+                  disabled={isSubUpdate}
+                  onClick={cancelSub}
                 >
                   Cancel Subscription
                 </Button>{' '}
