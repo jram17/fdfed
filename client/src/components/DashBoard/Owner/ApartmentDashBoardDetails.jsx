@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
-import { Apartment_Complaints } from '../../../utils/DashBoardUtils';
+import {
+  Apartment_Complaints,
+  ApartmentUsers,
+} from '../../../utils/DashBoardUtils';
 import { toTitleCase } from '../../../utils/Roomutils';
 import { Tag } from 'antd';
 import { DataGrid } from '@mui/x-data-grid';
-import { DateRangeInput } from 'rsuite';
+import MyResponsiveCalendar from '../../nivocharts/CalenderUi';
 const ApartmentDashBoardDetails = () => {
   const columns = [
     {
@@ -59,14 +62,20 @@ const ApartmentDashBoardDetails = () => {
     },
   ];
   const { apartment_id } = useParams();
-  console.log(apartment_id);
   const { data, isLoading, isError } = useQuery({
     queryKey: ['apartment_complaints', apartment_id],
     queryFn: () => Apartment_Complaints(apartment_id),
     enabled: !!apartment_id,
   });
-  console.log(data, isLoading, isError);
-
+  const {
+    data: apartment_users,
+    isLoading: Loading,
+    isError: error,
+  } = useQuery({
+    queryKey: ['apartment_users', apartment_id],
+    queryFn: () => ApartmentUsers(apartment_id),
+    enabled: !!apartment_id,
+  });
   return (
     <Box
       m={'1.5rem 2.5rem '}
@@ -76,6 +85,42 @@ const ApartmentDashBoardDetails = () => {
         gap: '3rem',
       }}
     >
+      <Box
+        display={'flex'}
+        alignItems={'center'}
+        justifyContent={'center'}
+        sx={{
+          height: '400px',
+          backgroundColor: 'background.paper',
+          padding: '0.5rem 1rem',
+          borderRadius: '0.5rem',
+          gap: '1rem',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+          cursor: 'pointer',
+          transition: 'background-color 0.2s ease-in-out',
+          '&:hover': {
+            backgroundColor: 'background.paperHover',
+          },
+        }}
+      >
+        <Typography
+          width={'100%'}
+          textAlign={'left'}
+          component={'h1'}
+          variant="h4"
+          fontWeight={'bold'}
+          sx={{ mb: '1rem' }}
+        >
+          Residents Calender
+        </Typography>
+        {apartment_users?.calenderData && (
+          <MyResponsiveCalendar data={apartment_users?.calenderData} />
+        )}
+      </Box>
       <Box
         display={'flex'}
         alignItems={'center'}

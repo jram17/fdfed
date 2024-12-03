@@ -175,10 +175,27 @@ const SubscriptionDetails = async (apartment_details) => {
 
 const ApartmentUsers = async (apartment_id) => {
     try {
+
         const response = await axios.get(`http://localhost:5000/dashboard/apartment-users/${apartment_id}`, {
             withCredentials: true
         });
-        return response.data;
+        console.log(response.data);
+        const groupedData = response.data.residents.reduce((acc, ele) => {
+            const day = ele.createdAt.slice(0, 10);
+
+            if (acc[day]) {
+                acc[day].value++;
+            } else {
+                acc[day] = { day, value: 1 };
+            }
+
+            return acc;
+        }, {});
+        const resultArray = Object.values(groupedData || {});
+        return {
+            data: response.data.residents,
+            calenderData: resultArray
+        };
 
     } catch (error) {
         console.error('Could not fetch the users:', error);
