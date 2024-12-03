@@ -26,7 +26,8 @@ exports.createPost = async (req, res) => {
 
 exports.getPosts = async (req, res) => {
     try {
-        const posts = await Post.find().sort({ createdAt: -1 });
+        const { apartment_id } = req.params;
+        const posts = await Post.find({ apartment_id }).sort({ createdAt: -1 });
         res.status(200).json(posts);
     } catch (error) {
         res.status(500).json({ message: 'Failed to fetch posts', error });
@@ -69,7 +70,8 @@ exports.addComment = async (req, res) => {
 
 exports.getPosts = async (req, res) => {
     try {
-        const posts = await Post.find()
+        const { apartment_id } = req.params;
+        const posts = await Post.find({ apartment_id: apartment_id })
             .sort({ createdAt: -1 })
             .select('title description fileUrl likes comments createdAt');
 
