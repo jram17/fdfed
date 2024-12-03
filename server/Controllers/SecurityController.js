@@ -2,7 +2,7 @@ const Apartment = require('../Models/RoomModel');
 const ApartmentUser = require('../Models/ApartmentUserModel');
 const ResidentLog = require("../Models/LogModel");
 const Parcel = require('../Models/ParcelModel');
-
+const Guest = require('../Models/GuestModel');
 class LogController {
     // Method to get all residents of a specific apartment
     async getResidents(req, res) {
@@ -12,7 +12,6 @@ class LogController {
             // Retrieve the apartment and populate the resident_id
             const apartment = await Apartment.findOne({ apartment_id }).populate('resident_id', 'username flat_id');
 
-
             // Check if apartment exists
             if (!apartment) {
                 return res.status(404).json({ error: 'Apartment not found' });
@@ -21,6 +20,7 @@ class LogController {
             // Return only the populated resident details
             return res.json(apartment.resident_id);
         } catch (error) {
+            console.log(error);
             console.error('Error fetching residents:', error);
             return res.status(500).json({ error: 'Server error' });
         }
@@ -69,7 +69,7 @@ class LogController {
 
             // Check if logs exist
             if (logs.length === 0) {
-                return res.status(400).json({ error: 'No logs found for this resident' });
+                return res.status(200).json({ error: 'No logs found for this resident' });
             }
 
 
@@ -109,6 +109,40 @@ class LogController {
             res.status(500).json({ message: 'Error fetching parcels', error });
         }
     };
+    async getGuests(req, res) {
+        const { apartment_id } = req.params;
+        try {
+            const guests = await Guest.find({ apartment_id });
+            return res.status(200).json(guests);
+        } catch (error) {
+            console.error("Error fetching guests:", error);
+            return res.status(500).json({ error: "Server error" });
+        }
+    }
+
+    async addGuests(req, res) {
+        try {
+            const { apartment_id } = req.params; // Get from URL params
+            const { flat_no, no_of_guests, guest_names } = req.body; // Get data from request body
+
+            if (!flat_no || !no_of_guests || !guest_names || guest_names.length != no_of_guests) {
+                return res.status(400).json({ error: "Invalid data provided" });
+            }
+
+            // Add each guest to the database
+            const guests = [];
+            for (const name of guest_names) {
+                const newGuest = new Guest({ name, flat_no, apartment_id });
+                const savedGuest = await newGuest.save();
+                guests.push(savedGuest);
+            }
+
+            return res.status(201).json({ message: "Guests added successfully", guests });
+        } catch (error) {
+            console.error("Error in addGuests:", error);
+            return res.status(500).json({ error: "Server error" });
+        }
+    }
 }
 
 module.exports = LogController;

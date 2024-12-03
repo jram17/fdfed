@@ -4,7 +4,6 @@ require("dotenv").config();
 const LOGIN_URL = "http://localhost:5173/sign-in";
 const login = async (req, res, next) => {
     passport.authenticate('local', { session: false }, (err, user, info) => {
-        console.log(err,user,info)
         if (err) {
             console.log("error", err);
             return res.status(400).json({ message: info });
