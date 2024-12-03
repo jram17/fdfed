@@ -5,7 +5,7 @@ import { MdOutlineSecurity } from "react-icons/md";
 import { FaBox } from "react-icons/fa";
 import { SlCalender } from "react-icons/sl"
 import { TfiLayoutAccordionSeparated } from "react-icons/tfi";
-
+import { getCreatedData } from "./Roomutils";
 const DashBoardSideDashutils = [
     {
         "Personals": [
@@ -90,5 +90,61 @@ const Apartment_Complaints = async (apartment_id) => {
 }
 
 
+const fetchAdminData = async () => {
+    let basic = 0;
+    let premium = 0;
+    try {
+        const response = await axios.get('http://localhost:5000/admin/details');
+        if (response.status === 200) {
+            const apartments_table = response.data.apartments?.map((ele) => {
+                if (ele.subscription === 'Basic') {
+                    basic++;
+                } else {
+                    premium++;
+                }
+                return {
+                    apartment_name: ele.apartment_name,
+                    ownername: ele.ownername,
+                    address: ele.address,
+                    subscription: ele.subscription,
+                    no_of_residents: ele.resident_id.length,
+                };
+            });
 
-export { DashBoardSideDashutils, getApartmentDetails, UserDetailsforApartment, Apartment_Complaints };
+            const users_table = response.data.users?.map((ele) => {
+                return {
+                    username: ele.username,
+                    email: ele.email,
+                    started_at: getCreatedData(ele.createdAt),
+                    googleaccount: ele.isGoogleId ? 'Yes' : 'No',
+                };
+            });
+
+            // Prepare pie chart data
+            const statusData = [
+                {
+                    id: 'Basic',
+                    label: 'Basic',
+                    value: basic,
+                    color: 'hsl(87, 70%, 50%)',
+                },
+                {
+                    id: 'Premium',
+                    label: 'Premium',
+                    value: premium,
+                    color: 'hsl(74, 70%, 50%)',
+                },
+            ];
+
+            return { apartments_table, users_table, statusData };
+
+
+        }
+    } catch (error) {
+        console.error(error);
+        alert('Error in fetching details: ' + error.message);
+    }
+};
+
+
+export { DashBoardSideDashutils, getApartmentDetails, UserDetailsforApartment, Apartment_Complaints, fetchAdminData };

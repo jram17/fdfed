@@ -34,6 +34,8 @@ import ApartmentDashBoardDetails from './components/DashBoard/Owner/ApartmentDas
 import Subscriptions from './components/DashBoard/Owner/Subscriptions';
 import AddLogDashBoard from './components/DashBoard/Security/AddLogDashBoard';
 import AddParcelDashBoard from './components/DashBoard/Security/AddParcelDashBoard';
+import AdminApartmentsDetails from './components/DashBoard/Admin/AdminApartmentsDetails';
+
 gsap.registerPlugin(ScrollTrigger);
 
 function App() {
@@ -116,6 +118,16 @@ function App() {
             <AuthLayout authentication={true}>
               <DashBoardLayout>
                 <UserComplaints />
+              </DashBoardLayout>
+            </AuthLayout>
+          }
+        />
+        <Route
+          path="dash/admin/apartments"
+          element={
+            <AuthLayout authentication={true}>
+              <DashBoardLayout>
+                <AdminApartmentsDetails />
               </DashBoardLayout>
             </AuthLayout>
           }

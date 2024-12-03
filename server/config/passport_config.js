@@ -43,7 +43,6 @@ const VerifyUser = (username, password, done) => {
         if (!isValid) {
             return done(null, false, { message: 'Incorrect password.' });
         }
-
         return done(null, user);
     }).catch(err => {
         done(err, false, { message: err.message })
