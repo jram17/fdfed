@@ -14,7 +14,7 @@ const AddParcel = () => {
     parcelType: '',
     senderAddress: '',
   });
-
+  
   const [errors, setErrors] = useState({});
 
   const {

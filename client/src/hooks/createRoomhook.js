@@ -42,7 +42,7 @@ const useCreateRoom = () => {
                         }
                         );
                         if (addRoomData.status === 200) {
-                            navigate('/dashboard');
+                            navigate('/dash');
                         }
 
                     }
