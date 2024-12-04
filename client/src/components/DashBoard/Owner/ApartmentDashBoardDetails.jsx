@@ -10,7 +10,7 @@ import { toTitleCase } from '../../../utils/Roomutils';
 import { Tag } from 'antd';
 import { DataGrid } from '@mui/x-data-grid';
 import MyResponsiveCalendar from '../../nivocharts/CalenderUi';
-import { ApartmentComplaintBar } from '../../nivocharts/BarChart';
+import { ApartmentComplaintsPie } from '../../nivocharts/PieChart';
 const ApartmentDashBoardDetails = () => {
   const columns = [
     {
@@ -18,11 +18,11 @@ const ApartmentDashBoardDetails = () => {
       headerName: 'Title',
       flex: 0.8,
       renderCell: (params) => {
-        return toTitleCase(params.row.complainTitle);
+        return toTitleCase(params.row.complaintTitle);
       },
     },
     {
-      field: 'description',
+      field: 'complaintDetail',
       headerName: 'Description',
       flex: 1,
       renderCell: (params) => {
@@ -68,6 +68,7 @@ const ApartmentDashBoardDetails = () => {
     queryFn: () => Apartment_Complaints(apartment_id),
     enabled: !!apartment_id,
   });
+  console.log(data?.status);
   const {
     data: apartment_users,
     isLoading: Loading,
@@ -152,11 +153,11 @@ const ApartmentDashBoardDetails = () => {
           fontWeight={'bold'}
           sx={{ mb: '1rem' }}
         >
-          Apartments Complaints
+          Complaints Filed By The Residents
         </Typography>
         <DataGrid
           rowsPerPageOptions={[10, 20, 50]}
-          rows={data.complaints || []}
+          rows={data?.complaints || []}
           loading={isLoading || !data.complaints}
           columns={columns}
           getRowId={(row) => `${row.apartment_id}-${row._id}`}
@@ -172,7 +173,7 @@ const ApartmentDashBoardDetails = () => {
         alignItems={'center'}
         justifyContent={'center'}
         sx={{
-          height: '400px',
+          height: '300px',
           backgroundColor: 'background.paper',
           padding: '0.5rem 1rem',
           borderRadius: '0.5rem',
@@ -189,7 +190,7 @@ const ApartmentDashBoardDetails = () => {
           },
         }}
       >
-        <ApartmentComplaintBar data={data.status} />
+        {data?.status && <ApartmentComplaintsPie data={data?.status} />}
       </Box>
     </Box>
   );

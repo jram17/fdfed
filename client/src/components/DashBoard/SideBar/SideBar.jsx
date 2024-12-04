@@ -60,7 +60,7 @@ const navItems = [
   {
     text: 'Add Log',
     icon: <CiLogin />,
-    path: '/dash/logs ',
+    path: '/dash/logs',
   },
   {
     text: 'Add Parcel',

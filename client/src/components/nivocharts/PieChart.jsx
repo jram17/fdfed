@@ -38,13 +38,13 @@ const ApartmentComplaintsPie = ({ data }) => {
       fill={[
         {
           match: {
-            id: 'Yes', // Matching 'Yes' from your data
+            id: 'Solved', // Matching 'Yes' from your data
           },
           id: 'dots',
         },
         {
           match: {
-            id: 'No', // Matching 'No' from your data
+            id: 'NotSolved', // Matching 'No' from your data
           },
           id: 'dots',
         },

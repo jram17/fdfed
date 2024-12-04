@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-
+import { Avatar, Tooltip } from '@mui/material';
 import EmojiPicker from 'emoji-picker-react';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
 import ScrollToBottom from 'react-scroll-to-bottom';
 function PrivateChat({ username, currentUser, aptId, socket }) {
   const [messages, setMessages] = useState([]);
@@ -75,7 +77,16 @@ function PrivateChat({ username, currentUser, aptId, socket }) {
 
   return (
     <div className="groupchat">
-      <div className="chatname">{username}</div>
+      <div className="chatname">
+        <div className="avatar-div">
+          <Avatar
+            src={`https://api.dicebear.com/9.x/initials/svg?seed=${username}&radius=10`}
+            alt="User Avatar"
+            style={{ width: '30px', height: '30px' }}
+          />
+        </div>
+        <div>{username}</div>
+      </div>
       <ScrollToBottom className="msgsdiv">
         <ul id="msgs">
           {messages.map((msg, index) => (
@@ -95,7 +106,13 @@ function PrivateChat({ username, currentUser, aptId, socket }) {
                 <br />
                 {msg.deleteForAll === false && <div>{msg.time}</div>}
                 {msg.userId === currentUser && msg.deleteForAll === false && (
-                  <button onClick={() => handleDelete(msg._id)}>D</button>
+                  <IconButton
+                    aria-label="delete"
+                    size="small"
+                    onClick={() => handleDelete(msg._id)}
+                  >
+                    <DeleteIcon fontSize="inherit" />
+                  </IconButton>
                 )}
               </li>
             </div>

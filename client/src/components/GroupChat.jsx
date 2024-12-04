@@ -1,16 +1,24 @@
 import React, { useState, useEffect } from 'react';
-
+import { Avatar, Tooltip } from '@mui/material';
 import EmojiPicker from 'emoji-picker-react';
 import ScrollToBottom from 'react-scroll-to-bottom';
-
-function GroupChat({ user, aptId, socket }) {
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import SendIcon from '@mui/icons-material/Send';
+import Button from '@mui/material/Button';
+function GroupChat({ user, aptId, socket, setIsVideo, isVideo }) {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [inCall, setIncall] = useState(false);
   const to = 'groupchat';
 
   useEffect(() => {
     if (socket) {
+      // socket.on("incomming:call", () => {
+      //   setIncall(!inCall);
+      // })
+
       if (user) {
         socket.on('message-deleted', ({ msgId, replacementMsg }) => {
           setMessages((prev) =>
@@ -67,9 +75,24 @@ function GroupChat({ user, aptId, socket }) {
     socket.emit('handle-delete-msgs', { msgId });
   };
 
+  const handleCall = () => {
+    setIsVideo(!isVideo);
+  };
+
   return (
     <div className="groupchat">
-      <div className="chatname">group chat</div>
+      {/* {inCall ? (<div className="chatname"><h2>group chat</h2><button onClick={handleCall}>answer</button></div>) :
+        (<div className="chatname"><h2>group chat</h2><button onClick={handleCall}>📞</button></div>)} */}
+      <div className="chatname">
+        <div className="avatar-div">
+          <Avatar
+            src={`https://api.dicebear.com/9.x/initials/svg?seed=Groupchat&radius=10`}
+            alt="User Avatar"
+            style={{ width: '30px', height: '30px' }}
+          />
+        </div>
+        <div>Group chat</div>
+      </div>
       <ScrollToBottom className="msgsdiv">
         <ul id="msgs">
           {messages.map((msg, index) => (
@@ -87,22 +110,36 @@ function GroupChat({ user, aptId, socket }) {
                 <br />
                 {msg.deleteForAll === false && <div>{msg.time}</div>}
                 {msg.userId === user && msg.deleteForAll === false && (
-                  <button onClick={() => handleDelete(msg._id)}>D</button>
+                  // <button onClick={() => handleDelete(msg._id)}>🗑️</button>
+                  <IconButton
+                    aria-label="delete"
+                    size="small"
+                    onClick={() => handleDelete(msg._id)}
+                  >
+                    <DeleteIcon fontSize="inherit" />
+                  </IconButton>
                 )}
               </li>
+              {/* {msg.userId === user && msg.deleteForAll === false && (
+              <div className="delete-btn-container">
+                <button className="delete-btn" onClick={() => handleDelete(msg._id)}> 🗑️</button>
+              </div>
+              )} */}
             </div>
           ))}
         </ul>
       </ScrollToBottom>
 
       <form id="chat-form" onSubmit={handleFormSubmit}>
-        <button
-          type="button"
-          id="emojipicker-btn"
-          onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-        >
-          {showEmojiPicker ? '🫣' : '😊'}
-        </button>
+        <div className="input-div-form">
+          <button
+            type="button"
+            id="emojipicker-btn"
+            onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+          >
+            {showEmojiPicker ? '🫣' : '😊'}
+          </button>
+        </div>
 
         {showEmojiPicker && (
           <div id="emojishow-div">
@@ -120,15 +157,20 @@ function GroupChat({ user, aptId, socket }) {
             />
           </div>
         )}
-
-        <input
-          type="text"
-          id="chat-input"
-          autoComplete="off"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-        />
-        <button className="send-button">send</button>
+        <div className="input-div-form">
+          <input
+            type="text"
+            id="chat-input"
+            autoComplete="off"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+          />
+        </div>
+        <div className="input-div-form">
+          <button className="send-button">
+            <SendIcon />
+          </button>
+        </div>
       </form>
     </div>
   );

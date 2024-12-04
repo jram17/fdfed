@@ -1,21 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import Contentbox from '../components/ContentBox';
+import '@fontsource/acme';
+
+import '@fontsource/abril-fatface';
+import { Avatar, Tooltip } from '@mui/material';
 function Content({ setCurrentChat, socket, user, aptId }) {
   const [availableUsers, setAvailableUsers] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState(['groupchat']);
   const [showDropdown, setShowDropdown] = useState(false);
-
-  // useEffect(() => {
-  //   console.log("Current user:", user);
-  //   console.log(aptId)
-  //   socket.emit('identify', { username: user, aptId: aptId });
-  // }, [user])
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     if (socket) {
       socket.emit('get-selected-users', { username: user, aptId: aptId });
       socket.on('load-selected-users', (users) => {
-        console.log('Selected users loaded:', users);
         setSelectedUsers(users);
       });
 
@@ -47,9 +45,29 @@ function Content({ setCurrentChat, socket, user, aptId }) {
     setCurrentChat(user);
   };
 
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value.toLowerCase());
+  };
+
+  // Filter available users based on the search query
+  const filteredUsers = availableUsers.filter((availableUser) =>
+    availableUser.toLowerCase().includes(searchQuery)
+  );
+
   return (
     <div className="content">
       <div className="contentdiv">
+        <div className="userprofiledisplay">
+          <div className="avatar-div">
+            <Avatar
+              src={`https://api.dicebear.com/9.x/initials/svg?seed=${user}&radius=10`}
+              alt="User Avatar"
+              style={{ width: '30px', height: '30px' }}
+            />
+          </div>
+          <div>{user}</div>
+        </div>
+        <br />
         <div className="contentbox-container">
           {selectedUsers.map((user, index) => (
             <Contentbox
@@ -70,20 +88,27 @@ function Content({ setCurrentChat, socket, user, aptId }) {
 
         {showDropdown && (
           <div className="dropdown">
-            {availableUsers.map((user, index) => (
-              <div
-                key={index}
-                className="dropdown-item"
-                onClick={() => handleUserSelect(user)}
-              >
-                {user}
-              </div>
-            ))}
+            <input
+              type="text"
+              className="search-input"
+              placeholder="Search users..."
+              value={searchQuery}
+              onChange={handleSearch}
+            />
+            <div className="dropdown-items">
+              {filteredUsers.map((user, index) => (
+                <div
+                  key={index}
+                  className="dropdown-item"
+                  onClick={() => handleUserSelect(user)}
+                >
+                  {user}
+                </div>
+              ))}
+            </div>
           </div>
         )}
       </div>
-
-      <div className="userprofiledisplay">{user}</div>
     </div>
   );
 }

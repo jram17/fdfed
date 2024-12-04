@@ -65,7 +65,33 @@ const UserDetailsforApartment = async () => {
         });
         if (response.status === 200) {
 
-            return response.data;
+            let severe = 0;
+            let warning = 0;
+            response.data.complaints.forEach((ele) => {
+                if (ele.severity === 'warning') {
+                    warning++;
+                } else if (ele.severity === 'severe') {
+                    severe++;
+                }
+            });
+            const status = [
+                {
+                    id: 'severe',
+                    label: 'Severe',
+                    value: severe,
+                    color: 'hsl(210, 70%, 50%)',
+                },
+                {
+                    id: 'warning',
+                    label: 'Warning',
+                    value: warning,
+                    color: 'hsl(350, 70%, 50%)',
+                },
+            ]
+            return {
+                status: status,
+                complaints: response.data.complaints
+            };
         }
     } catch (error) {
         console.log(error);
@@ -81,18 +107,24 @@ const Apartment_Complaints = async (apartment_id) => {
             `http://localhost:5000/complaints/${apartment_id}`,
             { withCredentials: true }
         );
+        console.log(response.data);
         let severe = 0;
         let warning = 0;
-        severe = response.data.filter((ele) => ele.severity === 'Severe').length;
-        warning = response.data.filter((ele) => ele.severity === 'Warning').length;
+        severe = response.data.filter((ele) => ele.isSolved === true).length;
+        warning = response.data.length - severe;
         return {
             status: [
                 {
-                    severity: 'Severe',
-                    count: severe
-                }, {
-                    severity: 'Warning',
-                    count: warning
+                    id: 'Solved',
+                    label: 'Solved',
+                    value: severe,
+                    color: 'hsl(87, 70%, 50%)',
+                },
+                {
+                    id: 'NotSolved',
+                    label: 'NotSolved',
+                    value: warning,
+                    color: 'hsl(74, 70%, 50%)',
                 }
             ]
             , complaints: response.data

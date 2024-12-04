@@ -3,7 +3,10 @@ import { RiLoader5Line } from 'react-icons/ri';
 import { FaArrowLeftLong } from 'react-icons/fa6';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-
+import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
+import { DateRangeCalendar } from '@mui/x-date-pickers-pro/DateRangeCalendar';
+import { LocalizationProvider } from '@mui/x-date-pickers-pro/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
 function AnnouncementForm({
   setMessages,
   role,
@@ -163,6 +166,12 @@ function Announcement({ apartment_id, isRole, Role, apartment_username }) {
     }
   }, [apartment_id, messages]);
 
+  const returnTime = (time) => {
+    // const newtime=new Date(time).toLocaleTimeString();
+    const newtime = new Date(time).toLocaleDateString();
+    return newtime;
+  };
+
   return (
     <div className="flex flex-col w-full gap-5 items-center justify-center p-6">
       {isRole && (
@@ -176,7 +185,17 @@ function Announcement({ apartment_id, isRole, Role, apartment_username }) {
       )}
 
       <div className="announcement-container">
-        <div className="announcement-something">something</div>
+        <div className="announcement-something">
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DemoContainer
+              components={['DateRangeCalendar', 'DateRangeCalendar']}
+            >
+              <DemoItem>
+                <DateRangeCalendar calendars={1} className="MuiCalendar" />
+              </DemoItem>
+            </DemoContainer>
+          </LocalizationProvider>
+        </div>
         <div className="announcement-messages-container">
           {messages.map((msg, index) => {
             return (
@@ -187,6 +206,8 @@ function Announcement({ apartment_id, isRole, Role, apartment_username }) {
                   </div>
                   <div id="announcement-msg-body">
                     {msg.announcement_msg}
+                    <br />
+                    {returnTime(msg.timestamp)}
                     <br />
                     {msg.fileUrl && (
                       <div id="fileupload">
