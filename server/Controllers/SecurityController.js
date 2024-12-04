@@ -54,6 +54,8 @@ class LogController {
             return res.status(201).json({ message: 'Log added successfully', log: newLog });
 
         } catch (error) {
+            console.error(error);
+
             // Return error response if something goes wrong in the try block
             return res.status(500).json({ error: 'Server error' });
         }

@@ -55,6 +55,7 @@ const AddLog = () => {
   // Log function for adding resident logs
   const addLog = async () => {
     try {
+      console.log(name,entryTime,exitTime,apartmentId);
       const response = await fetch(
         `http://localhost:5000/api/residents/add-log`,
         {
@@ -89,6 +90,7 @@ const AddLog = () => {
       setEntryTime('');
       setExitTime('');
     } catch (error) {
+      console.log(error);
       console.error('Error adding log:', error.message);
     }
 
@@ -233,7 +235,10 @@ const AddLog = () => {
             <input
               type="datetime-local"
               value={entryTime}
-              onChange={(e) => setEntryTime(e.target.value)}
+              onChange={(e) => {
+                console.log(e.target.value);
+                setEntryTime(e.target.value)
+              }}
               className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
             />
           </div>
