@@ -21,6 +21,8 @@ const plans = {
   },
 };
 const ApartmentSubscription = () => {
+  const [open, setOpen] = React.useState(false);
+
   const [conversionPlan, setconversionPlan] = useState(null);
   const [isSubUpdate, setLoading] = useState(false);
 
@@ -30,7 +32,9 @@ const ApartmentSubscription = () => {
     queryFn: () => SubscriptionDetails(apartment_id),
     enabled: !!apartment_id,
   });
-
+  const handleClose = () => {
+    setOpen(false);
+  };
   const handleDateCOnversion = (unixTimestamp) => {
     const date = new Date(unixTimestamp * 1000);
 
@@ -70,6 +74,7 @@ const ApartmentSubscription = () => {
     deleteSubscription(apartment_id, data.id)
       .then(() => {
         setLoading(false);
+        setOpen(true);
       })
       .catch((error) => {
         setLoading(false);
@@ -199,6 +204,12 @@ const ApartmentSubscription = () => {
                 </Button>{' '}
               </Stack>
             </Stack>
+            <Snackbar
+              open={open}
+              autoHideDuration={5000}
+              onClose={handleClose}
+              message="Subscription closed successfully"
+            />
           </Box>
         </Box>
       )}
