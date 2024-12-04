@@ -23,7 +23,6 @@ import {
 import { useTheme } from '@mui/material/styles';
 import { CiLogin } from 'react-icons/ci';
 import { FaBox } from 'react-icons/fa';
-
 const navItems = [
   {
     text: 'Resident',
@@ -84,7 +83,7 @@ const SideBar = ({ drawerWidth }) => {
   const [isSideBarOpen, setIsSideBarOpen] = useState(true);
   const { pathname } = useLocation();
   const theme = useTheme();
-
+  const location = useLocation();
   useEffect(() => {
     setActive(pathname);
   }, [pathname]);
@@ -136,11 +135,11 @@ const SideBar = ({ drawerWidth }) => {
                   }}
                   sx={{
                     backgroundColor:
-                      active === lcText
+                      location.pathname === path
                         ? theme.palette.secondary[300]
                         : 'transparent',
                     color:
-                      active === lcText
+                      location.pathname === path
                         ? theme.palette.primary[600]
                         : theme.palette.secondary[100],
                   }}
@@ -148,10 +147,7 @@ const SideBar = ({ drawerWidth }) => {
                   <ListItemIcon
                     sx={{
                       ml: '2rem',
-                      color:
-                        active === lcText
-                          ? theme.palette.primary[600]
-                          : theme.palette.secondary[200],
+                      color: '#00f',
                     }}
                   >
                     {icon}
