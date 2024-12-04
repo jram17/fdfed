@@ -21,7 +21,7 @@ const UserLogDetails = ({ apartment_id }) => {
       dispatch(setApartmentDetails(roomData));
     }
   }, [roomData, dispatch]);
-  const { resident_id } = useParams(); // Get resident_id from the URL
+  const { resident_id } = useParams();
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -40,9 +40,10 @@ const UserLogDetails = ({ apartment_id }) => {
         if (!response.ok) {
           throw new Error('Failed to fetch log details');
         }
-
-        const data = await response.json();
-        setLogs(data);
+        const data = response.json();
+        if (Array.isArray(data)) {
+          setLogs(data);
+        }
         const guest_res = await fetch(
           `http://localhost:5000/api/residents/get-guests/${apartment_id}`,
           {
