@@ -7,7 +7,7 @@ class DbConfig {
     }
     async DbConnect() {
         try {
-            const connect = await mongoose.connect(this.mongoUri);
+            await mongoose.connect(this.mongoUri);
             console.log(`Connected to Mongodb Database`);
 
 
