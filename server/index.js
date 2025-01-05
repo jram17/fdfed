@@ -73,14 +73,15 @@ class App extends Iointialize {
         this.app.use(passport.initialize());
         this.app.use(cors(corsOptions));
         this.app.options("*", cors(corsOptions));
-        this.app.use(
-            "/communitypost",
-            express.static(path.join(__dirname, "communitypost")),
-        );
+
         require("./config/passport_config");
     }
 
     setRoutes() {
+        this.app.use(
+            "/communitypost",
+            express.static(path.join(__dirname, "communitypost")),
+        );
         this.app.use("/user", Auth);
         this.app.use("/auth/google", GoogleStrategy);
         this.app.use("/jwtVerify", JwtVerifyRouter);
@@ -104,7 +105,7 @@ class App extends Iointialize {
 
     start(port) {
         this.server.listen(port, () => {
-            console.log(`Server is running on port ${port}`);
+            logger.default.info(`Server running on port ${port}`);
         });
     }
 }

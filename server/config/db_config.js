@@ -1,18 +1,21 @@
 const mongoose = require('mongoose');
+const redis = require('redis');
+const { default: logger } = require('./logger');
 
 
 class DbConfig {
-    constructor(mongoUri) {
+    constructor(mongoUri,redisUri) {
+        this.redisUri=redisUri;
         this.mongoUri = mongoUri;
     }
     async DbConnect() {
         try {
             await mongoose.connect(this.mongoUri);
-            console.log(`Connected to Mongodb Database`);
+            logger.info(`Connected to Mongodb Database`);
 
 
         } catch (error) {
-            console.log(`Failed to connect to Mongodb`);
+            logger.error(`Failed to connect to Mongodb`);
         }
     }
 }
