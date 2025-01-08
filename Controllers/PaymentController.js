@@ -1,6 +1,7 @@
 const RazorpayPayment = require("../utils/razorpayutils");
 const RoomModel = require("../Models/RoomModel");
 const plans = require("../constants/razorpayconstants");
+const { loggers } = require("winston");
 class PaymentController extends RazorpayPayment {
     constructor() {
         super();
@@ -87,6 +88,7 @@ class PaymentController extends RazorpayPayment {
 
     async getAllSubscriptions(req, res) {
         try {
+            
             const subscriptions = await this.getAllSubscriptions();
             res.status(200).json({ subscriptions });
         } catch (error) {

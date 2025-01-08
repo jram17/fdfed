@@ -30,7 +30,7 @@ class App extends Iointialize {
         this.cors = {
             origin: "http://localhost:5173",
             methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-            allowedHeaders: ["Content-Type", "Authorization"],
+            allowedHeaders: ["Content-Type", "Authorization", "X-CSRF-Token"],
             credentials: true,
             optionSuccessStatus: 200,
         };
@@ -50,7 +50,7 @@ class App extends Iointialize {
     }
 
     setMiddleware(corsOptions) {
-  
+
         const morganFormat = ":method :url :status :response-time ms";
 
         this.app.use(bodyParser.urlencoded({ extended: true }));
@@ -133,12 +133,12 @@ class App extends Iointialize {
             res.json({ message: 'Welcome to the Server' });
         })
 
-        
+
         this.app.get('/test-error', (req, res, next) => {
             try {
                 throw new Error('Test error');
             } catch (err) {
-                next(err); 
+                next(err);
             }
         });
 
