@@ -55,14 +55,14 @@ class App extends Iointialize {
 
         this.app.use(bodyParser.urlencoded({ extended: true }));
         this.app.use(express.urlencoded({ extended: true }));
-
+        
         this.app.use(
             morgan(morganFormat, {
                 skip: function (req, res) {
                     return res.statusCode >= 400
                 },
                 stream: {
-
+                    
                     write: (message) => {
                         const logObject = {
                             method: message.split(" ")[0],

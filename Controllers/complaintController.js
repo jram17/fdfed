@@ -51,11 +51,13 @@ const createComplaint = async (req, res) => {
 const getApartmentDetails = async (req, res) => {
   try {
     const { apartment_id } = req.params;
-    const room = await Room.findOne({ apartment_id: apartment_id });
+    const room = await ApartmentUser.findOne({ apartment_id: apartment_id, user: req.id });
+    console.log(room.user_designation);
     if (!room) {
-      return res.status(404).json({ message: "Room not found" });
+      return res.status(403).json({ message: "Room not found" });
     }
-    if (room.owner != req.id) {
+
+    if (room.user_designation != "Owner" && room.user_designation != "Security") {
       return res.status(403).json({ message: "Unauthorized access" });
     }
     const Complaints = await Complaint.find({ apartment_id });

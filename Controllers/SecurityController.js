@@ -109,7 +109,7 @@ class LogController {
       tokenFromClient !== tokenFromCookie
     ) {
       return res.status(403).json({ error: "Invalid CSRF token" });
-    }
+    }  
 
     const {
       residentName,
