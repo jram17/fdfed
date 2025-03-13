@@ -23,6 +23,7 @@ const Admin = require("./Routes/AdminRouter");
 const Payment = require("./Routes/PaymentRouter");
 const PostRouter = require("./Routes/PostRouter");
 const path = require("path");
+const { errorLogger, errorHandler } = require("./middlewares/ErrorMiddleware");
 class App extends Iointialize {
     constructor() {
         super();
@@ -49,11 +50,36 @@ class App extends Iointialize {
     }
 
     setMiddleware(corsOptions) {
+  
         const morganFormat = ":method :url :status :response-time ms";
+
         this.app.use(bodyParser.urlencoded({ extended: true }));
         this.app.use(express.urlencoded({ extended: true }));
+
         this.app.use(
             morgan(morganFormat, {
+                skip: function (req, res) {
+                    return res.statusCode >= 400
+                },
+                stream: {
+
+                    write: (message) => {
+                        const logObject = {
+                            method: message.split(" ")[0],
+                            url: message.split(" ")[1],
+                            status: message.split(" ")[2],
+                            responseTime: message.split(" ")[3],
+                        };
+                        logger.default.info(JSON.stringify(logObject));
+                    },
+                },
+            }),
+        );
+        this.app.use(
+            morgan(morganFormat, {
+                skip: function (req, res) {
+                    return res.statusCode < 400
+                },
                 stream: {
                     write: (message) => {
                         const logObject = {
@@ -62,7 +88,7 @@ class App extends Iointialize {
                             status: message.split(" ")[2],
                             responseTime: message.split(" ")[3],
                         };
-                        logger.info(JSON.stringify(logObject));
+                        logger.default.error(JSON.stringify(logObject));
                     },
                 },
             }),
@@ -75,6 +101,7 @@ class App extends Iointialize {
         this.app.options("*", cors(corsOptions));
 
         require("./config/passport_config");
+
     }
 
     setRoutes() {
@@ -97,6 +124,27 @@ class App extends Iointialize {
         this.app.use("/admin", Admin);
         this.app.use("/payment", Payment);
         this.app.use("/api/posts", PostRouter);
+
+
+        // Error handling middleware
+
+
+        this.app.get('/get', (req, res) => {
+            res.json({ message: 'Welcome to the Server' });
+        })
+
+        
+        this.app.get('/test-error', (req, res, next) => {
+            try {
+                throw new Error('Test error');
+            } catch (err) {
+                next(err); 
+            }
+        });
+
+
+        this.app.use(errorLogger);
+        this.app.use(errorHandler);
     }
 
     initializeSocket() {
