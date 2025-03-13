@@ -49,6 +49,7 @@ class RazorpayPayment {
         try {
 
             const response = await this.razorpay_instance.subscriptions.all();
+            console.log(response);
             return response;
         } catch (error) {
             console.error(error);

@@ -88,8 +88,9 @@ class PaymentController extends RazorpayPayment {
 
     async getAllSubscriptions(req, res) {
         try {
-            
+           console.log("gotsjbslkfjbgsldfjgsjlkd") 
             const subscriptions = await this.getAllSubscriptions();
+            console.log(subscriptions);
             res.status(200).json({ subscriptions });
         } catch (error) {
             console.log(error);
