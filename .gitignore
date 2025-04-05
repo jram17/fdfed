@@ -1,7 +1,10 @@
+.env.local
+node_modules/
 # Logs
 logs
 *.log
 npm-debug.log*
+pnpm-lock.yaml
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
@@ -27,3 +30,4 @@ Teamdetails.md
 *.sw?
 communitypost/
 app.log
+uploads/
