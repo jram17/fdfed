@@ -1,5 +1,5 @@
 {
-  "name": "ui",
+  "name": "@repo/ui",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "package ui for managing shadcn ui components",
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
     "@radix-ui/react-label": "^2.1.2",
