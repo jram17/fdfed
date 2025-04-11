@@ -1,0 +1,45 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ROLE {
+  USER
+  ADMIN
+  MODERATOR
+}
+
+model User {
+  id            String   @id @default(uuid())
+  username      String
+  uuid          String
+  email         String
+  password_hash String
+  userAvatar    String   @default("")
+  role          ROLE
+  isGoogleId    Boolean  @default(false)
+  googleId      String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  verificationToken VerificationToken? // 👈 Add this line for the reverse relation
+}
+
+model VerificationToken {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @unique // 👈 Ensures one-to-one relationship
+  expiresAt DateTime
+  token     String
+}

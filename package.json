@@ -2,6 +2,7 @@
   "name": "societylog",
   "version": "1.0.0",
   "main": "index.js",
+    "type":"module",
   "scripts": {
        "dev": "concurrently \" pnpm run server\" \" pnpm run client\"",
         "client":"pnpm run --filter client dev",

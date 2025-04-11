@@ -1,23 +1,17 @@
-.env.local
-node_modules/
 # Logs
 logs
 *.log
 npm-debug.log*
-pnpm-lock.yaml
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
-video4.mp4
+
 node_modules
 dist
 dist-ssr
 *.local
-dashideas.txt
-Teamdetails.md
-.env
-.env.local
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -28,7 +22,3 @@ Teamdetails.md
 *.njsproj
 *.sln
 *.sw?
-communitypost/
-app.log
-uploads/
-generated/
