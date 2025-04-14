@@ -6,7 +6,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -23,11 +22,9 @@ enum ROLE {
 model User {
   id            String   @id @default(uuid())
   username      String
-  uuid          String
   email         String
   password_hash String
-  userAvatar    String   @default("")
-  role          ROLE
+  role          ROLE     @default(USER)
   isGoogleId    Boolean  @default(false)
   googleId      String?
   createdAt     DateTime @default(now())

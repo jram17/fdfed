@@ -10,7 +10,6 @@ import { db } from "./db";
 import { verifyPassword, generateHash } from "#/utils/authutils";
 import { env } from "#/utils/envutils";
 import { getDecryptedToken } from "#/utils/jwtutils";
-import { v4 as uuidv4 } from "uuid";
 import { User } from "#/generated/prisma";
 
 // Type for JWT payload
@@ -54,22 +53,22 @@ const verifyUser = async (
                 message: "Username and password are required.",
             });
         }
-
+        
         const user = await db.user.findFirst({
             where: {
                 OR: [{ username: username }, { email: username }],
             },
         });
-
+        
         if (!user) {
             return done(null, false, { message: "Incorrect username or email." });
         }
-
+        
         const isValid = verifyPassword(password, user.password_hash);
         if (!isValid) {
             return done(null, false, { message: "Incorrect password." });
         }
-
+        
         return done(null, user);
     } catch (err) {
         return done(err, false);
@@ -84,7 +83,7 @@ passport.use(
             if (!payload) {
                 return done(null, false, { message: "Token is not present" });
             }
-
+            
             return done(null, payload.sub);
         },
     ),
@@ -112,13 +111,13 @@ passport.use(
             try {
                 const email = profile._json.email;
                 const username = profile.displayName;
-
+                
                 const user = await db.user.findFirst({
                     where: {
                         email: email,
                     },
                 });
-
+                
                 if (user) {
                     if (user.isGoogleId) {
                         return cb(null, user);
@@ -127,13 +126,11 @@ passport.use(
                     }
                 }
 
-                const uuid = uuidv4();
                 const hash = generateHash(profile.id);
                 const newUser = await db.user.create({
                     data: {
                         username,
                         email,
-                        uuid,
                         userAvatar: profile._json.picture,
                         password_hash: hash,
                         isGoogleId: true,

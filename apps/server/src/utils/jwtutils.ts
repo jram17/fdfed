@@ -22,18 +22,23 @@ interface TokenResult {
 
 export function issueJWT(user: User): TokenResult {
     const expiresIn = "1d";
-
+    
     const payload: JwtPayload = {
-        sub: user,
+        sub: {
+            id:user.id,
+            email: user.email,
+            username :user.username,
+            role:user.role
+        },
         iat: Date.now(),
     };
-
+    
     const signedToken = jwt.sign(payload, PRIV_KEY, { expiresIn });
     const encryptedToken = CryptoJS.AES.encrypt(
         JSON.stringify(signedToken),
         AES_KEY,
     ).toString();
-
+    
     return {
         token: encryptedToken,
         expires: expiresIn,

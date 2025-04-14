@@ -1,20 +1,23 @@
 import express, { Application, Request, Response } from "express";
+import { logger } from "./utils/loggerutils";
 import helmet from "helmet";
 import bodyParser from "body-parser";
 import cookieParser from 'cookie-parser';
 import passport from 'passport';
-import { env } from "./utils/env";
+import { env } from "./utils/envutils";
 import { errorHandler } from "./middlewares/errorMiddleware";
+import { urllog, errorlog } from "./utils/loggerutils";
+import { router } from "./api/api";
 class App {
     port: number | null = null;
     app: Application | null = null;
     env = env;
 
-    constructor(port: string) {
-        
+    constructor(port: number) {
+
         this.port = Number(port);
         this.app = express();
-            
+
         this.app.get("/", (req: Request, res: Response) => {
             res.send("Hello from the server!");
         });
@@ -24,7 +27,7 @@ class App {
     server() {
         if (this.app && this.port) {
             this.app.listen(this.port, () => {
-                console.log(`Server running on port ${this.port}`);
+                logger.info(`Server running on port ${this.port}`)
             });
         }
     }
@@ -37,7 +40,10 @@ class App {
         this.app.use(express.json());
         this.app.use(cookieParser());
         this.app.use(passport.initialize());
+        this.app.use(urllog);
+        this.app.use(errorlog);
         this.app.use(errorHandler);
+        this.app.use('/api', router!);
     }
 }
 
