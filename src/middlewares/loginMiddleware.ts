@@ -54,7 +54,7 @@ export const jwt_authenticate = async (
     passport.authenticate("jwt", (error: any, user: any, info: any) => {
         if (error) {
             return res
-                .status(500)
+                .status(303)
                 .json({ message: info?.message || "Authentication failed" });
         }
 
