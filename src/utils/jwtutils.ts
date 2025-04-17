@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import CryptoJS from "crypto-js";
 import { env } from "./envutils";
-import { User } from "#/generated/prisma";
+import { User } from "@prisma/client";
 const PRIV_KEY = env.JWT_SECRET_KEY;
 const AES_KEY = env.CRYPTO_SECRET_KEY;
 
@@ -22,23 +22,23 @@ interface TokenResult {
 
 export function issueJWT(user: User): TokenResult {
     const expiresIn = "1d";
-    
+
     const payload: JwtPayload = {
         sub: {
-            id:user.id,
+            id: user.id,
             email: user.email,
-            username :user.username,
-            role:user.role
+            username: user.username,
+            role: user.role,
         },
         iat: Date.now(),
     };
-    
+
     const signedToken = jwt.sign(payload, PRIV_KEY, { expiresIn });
     const encryptedToken = CryptoJS.AES.encrypt(
         JSON.stringify(signedToken),
         AES_KEY,
     ).toString();
-    
+
     return {
         token: encryptedToken,
         expires: expiresIn,

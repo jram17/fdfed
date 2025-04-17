@@ -7,7 +7,9 @@ class AuthRouter extends AuthController {
     super();
     this.route = Router();
     this.route.post("/register", this.register.bind(this));
-    this.route.post("/login", login);
+    this.route.post("/login", login,(req,res)=>{
+            return 
+        });
     this.route.get("/logout", this.logout.bind(this));
   }
 }
