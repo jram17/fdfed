@@ -41,6 +41,7 @@ class RoomController {
       });
     }
   }
+
 }
 
 export { RoomController };
