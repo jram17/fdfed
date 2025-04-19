@@ -17,6 +17,8 @@ const envSchema = z.object({
   SERVER_URL: z.string(),
   CLIENT_URL: z.string(),
   FALLBACK_URL: z.string(),
+
+  // 👉 Redis environment variables
   REDIS_HOST: z.string(),
   REDIS_PORT: z.string().transform(Number),
   REDIS_PASSWORD: z.string().optional(), // in case it's optional

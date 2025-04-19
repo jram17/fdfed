@@ -56,6 +56,7 @@ model Room {
   name               String
   address            String
   state              String
+  coverpicurl        String
   pincode            String
   registration_num   String
   subscription       SUBSCRIPTION @default(BASIC)
