@@ -1,5 +1,5 @@
-import dotenv from "dotenv";
-import { z } from "zod";
+import dotenv from 'dotenv';
+import { z } from 'zod';
 
 dotenv.config();
 
@@ -17,15 +17,14 @@ const envSchema = z.object({
   SERVER_URL: z.string(),
   CLIENT_URL: z.string(),
   FALLBACK_URL: z.string(),
+  REDIS_HOST: z.string(),
+  REDIS_PORT: z.string().transform(Number),
+  REDIS_PASSWORD: z.string().optional(), // in case it's optional
 });
-
 const parsedEnv = envSchema.safeParse(process.env);
 
 if (!parsedEnv.success) {
-  console.error(
-    "❌ Invalid environment variables:",
-    parsedEnv.error.flatten().fieldErrors,
-  );
+  console.error('❌ Invalid environment variables:', parsedEnv.error.flatten().fieldErrors);
   process.exit(1);
 }
 

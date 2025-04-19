@@ -26,9 +26,7 @@ class App {
 
   server() {
     if (this.app && this.port) {
-      (async () => {
-        await redis.connect();
-      })();
+
       redis.on("ready", () => {
         logger.info("Connected to Redis!");
         this.app?.listen(this.port, () => {
