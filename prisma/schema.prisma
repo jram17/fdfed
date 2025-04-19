@@ -19,10 +19,17 @@ enum ROLE {
   MODERATOR
 }
 
+enum SUBSCRIPTION {
+  BASIC
+  PREMIUM
+}
+
 model User {
   id            String   @id @default(uuid())
   username      String
   email         String
+  phonenumber   String?
+  rt_hash       String?
   password_hash String
   role          ROLE     @default(USER)
   isGoogleId    Boolean  @default(false)
@@ -30,13 +37,29 @@ model User {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  verificationToken VerificationToken? // 👈 Add this line for the reverse relation
+  verificationToken VerificationToken?
+  rooms             Room[] // 👈 One-to-many relation: one user owns many rooms
 }
 
 model VerificationToken {
   id        String   @id @default(uuid())
   user      User     @relation(fields: [userId], references: [id])
-  userId    String   @unique // 👈 Ensures one-to-one relationship
+  userId    String   @unique
   expiresAt DateTime
   token     String
+}
+
+model Room {
+  id                 String       @id @default(uuid())
+  ownerId            String // 👈 Foreign key
+  owner              User         @relation(fields: [ownerId], references: [id]) // 👈 Relation to User
+  name               String
+  address            String
+  state              String
+  pincode            String
+  registration_num   String
+  subscription       SUBSCRIPTION @default(BASIC)
+  subscriptionStatus Boolean
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
 }
