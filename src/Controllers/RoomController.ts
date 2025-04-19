@@ -1,4 +1,3 @@
-import { Room } from "@prisma/client";
 import { db } from "#/config/db";
 import { NextFunction, Request, Response } from "express";
 import { RoomCreateDto } from "#/dto/roomDto";

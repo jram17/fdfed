@@ -1,5 +1,5 @@
-import dotenv from 'dotenv';
-import { z } from 'zod';
+import dotenv from "dotenv";
+import { z } from "zod";
 
 dotenv.config();
 
@@ -17,6 +17,7 @@ const envSchema = z.object({
   SERVER_URL: z.string(),
   CLIENT_URL: z.string(),
   FALLBACK_URL: z.string(),
+  ADMIN_EMAIL: z.string().email(),
 
   // 👉 Redis environment variables
   REDIS_HOST: z.string(),
@@ -26,7 +27,10 @@ const envSchema = z.object({
 const parsedEnv = envSchema.safeParse(process.env);
 
 if (!parsedEnv.success) {
-  console.error('❌ Invalid environment variables:', parsedEnv.error.flatten().fieldErrors);
+  console.error(
+    "❌ Invalid environment variables:",
+    parsedEnv.error.flatten().fieldErrors,
+  );
   process.exit(1);
 }
 
