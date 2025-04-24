@@ -24,21 +24,30 @@ enum SUBSCRIPTION {
   PREMIUM
 }
 
-model User {
-  id            String   @id @default(uuid())
-  username      String
-  email         String
-  phonenumber   String?
-  rt_hash       String?
-  password_hash String
-  role          ROLE     @default(USER)
-  isGoogleId    Boolean  @default(false)
-  googleId      String?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+enum APARTMENTROLE {
+  RESIDENT
+  OWNER
+  SECURITY
+  AUTHORITY
+}
 
+model User {
+  id                String             @id @default(uuid())
+  username          String             @unique()
+  email             String             @unique()
+  phonenumber       String?
+  rt_hash           String?
+  profilepic        String?
+  password_hash     String
+  role              ROLE               @default(USER)
+  isGoogleId        Boolean            @default(false)
+  googleId          String?
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
   verificationToken VerificationToken?
-  rooms             Room[] // 👈 One-to-many relation: one user owns many rooms
+  rooms             Room[] // One-to-many: one user owns many rooms
+  apartments        ApartmentUser[] // Many-to-many: user is part of many apartments
+  JoinRoom          JoinRoom[]
 }
 
 model VerificationToken {
@@ -51,16 +60,56 @@ model VerificationToken {
 
 model Room {
   id                 String       @id @default(uuid())
-  ownerId            String // 👈 Foreign key
-  owner              User         @relation(fields: [ownerId], references: [id]) // 👈 Relation to User
-  name               String
+  ownerId            String
+  owner              User         @relation(fields: [ownerId], references: [id]) // Room owner
+  name               String       @unique()
   address            String
   state              String
   coverpicurl        String
   pincode            String
-  registration_num   String
+  registration_num   String       @unique()
   subscription       SUBSCRIPTION @default(BASIC)
   subscriptionStatus Boolean
   createdAt          DateTime     @default(now())
   updatedAt          DateTime     @updatedAt
+
+  ApartmentUsers ApartmentUser[]
+  JoinRoom       JoinRoom[]
+
+  @@index([ownerId])
 }
+
+model ApartmentUser {
+  id        String        @id @default(uuid())
+  userId    String
+  user      User          @relation(fields: [userId], references: [id])
+  role      APARTMENTROLE @default(RESIDENT)
+  flatNo    Int
+  roomId    String
+  room      Room          @relation(fields: [roomId], references: [id])
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@unique([userId, roomId]) // Ensure no duplicate user/room pairs
+  @@index([userId, roomId])
+  @@index([userId]) // Optimizing queries based on userId
+  @@index([roomId]) // Optimizing queries based on roomId
+}
+
+model JoinRoom {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  roomId    String
+  room      Room     @relation(fields: [roomId], references: [id])
+  expiresOn DateTime
+  token     String
+  createdAt DateTime @default(now())
+
+  @@unique([userId, roomId]) // Prevent multiple entries for the same user/room
+  @@index([userId]) // Optimizing queries based on userId
+  @@index([roomId]) // Optimizing queries based on roomId
+}
+
+
+
