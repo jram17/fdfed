@@ -11,4 +11,18 @@ export const RoomCreateDto = z.object({
   registration_num: z.string(),
   subscription: SubscriptionEnum.optional().default("BASIC"),
   subscriptionStatus: z.boolean().optional().default(false),
+  flatNo:z.number()
 });
+
+
+export const joinResidentDto = z.object({
+    roomId : z.string().uuid(),
+    emails: z.array(z.string().email())
+})
+
+
+export const addResidentDto = z.object({
+    roomId :z.string().uuid(),
+    flatNo :z.number(),
+    token :z.string()
+})
