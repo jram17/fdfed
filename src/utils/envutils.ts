@@ -19,10 +19,10 @@ const envSchema = z.object({
   FALLBACK_URL: z.string(),
   ADMIN_EMAIL: z.string().email(),
 
-  // 👉 Redis environment variables
   REDIS_HOST: z.string(),
   REDIS_PORT: z.string().transform(Number),
   REDIS_PASSWORD: z.string().optional(), // in case it's optional
+  RESEND_API: z.string(),
 });
 const parsedEnv = envSchema.safeParse(process.env);
 
