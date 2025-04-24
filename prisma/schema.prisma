@@ -31,6 +31,11 @@ enum APARTMENTROLE {
   AUTHORITY
 }
 
+enum COMPLAINTSEVERITY {
+  SEVERE
+  WARNING
+}
+
 model User {
   id                String             @id @default(uuid())
   username          String             @unique()
@@ -48,6 +53,7 @@ model User {
   rooms             Room[] // One-to-many: one user owns many rooms
   apartments        ApartmentUser[] // Many-to-many: user is part of many apartments
   JoinRoom          JoinRoom[]
+  UserComplaints    UserComplaints[]
 }
 
 model VerificationToken {
@@ -75,6 +81,7 @@ model Room {
 
   ApartmentUsers ApartmentUser[]
   JoinRoom       JoinRoom[]
+  UserComplaints UserComplaints[]
 
   @@index([ownerId])
 }
@@ -109,4 +116,22 @@ model JoinRoom {
   @@unique([useremail, roomId]) // Prevent multiple entries for the same user/room
   @@index([useremail]) // Optimizing queries based on userId
   @@index([roomId]) // Optimizing queries based on roomId
+}
+
+model UserComplaints {
+  id           String            @id @default(uuid())
+  userId       String
+  user         User              @relation(fields: [userId], references: [id])
+  roomId       String
+  room         Room              @relation(fields: [roomId], references: [id])
+  complaint    String            @db.Text // Use @db.Text for large text
+  severity     COMPLAINTSEVERITY
+  response     String?           @db.Text // Optional large text
+  responseTime DateTime?
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @default(now())
+
+  @@index([userId])
+  @@index([roomId])
+  @@index([userId, roomId])
 }

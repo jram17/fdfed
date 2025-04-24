@@ -1,9 +1,11 @@
 import { db } from "#/config/db";
 import { NextFunction, Request, Response } from "express";
 import {
+  adduserComplaintDto,
   RemoveApartmentUserDto,
   RoomCreateDto,
   updateApartmentRoleUserDto,
+  userComplaintSeverityLevel,
 } from "#/dto/roomDto";
 import { StatusCodes } from "http-status-codes";
 import { removeCache } from "#/middlewares/redisMiddleware";
@@ -85,7 +87,7 @@ class RoomController {
       data?.emails.map(async (email, _index) => {
         const userToken = uuid();
         const { data: _resp, error } = await this.resend?.emails.send({
-          from: req.userDetails.email,
+          from: env.ADMIN_EMAIL,
           to: [email],
           subject: "hello world",
           html: "<strong>it works!</strong>",
@@ -270,6 +272,52 @@ class RoomController {
 
         content: {
           userid: data?.userId,
+        },
+      });
+    } catch (error) {
+      res.status(500).json({
+        status: "error",
+        message: "Internal Server Error",
+      });
+    }
+  }
+  async adduserComplaint(req: Request, res: Response) {
+    try {
+      const isvalid = adduserComplaintDto.safeParse(req.body);
+      if (!isvalid.success) {
+        res.status(StatusCodes.NOT_ACCEPTABLE).json({
+          status: "error",
+          message: "Error in data validation",
+        });
+      }
+      const { data } = isvalid;
+      const userData = await db.apartmentUser.findFirst({
+        where: {
+          userId: data?.userId,
+          roomId: data?.roomId,
+        },
+      });
+      if (!userData) {
+        res.status(StatusCodes.CONFLICT).json({
+          status: "error",
+          message: "User Is Not present in the apartment",
+        });
+      }
+      const addComplaint = await db.userComplaints.create({
+        data: {
+          userId: data?.userId!,
+          roomId: data?.roomId!,
+          complaint: data?.complaint!,
+          severity: data?.severity!,
+        },
+      });
+      res.status(StatusCodes.OK).json({
+        status: "success",
+        message: "add complaint over the user successfully",
+
+        content: {
+          userid: data?.userId,
+          complaintId: addComplaint.id,
         },
       });
     } catch (error) {

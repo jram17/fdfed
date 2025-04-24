@@ -33,7 +33,7 @@ class AuthController {
       throw new ApiError(StatusCodes.CONFLICT, req.url, "User already exists");
     }
     const { hash } = generateHash(password);
-
+    
     this.user = await db.user.create({
       data: {
         username,
