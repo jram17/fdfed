@@ -13,6 +13,11 @@ class RoomRouter extends RoomController {
       "/resident-confirmation",
       this.addApartmentResidents.bind(this),
     );
+    this.route.delete("/remove-apartment-user", this.removeUser.bind(this));
+    this.route.patch(
+      "/update-apartment-user-role",
+      this.updateUserRole.bind(this),
+    );
   }
 }
 

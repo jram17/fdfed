@@ -1,6 +1,10 @@
 import { db } from "#/config/db";
 import { NextFunction, Request, Response } from "express";
-import { RoomCreateDto } from "#/dto/roomDto";
+import {
+  RemoveApartmentUserDto,
+  RoomCreateDto,
+  updateApartmentRoleUserDto,
+} from "#/dto/roomDto";
 import { StatusCodes } from "http-status-codes";
 import { removeCache } from "#/middlewares/redisMiddleware";
 import { ApiResponse } from "#/types/api-response";
@@ -8,7 +12,6 @@ import { joinResidentDto, addResidentDto } from "#/dto/roomDto";
 import { env } from "#/utils/envutils";
 import { Resend } from "resend";
 import { v4 as uuid } from "uuid";
-import { Param } from "@prisma/client/runtime/library";
 class RoomController {
   private resend: Resend;
   constructor() {
@@ -176,6 +179,99 @@ class RoomController {
           });
         }
       }
+    } catch (error) {
+      res.status(500).json({
+        status: "error",
+        message: "Internal Server Error",
+      });
+    }
+  }
+
+  async removeUser(req: Request, res: Response) {
+    try {
+      const isvalid = RemoveApartmentUserDto.safeParse(req.body);
+      if (!isvalid.success) {
+        res.status(StatusCodes.NOT_ACCEPTABLE).json({
+          status: "error",
+          message: "Error in data validation",
+        });
+      }
+      const { data } = isvalid;
+      const removedUser = await db.apartmentUser.delete({
+        where: {
+          userId_roomId: {
+            userId: data?.userId!,
+            roomId: data?.roomId!,
+          },
+        },
+      });
+      res.status(StatusCodes.OK).json({
+        status: "success",
+        message: "Removed User successfully",
+        content: {
+          userid: data?.userId,
+          removedUserId: removedUser.id,
+        },
+      });
+    } catch (error) {
+      res.status(500).json({
+        status: "error",
+        message: "Internal Server Error",
+      });
+    }
+  }
+
+  async updateUserRole(req: Request, res: Response) {
+    try {
+      const isvalid = updateApartmentRoleUserDto.safeParse(req.body);
+      if (!isvalid.success) {
+        res.status(StatusCodes.NOT_ACCEPTABLE).json({
+          status: "error",
+          message: "Error in data validation",
+        });
+      }
+      const { data } = isvalid;
+      const userData = await db.apartmentUser.findFirst({
+        where: {
+          userId: data?.userId,
+          roomId: data?.roomId,
+        },
+      });
+      if (!userData) {
+        res.status(StatusCodes.CONFLICT).json({
+          status: "error",
+          message: "User Is Not present in the apartment",
+        });
+      }
+      const updateduserRole = await db.apartmentUser.update({
+        where: {
+          userId_roomId: {
+            userId: data?.userId!,
+            roomId: data?.roomId!,
+          },
+        },
+        data: {
+          role: data?.role,
+        },
+      });
+
+      res.status(StatusCodes.OK).json({
+        status: "success",
+        message: "Removed User successfully",
+        content: {
+          userid: data?.userId,
+          role: updateduserRole?.role,
+        },
+      });
+
+      res.status(StatusCodes.OK).json({
+        status: "success",
+        message: "updated user role User successfully",
+
+        content: {
+          userid: data?.userId,
+        },
+      });
     } catch (error) {
       res.status(500).json({
         status: "error",
