@@ -70,7 +70,7 @@ class App extends Iointialize {
                             status: message.split(" ")[2],
                             responseTime: message.split(" ")[3],
                         };
-                        logger.default.info(JSON.stringify(logObject));
+                        logger.info(JSON.stringify(logObject));
                     },
                 },
             }),
@@ -88,7 +88,7 @@ class App extends Iointialize {
                             status: message.split(" ")[2],
                             responseTime: message.split(" ")[3],
                         };
-                        logger.default.error(JSON.stringify(logObject));
+                        logger.error(JSON.stringify(logObject));
                     },
                 },
             }),
@@ -153,7 +153,7 @@ class App extends Iointialize {
 
     start(port) {
         this.server.listen(port, () => {
-            logger.default.info(`Server running on port ${port}`);
+            logger.info(`Server running on port ${port}`);
         });
     }
 }

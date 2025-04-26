@@ -1,7 +1,6 @@
-const ApartmentUser = require('../Models/ApartmentUserModel');
+const ApartmentUser = require('../Models/ApartmentUserModel')
 
-
-export const isVerified =async (userid , apartmentid,role) =>{
+const isVerified =async (userid , apartmentid,role) =>{
    const isUser = await ApartmentUser.findOne({
         user:userid,
         apartment_id:apartmentid
@@ -12,7 +11,7 @@ export const isVerified =async (userid , apartmentid,role) =>{
 }
 
 
-export const getRole = async(userid , apartmentid)=>{
+ const getRole = async(userid , apartmentid)=>{
     const user = await ApartmentUser.findOne({
         user:userid,
         apartment_id:apartmentid
@@ -20,4 +19,7 @@ export const getRole = async(userid , apartmentid)=>{
     if(!user) return null ;
     return user.role;
 }
+
+
+module.exports = { isVerified, getRole}
 

@@ -1,11 +1,12 @@
-import { createLogger, format, transports } from "winston";
-import DailyRotateFile from "winston-daily-rotate-file";
-import path from "path";
-import fs from "fs";
+const winston = require('winston');
+const DailyRotateFile = require('winston-daily-rotate-file');
+const path = require('path');
+const fs = require('fs');
 
-const { combine, timestamp, json, colorize, printf } = format;
+const { combine, timestamp, json, colorize, printf } = winston.format;
 
-const logDirectory = path.join("public", "logs");
+const logDirectory = path.join('public', 'logs');
+
 if (!fs.existsSync(logDirectory)) {
   // Create the directory if it doesn't exist.
   fs.mkdirSync(logDirectory, { recursive: true });
@@ -16,21 +17,23 @@ const consoleLogFormat = printf(({ level, message, timestamp }) => {
 });
 
 const dailyRotateFileTransport = new DailyRotateFile({
-  filename: path.join(logDirectory, "app-%DATE%.log"), 
-  datePattern: "YYYY-MM-DD-HH", 
-  zippedArchive: true, 
-  maxSize: "20m", 
-  maxFiles: "24h", 
+  filename: path.join(logDirectory, 'app-%DATE%.log'),
+  datePattern: 'YYYY-MM-DD-HH',
+  zippedArchive: true,
+  maxSize: '20m',
+  maxFiles: '24h',
 });
 
-const logger = createLogger({
-  level: "info",
-  format: combine(timestamp(), json()), 
+const logger = winston.createLogger({
+  level: 'info',
+  format: combine(timestamp(), json()),
   transports: [
-    new transports.Console({
+    new winston.transports.Console({
       format: combine(colorize(), consoleLogFormat),
     }),
-    dailyRotateFileTransport, 
+    dailyRotateFileTransport,
   ],
 });
-export default logger;
+
+module.exports = logger;
+

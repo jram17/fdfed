@@ -1,11 +1,9 @@
 const mongoose = require('mongoose');
-const redis = require('redis');
-const { default: logger } = require('./logger');
+const logger = require('./logger')
 
 
 class DbConfig {
-    constructor(mongoUri,redisUri) {
-        this.redisUri=redisUri;
+    constructor(mongoUri) {
         this.mongoUri = mongoUri;
     }
     async DbConnect() {

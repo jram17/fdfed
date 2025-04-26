@@ -1,7 +1,6 @@
 
 
 const errorLogger=(err,req,res,next)=>{
-    console.log("hit")
     console.error(`[ERROR] : ${err.message}`);
     next(err);
 }

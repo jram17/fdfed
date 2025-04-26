@@ -7,8 +7,8 @@ const usersSchema = new mongoose.Schema({
     uuid: String,
     email: String,
     password_hash: String,
-    userAvatar: { type: String, default: '' },
-    isGoogleId: { type: Boolean, default: false },
+    userAvatar: { type: String, default: null },
+    isGoogleId: { type: Boolean, default: false , index: true },
     googleId: {
         type: String, default: null
     }
