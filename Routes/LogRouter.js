@@ -8,6 +8,12 @@ class LogRouter extends LogController {
         super();
         this.route = express.Router();
         this.route.use(jwt_authenticate);
+        this.route.get('/log-details/:apartment_id',this.getLogs.bind(this));
+        this.route.get('/log-details/:apartment_id/:apartmentuser', this.getUserLogs.bind(this));
+        this.route.post('/send-guest-invite',this.sendOtp.bind(this));
+        this.route.patch('/guest-entry',this.regsiterGuestEntry.bind(this));
+        this.route.patch('/guest-exit',this.registerGuestExit.bind(this));
+        
 
 
     }

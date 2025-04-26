@@ -1,13 +1,10 @@
 const Apartment = require("../Models/RoomModel");
-const ApartmentUser = require("../Models/ApartmentUserModel");
-const ResidentLog = require("../Models/LogModel");
 const Parcel = require("../Models/ParcelModel");
-const Guest = require("../Models/GuestModel");
 const {
   isVerified,
   getRole,
 } = require("../middlewares/RoleValidationMiddleware");
-class LogController {
+class ParcelController {
   // Method to get all residents of a specific apartment
   async getResidents(req, res) {
     const { apartment_id } = req.params; // Extract apartment_id from the URL
@@ -180,4 +177,4 @@ class LogController {
   }
 }
 
-module.exports = LogController;
+module.exports = ParcelController;

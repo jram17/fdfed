@@ -90,7 +90,7 @@ class JoinRoom {
         });
       }
       const isvalid = this.isExpired(tokenVerification.expiresOn);
-      if (!isvalid) {
+      if (isvalid) {
         res.status(403).json({
           message: "The invitation is not valid",
         });

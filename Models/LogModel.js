@@ -1,26 +1,38 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const ResidentLogSchema = new mongoose.Schema({
-
-    name: {
-        type: String,
-        required: true
+const LogSchema = new mongoose.Schema(
+  {
+    apartment_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Apartments",
+      index: true,
     },
-
-    resident_id: {
-        type: String,
-        required: true
+    apartmentuser: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "ApartmentUsers",
+      index: true,
     },
-    entry_time: {
-        type: Date,
-        required: true
+    entrytime: {
+      type: Date,
     },
-    exit_time: {
-        type: Date,
-        required: true
-    }
-}, { timestamps: true });  // Automatically adds createdAt and updatedAt timestamps
+    exittime: {
+      type: Date,
+    },
+    masterguestemail: String,
+    otp: {
+      type: String,
+      maxlength: 6,
+    },
+    expiresOn: Date,
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  { timestamps: true },
+); // Automatically adds createdAt and updatedAt timestamps
 
-const ResidentLog = mongoose.model('ResidentLog', ResidentLogSchema);
+LogSchema.index({ apartment_id: 1, apartmentuser: 1 });
+const Log = mongoose.model("ResidentLog", LogSchema);
 
-module.exports = ResidentLog;
+module.exports = Log;
