@@ -33,6 +33,7 @@ const LogSchema = new mongoose.Schema(
 ); // Automatically adds createdAt and updatedAt timestamps
 
 LogSchema.index({ apartment_id: 1, apartmentuser: 1 });
+LogSchema.index({ apartment_id: 1, apartmentuser: 1, masterguestemail: 1 });
 const Log = mongoose.model("ResidentLog", LogSchema);
 
 module.exports = Log;
