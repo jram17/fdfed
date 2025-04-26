@@ -12,7 +12,9 @@ class LogRouter extends LogController {
         this.route.get('/:apartment_id', this.getLogDetails.bind(this));
         this.route.post('/add-log', this.addLogDetails.bind(this));
         this.route.post('/add-parcel', this.createParcel.bind(this));
-        this.route.get('/get-parcels/:apartment_id', this.getParcels.bind(this));
+        this.route.patch('/ack-parcels',this.acknowledgeParcels.bind(this));
+        this.route.delete('/remove-ack-parcels',this.removeAckParcels.bind(this));
+        this.route.get('/get-parcels/:apartment_id/:apartmentuser', this.getParcels.bind(this));
         this.route.post('/add-guest/:apartment_id', this.addGuests.bind(this));
         this.route.get('/get-guests/:apartment_id', this.getGuests.bind(this));
 

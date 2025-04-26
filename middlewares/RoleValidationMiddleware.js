@@ -17,5 +17,7 @@ export const getRole = async(userid , apartmentid)=>{
         user:userid,
         apartment_id:apartmentid
     });
-    return user.role
+    if(!user) return null ;
+    return user.role;
 }
+
