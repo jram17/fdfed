@@ -10,3 +10,12 @@ export const isVerified =async (userid , apartmentid,role) =>{
     if(isUser.role!=role) return false ;
     return true ;
 }
+
+
+export const getRole = async(userid , apartmentid)=>{
+    const user = await ApartmentUser.findOne({
+        user:userid,
+        apartment_id:apartmentid
+    });
+    return user.role
+}
